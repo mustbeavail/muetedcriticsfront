@@ -1,35 +1,55 @@
-import styles from './mail.module.css';
+"use client";
 
-export default function Mail() {
+import { useParams } from "next/navigation";
+import { listItem } from "../data";
+import Link from "next/link";
+import styles from "../mailList.module.css";
+import { IoCalendarClearOutline } from "react-icons/io5";
+
+export default function MailDetailPage() {
+  const { mail } = useParams();
+  const mail_detail = listItem.find((m) => m.mail_idx === Number(mail));
+
+  if (!mail_detail)
     return (
-        <div className={styles.wrapper}>
-            <h1 className={styles.title}>발신 메일 상세보기</h1>
-
-            <div className={styles.container}>
-                <button className={styles.backButton}>← 리스트로</button>
-
-                <div className={styles.header}>
-                    <h2 className={styles.subject}>📧 [안내] 고객 불만 사례 대응 매뉴얼 업데이트</h2>
-                    <p className={styles.meta}>수신 유저 분류: <span>전체 유저</span></p>
-                    <p className={styles.meta}>담당자 ID: <span>member123</span></p>
-                    <p className={styles.date}>📅 2025.06.30 09:05</p>
-                </div>
-
-                <div className={styles.body}>
-                    <p>안녕하세요 유저 여러분,</p>
-                    <br />
-                    <p>고객 불만 사례에 대한 대응 매뉴얼이 업데이트되어 공유드립니다.</p>
-                    <br />
-                    <p>
-                        이번 매뉴얼에서는 최근 발생한 주요 고객 불만 유형과 대응 방안을 상세히 다루고 있으며,
-                        모든 담당자는 본 내용을 숙지해 주시기 바랍니다.
-                    </p>
-                    <br />
-                    <p>추가 문의사항은 언제든지 연락해 주세요.</p>
-                    <br />
-                    <p>감사합니다.</p>
-                </div>
-            </div>
-        </div>
+      <div className={styles["not-found"]}>메일을 찾을 수 없습니다.</div>
     );
+
+  const isTemplate = !!mail_detail.tem_idx;
+
+  const subject = isTemplate ? mail_detail.mail_sub : mail_detail.mail_sub;
+  const content = isTemplate
+    ? mail_detail.mail_content?.[0]?.tem_body || "<p>템플릿 본문이 없습니다.</p>"
+    : mail_detail.mail_content;
+
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>📨 발신 메일 상세보기</h1>
+
+      <div className={styles.card}>
+        <Link href="/mailList">
+          <button className={styles.backBtn}>← 리스트로 돌아가기</button>
+        </Link>
+
+        <section className={styles.section}>
+          <h2 className={styles.subject}>📧 {subject}</h2>
+          <p className={styles.meta}>
+            수신 대상:{" "}
+            <span>
+              {mail_detail.is_to_all ? "전체 유저" : mail_detail.recipient}
+            </span>
+          </p>
+          <p className={styles.meta}>
+            담당자 ID: <span>{mail_detail.member_id}</span>
+          </p>
+          <div className={styles.date}>
+            <IoCalendarClearOutline />
+            <span>{mail_detail.mail_date}</span>
+          </div>
+        </section>
+
+        <div dangerouslySetInnerHTML={{ __html: content }} />
+      </div>
+    </div>
+  );
 }
