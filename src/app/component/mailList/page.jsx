@@ -1,50 +1,77 @@
 "use client";
 import { useState, useEffect } from "react";
-import mailListStyles from "./mailList.module.css";
+import "./mail.css";
 import { IoSearch } from "react-icons/io5";
 import Link from "next/link";
-import { listItem } from "./data"; // 더미데이터
+import { listItem } from "./data";
 
 export default function MailList() {
-    // data.js 에서 더미데이터 불러옴
     const [mailList, setMailList] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 15;
+
     useEffect(() => {
         setMailList(listItem);
     }, []);
 
+    const totalPages = Math.ceil(mailList.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedList = mailList.slice(startIndex, endIndex);
+
     return (
         <>
-            <span className={mailListStyles['mailList-title']}>발신 메일 리스트</span>
-            <div className={mailListStyles['mailList-background']}>
-                <div className={mailListStyles['mailList-header']}>
-                    <div className={mailListStyles['mailList-search']}>
+            <h1 className={"mailList-title"}>발신 메일 리스트</h1>
+            <div className={"mailList-background"}>
+                <div className={"mailList-header"}>
+                    <div className={"mailList-search"}>
                         <span>메일 검색</span>
-                        <div className={mailListStyles['mailList-input-wrapper']}>
+                        <div className={"mailList-input-wrapper"}>
                             <input type="text" placeholder="메일 검색" />
-                            <button className={mailListStyles['search-btn']}><IoSearch /></button>
+                            <button className={"search-btn"}><IoSearch /></button>
                         </div>
                     </div>
-                    <select className={mailListStyles['mailList-select']}>
-                        <option value="all">전체</option>
-                        <option value="sent">정렬 기준 미정1</option>
-                        <option value="received">정렬 기준 미정2</option>
+                    <Link href="/mail_send">
+                        <button className={"mailDetail-backBtn"}>메일 발송</button>
+                    </Link>
+                    <Link href="/stats_revenue_daily">
+                        <button className={"mailDetail-backBtn"}>매출 통계</button>
+                    </Link>
+                    <select className={"mailList-select"}>
+                        <option>전체</option>
+                        <option>정렬 기준 미정1</option>
+                        <option>정렬 기준 미정2</option>
                     </select>
                 </div>
-                {mailList.map((mail) => (
-                    <Link key={mail.mail_idx} href={`/mailList/${mail.mail_idx}`} className={mailListStyles['mailList-item']}>
-                        <div className={mailListStyles['mailList-subItem']}>
-                            <div className={mailListStyles['mailList-left']}>
-                                <div className={mailListStyles['mailList-title']}>📧 {mail.mail_sub}</div>
-                                <div className={mailListStyles['mailList-recipient']}>수신 유저 분류: <span style={{ color: 'white' }}>{mail.recipient}</span></div>
-                                <div className={mailListStyles['mailList-member']}>담당자 ID: <span style={{ color: 'white' }}>{mail.member_id}</span></div>
+
+                {/* 리스트 출력 */}
+                {paginatedList.map((mail) => (
+                    <Link key={mail.mail_idx} href={`/mail_list/${mail.mail_idx}`} className={"mailList-item"}>
+                        <div className={"mailList-subItem"}>
+                            <div className={"mailList-left"}>
+                                <div className={"mailList-title"}>📧 {mail.mail_sub}</div>
+                                <div className={"mailList-recipient"}>수신 유저 분류: <span style={{ color: 'white' }}>{mail.recipient}</span></div>
+                                <div className={"mailList-member"}>담당자 ID: <span style={{ color: 'white' }}>{mail.member_id}</span></div>
                             </div>
-                            <div className={mailListStyles['mailList-right']}>
+                            <div className={"mailList-right"}>
                                 📆 {mail.mail_date}
                             </div>
                         </div>
                     </Link>
                 ))}
 
+                {/* 페이징 */}
+                <div className="mailList-pagination">
+                    {Array.from({ length: totalPages }, (_, i) => (
+                        <button
+                            key={i}
+                            className={`mailList-pagination-btn ${currentPage === i + 1 ? 'active' : ''}`}
+                            onClick={() => setCurrentPage(i + 1)}
+                        >
+                            {i + 1}
+                        </button>
+                    ))}
+                </div>
             </div>
         </>
     );
