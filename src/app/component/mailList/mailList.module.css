@@ -1,11 +1,11 @@
-/* body {
+body {
     margin: 0;
     padding: 0;
     background: linear-gradient(to bottom, #1e1e1e, #1a132b, #35123b);
     background-attachment: fixed;
     min-height: 100vh;
     font-family: 'Pretendard', sans-serif;
-} */
+}
 
 .mailList-title {
     font-size: 24px;
@@ -145,4 +145,79 @@
     color: #7F748C;
     white-space: nowrap;
     align-self: flex-start;
+}
+
+/**/
+
+.container {
+    padding: 40px;
+    color: white;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.card {
+    background: linear-gradient(to bottom right, #1e1c28, #2e1f3a);
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.backBtn {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.backBtn:hover {
+    background-color: #555;
+}
+
+.subject {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.meta {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 4px;
+}
+
+.meta span {
+    color: white;
+}
+
+.date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #aaa;
+    margin: 16px 0;
+    font-size: 14px;
+}
+
+.content {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+.not-found {
+    padding: 40px;
+    color: white;
+    font-size: 16px;
 }
