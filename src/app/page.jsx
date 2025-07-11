@@ -1,9 +1,10 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FaCheck } from 'react-icons/fa';
 import styles from './page.module.css';
+import axios from 'axios';
 
 const VerificationCodeInput = ({ length = 6, value, onChange }) => {
   const inputRef = useRef();
@@ -116,8 +117,11 @@ const PasswordChangeModal = ({ onClose }) => {
 
 const Login = () => {
   const router = useRouter();
-  const [userName, setUserName] = useState('');
-  const [password, setPassword] = useState('');
+  const [info, setInfo] = useState({
+    member_id: '',
+    member_pw: ''
+  });
+  
   const [error, setError] = useState('');
   const [showFindModal, setShowFindModal] = useState(false);
   const [showPasswordChangeModal, setShowPasswordChangeModal] = useState(false);
@@ -134,18 +138,35 @@ const Login = () => {
     setVerificationError(false);
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    const member_id = sessionStorage.getItem('member_id');
+    if (member_id != null) {
+      sessionStorage.removeItem('member_id');
+    }
+    if (token != null) {
+      sessionStorage.removeItem('token');
+    }
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!userName.trim()) {
+    if (!info.member_id.trim()) {
       setError('아이디를 입력해주세요.');
       return;
     }
-    if (!password.trim()) {
+    if (!info.member_pw.trim()) {
       setError('비밀번호를 입력해주세요.');
       return;
     }
-    if (userName === 'admin' && password === 'passpass') {
+
+    // 로그인 요청
+    const {data} = await axios.post('http://localhost/member/login', info);
+    console.log(data);
+    if (data.success === true) {
       router.push('/component/main');
+      sessionStorage.setItem('member_id', info.member_id);
+      sessionStorage.setItem('token', data.token);
     } else {
       setError('아이디 또는 비밀번호가 올바르지 않습니다.');
     }
@@ -179,9 +200,10 @@ const Login = () => {
         <input
           type="text"
           placeholder="아이디"
-          value={userName}
+          name="member_id"
+          value={info.member_id}
           onChange={(e) => {
-            setUserName(e.target.value);
+            setInfo({...info, member_id: e.target.value});
             if (error) setError('');
           }}
           className={styles['login-input']}
@@ -190,16 +212,17 @@ const Login = () => {
         <input
           type="password"
           placeholder="비밀번호"
-          value={password}
+          name="member_pw"
+          value={info.member_pw}
           onChange={(e) => {
-            setPassword(e.target.value);
+            setInfo({...info, member_pw: e.target.value});
             if (error) setError('');
           }}
           className={styles['login-input']}
           autoComplete="current-password"
         />
         {error && <p className={styles['login-error']}>{error}</p>}
-        <button type="submit" className={styles['login-button']}>
+        <button type="submit" className={styles['login-button']} onClick={handleSubmit}>
           로그인
         </button>
       </form>
