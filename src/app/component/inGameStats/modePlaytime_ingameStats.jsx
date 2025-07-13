@@ -1,3 +1,6 @@
+"use client"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
 const match_result = [
     {
         result_idx: 5001,
@@ -382,9 +385,61 @@ const match_result = [
 ]
 
 export default function ModePlaytime_IngameStats() {
+    const playTimeByMode = {};
+
+    match_result.forEach((entry) => {
+        const mode = entry.match_table?.match_mode ?? "기타";
+        const time = entry.match_play_time ?? 0;
+
+        if (!playTimeByMode[mode]) {
+            playTimeByMode[mode] = 0;
+        }
+        playTimeByMode[mode] += time;
+    });
+
+    const chartData = Object.entries(playTimeByMode).map(([match_mode, total_play_time]) => ({
+        match_mode,
+        total_play_time
+    }));
+
     return (
-        <div className={"userStats-chartWrapper"}>
+        <div className={"ingameStats-chartWrapper-modePlaytime"}>
             <h2 className={"userStats-title"}>전체 유저의 모드별 플레이타임</h2>
+            <div className="tierStats-chartWrapper-datalist">
+                {/* 표 영역 */}
+                <div className="tierStats-chartWrapper-tableBox">
+                    <div className="row header">
+                        <div className="cell">게임 모드</div>
+                        <div className="cell">총 플레이 시간</div>
+                    </div>
+                    {chartData.map((mode, idx) => (
+                        <div className="row" key={idx}>
+                            <div className="cell">{mode.match_mode}</div>
+                            <div className="cell">{mode.total_play_time}분</div>
+                        </div>
+                    ))}
+                    <div className="row total">
+                        <div className="cell">총합</div>
+                        <div className="cell">
+                            {
+                                chartData.reduce((sum, item) => sum + item.total_play_time, 0)
+                            }분
+                        </div>
+                    </div>
+                </div>
+                <ResponsiveContainer width="60%" height={310}>
+                    <BarChart
+                        data={chartData}
+                        margin={{ top: 20, right: 30, left: 40, bottom: 20 }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="match_mode" />
+                        <YAxis unit="분" />
+                        <Tooltip formatter={(value) => `${value}분`} />
+                        <Bar dataKey="total_play_time" fill="#9C27B0" name="총 플레이 시간" />
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     );
 }   

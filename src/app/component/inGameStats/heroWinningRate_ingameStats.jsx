@@ -1,7 +1,91 @@
-export default function HeroWinningRate_IngameStats() {
+"use client"
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
+export default function HeroWinningRate_IngameStats({ inGameStatsData }) {
+    const winRateByHero = {};
+
+    inGameStatsData.forEach(data => {
+        const hero = data.heros.heroes_name;
+        if (!winRateByHero[hero]) {
+            winRateByHero[hero] = {
+                wins: 0,
+                total: 0,
+            };
+        }
+
+        winRateByHero[hero].total += 1;
+
+        if (data.lose_count === 0) {
+            winRateByHero[hero].wins += 1;
+        }
+    });
+
+    const result = Object.entries(winRateByHero).map(([heroes_name, { wins, total }]) => ({
+        heroes_name,
+        win_rate: Number(((wins / total) * 100).toFixed(1)),
+    }));
+
+    // 차트 페이징 처리
+    const itemsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const totalPages = Math.ceil(result.length / itemsPerPage);
+
+    const pagedData = result.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
     return (
-        <div className={"userStats-chartWrapper"}>
-            <h2 className={"userStats-title"}>전체 유저의 영웅별 승률</h2>
+        <div className={"ingameStats-chartWrapper"}>
+            <div>
+                <h2 className={"userStats-title"}>전체 유저의 영웅별 승률</h2>
+                <select>
+                    <option>시즌 선택</option>
+                    <option>시즌 1</option>
+                    <option>시즌 2</option>
+                    <option>시즌 3</option>
+                    <option>시즌 4</option>
+                    <option>시즌 5</option>
+                    <option>시즌 6</option>
+                </select>
+                <select>
+                    <option>높은 순</option>
+                    <option>낮은 순</option>
+                </select>
+            </div>
+            <ResponsiveContainer width="100%" height={1120}>
+                <BarChart
+                    data={pagedData}
+                    layout="vertical"
+                    margin={{ top: 20, right: 30, left: 120, bottom: 20 }}
+                >
+                    <defs>
+                        <linearGradient id="winRateGradient" x1="1" y1="0" x2="0" y2="0">
+                            <stop offset="0%" stopColor="#9C27B0" stopOpacity={1} />
+                            <stop offset="100%" stopColor="#4b00a3" stopOpacity={0} />
+                        </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" domain={[0, 100]} tickFormatter={(tick) => `${tick}%`} />
+                    <YAxis dataKey="heroes_name" type="category" />
+                    <Tooltip formatter={(value) => `${value}%`} />
+                    <Bar dataKey="win_rate" fill="url(#winRateGradient)" name="승률" />
+                </BarChart>
+            </ResponsiveContainer>
+            {/* 페이징 버튼 */}
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                        key={i}
+                        onClick={() => setCurrentPage(i + 1)}
+                        className={currentPage === i + 1 ? "active" : ""}
+                    >
+                        {i + 1}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 }

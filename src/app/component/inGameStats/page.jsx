@@ -3,6 +3,7 @@ import '../mail/mail.css';
 import HeroPlaytime_IngameStats from './heroPlaytime_ingameStats';
 import HeroPOTG_IngameStats from './heroPOTG_ingameStats';
 import HeroItem_IngameStats from './heroItem_ingameStats';
+import HeroTable_IngameStats from './heroTable_ingameStats';
 import ModePlaytime_IngameStats from './modePlaytime_ingameStats';
 import HeroWinningRate_IngameStats from './heroWinningRate_ingameStats';
 import HeroPickorBan_IngameStats from './heroPickorBan_ingameStats';
@@ -861,10 +862,10 @@ const InGameStats = () => {
       <HeroPlaytime_IngameStats inGameStatsData={inGameStatsData} />
       <HeroPOTG_IngameStats inGameStatsData={inGameStatsData} />
       <HeroItem_IngameStats inGameStatsData={inGameStatsData} />
-      {/* 위 3개 통계의 테이블 필요 */}
+      <HeroTable_IngameStats inGameStatsData={inGameStatsData} />
 
       <ModePlaytime_IngameStats />
-      <HeroWinningRate_IngameStats />
+      <HeroWinningRate_IngameStats inGameStatsData={inGameStatsData} />
       <HeroPickorBan_IngameStats inGameStatsData={inGameStatsData} />
 
     </>

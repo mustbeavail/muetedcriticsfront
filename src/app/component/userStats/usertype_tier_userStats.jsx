@@ -440,6 +440,14 @@ export default function Usertype_Tier_UserStats() {
         value
     }));
 
+    const completeChartData = chartData.map(tier => {
+        const found = filteredChartData.find(item => item.name === tier.name);
+        return {
+            name: tier.name,
+            value: found ? found.value : 0,
+        };
+    });
+
     const [selectedTierFromChart, setSelectedTierFromChart] = useState(null);
     const selectedTierUsers = filtered.filter(user => user.tier_name === selectedTierFromChart);
 
@@ -498,41 +506,36 @@ export default function Usertype_Tier_UserStats() {
             <div className="tierStats-chartWrapper-datalist">
                 <div className="tierStats-chartWrapper-chartBox">
                     <ResponsiveContainer width="100%" height="100%">
-                        <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+                        <PieChart>
                             <Pie
-                                data={filteredChartData}
+                                data={completeChartData}
+                                dataKey="value"
+                                nameKey="name"
                                 cx="50%"
                                 cy="50%"
                                 innerRadius="40%"
                                 outerRadius="80%"
-                                paddingAngle={0}
-                                stroke="none"
-                                dataKey="value"
                                 label={({ name, percent }) => `${name} ${(percent * 100).toFixed(1)}%`}
                                 labelLine={false}
-                                isAnimationActive={true}
-                                onClick={(data, index) => setSelectedTierFromChart(data.name)}
+                                onClick={(data) => setSelectedTierFromChart(data.name)}
                             >
-                                {filteredChartData.map((entry, index) => (
-                                    <Cell
-                                        key={`cell-${index}`}
-                                        fill={COLORS[index % COLORS.length]}
-                                    />
+                                {completeChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Pie>
                             <Tooltip formatter={(value) => `${value}명`} />
                             <Legend verticalAlign="bottom" iconType="circle" />
                         </PieChart>
                     </ResponsiveContainer>
-
                 </div>
+                
                 {/* 테이블 */}
                 <div className="tierStats-chartWrapper-tableBox">
                     <div className="row header">
                         <div className="cell">티어 이름</div>
                         <div className="cell">인원 수</div>
                     </div>
-                    {filteredChartData.map((tier, idx) => (
+                    {completeChartData.map((tier, idx) => (
                         <div className="row" key={idx}>
                             <div className="cell">{tier.name}</div>
                             <div className="cell">{tier.value}명</div>

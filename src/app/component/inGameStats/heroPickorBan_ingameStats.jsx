@@ -1,4 +1,5 @@
 "use client"
+import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function HeroPickorBan_IngameStats({ inGameStatsData }) {
@@ -27,12 +28,23 @@ export default function HeroPickorBan_IngameStats({ inGameStatsData }) {
         total_play_time_count: counts.total_play_time_count,
     }));
 
+    // 차트 페이징 처리
+    const itemsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const totalPages = Math.ceil(result.length / itemsPerPage);
+
+    const pagedData = result.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
     return (
-        <div className={"userStats-chartWrapper"}>
+        <div className={"ingameStats-chartWrapper"}>
             <h2 className={"userStats-title"}>영웅별 밴률 및 픽률</h2>
-            <ResponsiveContainer width="100%" height={2400}>
+            <ResponsiveContainer width="100%" height={1120}>
                 <BarChart
-                    data={result}
+                    data={pagedData}
                     layout="vertical"
                     margin={{ top: 20, right: 30, left: 120, bottom: 20 }}
                     barCategoryGap="20%"
@@ -49,6 +61,18 @@ export default function HeroPickorBan_IngameStats({ inGameStatsData }) {
                     <Bar dataKey="total_play_time_count" fill="#75b4f3" name="총 플레이 횟수" />
                 </BarChart>
             </ResponsiveContainer>
+            {/* 페이징 버튼 */}
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                        key={i}
+                        onClick={() => setCurrentPage(i + 1)}
+                        className={currentPage === i + 1 ? "active" : ""}
+                    >
+                        {i + 1}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 }
