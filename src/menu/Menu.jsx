@@ -87,12 +87,12 @@ const Menu = () => {
           <div className={styles.menu_subInner}>
             {activeMenu === 'stat' && (
               <>
-                <Link href="/#"> ✦ 매출 통계</Link>
-                <Link href="/#"> ✦ 아이템 통계</Link>
-                <Link href="/#"> ✦ 접속자 통계</Link>
-                <Link href="/#"> ✦ 유저 통계</Link>
-                <Link href="/#"> ✦ 인게임 통계</Link>
-                <Link href="/#"> ✦ 신고 및 문의 통계</Link>
+                <Link href="/component/salesStats"> ✦ 매출 통계</Link>
+                <Link href="/component/itemStats"> ✦ 아이템 통계</Link>
+                <Link href="/component/accessorStats"> ✦ 접속자 통계</Link>
+                <Link href="/component/userStats"> ✦ 유저 통계</Link>
+                <Link href="/component/inGameStats"> ✦ 인게임 통계</Link>
+                <Link href="/component/inquiryStats"> ✦ 신고 및 문의 통계</Link>
               </>
             )}
             {activeMenu === 'inquiry' && (
