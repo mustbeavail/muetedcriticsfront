@@ -4,20 +4,37 @@ import "./mail.css";
 import { IoSearch } from "react-icons/io5";
 import Link from "next/link";
 import { listItem } from "./data";
+import axios from "axios";
 
 export default function MailList() {
     const [mailList, setMailList] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 15;
 
     useEffect(() => {
-        setMailList(listItem);
+        const member_id = sessionStorage.getItem("member_id");
+        const token = sessionStorage.getItem("token");
+        if (member_id && token) {
+            getList(token);
+        }
     }, []);
 
-    const totalPages = Math.ceil(mailList.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const paginatedList = mailList.slice(startIndex, endIndex);
+    const getList = async (token) => {
+        try {
+            const { data } = await axios.get("http://localhost/mail/list", {
+                headers: {
+                    Authorization: token
+                },
+                params: {
+                    page: 1,
+                    sort: "mailList",
+                    align: "dateDesc"
+                },
+            });
+            console.log(data);
+            setMailList(data.data);
+        } catch (error) {
+            console.error("메일 목록을 가져오는데 실패했습니다:", error);
+        }
+    }
 
     return (
         <>
@@ -31,12 +48,6 @@ export default function MailList() {
                             <button className={"search-btn"}><IoSearch /></button>
                         </div>
                     </div>
-                    <Link href="/component/mailSend">
-                        <button className={"mailDetail-backBtn"}>메일 발송</button>
-                    </Link>
-                    <Link href="/component/salesStats">
-                        <button className={"mailDetail-backBtn"}>매출 통계</button>
-                    </Link>
                     <select className={"mailList-select"}>
                         <option>전체</option>
                         <option>정렬 기준 미정1</option>
@@ -44,8 +55,7 @@ export default function MailList() {
                     </select>
                 </div>
 
-                {/* 리스트 출력 */}
-                {paginatedList.map((mail) => (
+                {mailList.map((mail) => (
                     <Link key={mail.mail_idx} href={`/component/mail/${mail.mail_idx}`} className={"mailList-item"}>
                         <div className={"mailList-subItem"}>
                             <div className={"mailList-left"}>
@@ -59,19 +69,6 @@ export default function MailList() {
                         </div>
                     </Link>
                 ))}
-
-                {/* 페이징 */}
-                <div className="mailList-pagination">
-                    {Array.from({ length: totalPages }, (_, i) => (
-                        <button
-                            key={i}
-                            className={`mailList-pagination-btn ${currentPage === i + 1 ? 'active' : ''}`}
-                            onClick={() => setCurrentPage(i + 1)}
-                        >
-                            {i + 1}
-                        </button>
-                    ))}
-                </div>
             </div>
         </>
     );

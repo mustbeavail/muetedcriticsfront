@@ -21,22 +21,22 @@ export default function RevenueChart() {
                     기간 종료일 <input type="date" />
                     <button>조회</button>
                 </div>
-                <div class="salesStats-card-container">
-                    <div class="salesStats-card">
-                        <div class="salesStats-card-title">LTV (고객 생애 가치)</div>
-                        <div class="salesStats-card-value">데이터</div>
+                <div className="salesStats-card-container">
+                    <div className="salesStats-card">
+                        <div className="salesStats-card-title">LTV (고객 생애 가치)</div>
+                        <div className="salesStats-card-value">데이터</div>
                     </div>
-                    <div class="salesStats-card">
-                        <div class="salesStats-card-title">1인당 평균 구매액</div>
-                        <div class="salesStats-card-value">데이터</div>
+                    <div className="salesStats-card">
+                        <div className="salesStats-card-title">1인당 평균 구매액</div>
+                        <div className="salesStats-card-value">데이터</div>
                     </div>
-                    <div class="salesStats-card">
-                        <div class="salesStats-card-title">평균 구매 빈도</div>
-                        <div class="salesStats-card-value">데이터</div>
+                    <div className="salesStats-card">
+                        <div className="salesStats-card-title">평균 구매 빈도</div>
+                        <div className="salesStats-card-value">데이터</div>
                     </div>
-                    <div class="salesStats-card">
-                        <div class="salesStats-card-title">평균 고객 유지 기간</div>
-                        <div class="salesStats-card-value">데이터</div>
+                    <div className="salesStats-card">
+                        <div className="salesStats-card-title">평균 고객 유지 기간</div>
+                        <div className="salesStats-card-value">데이터</div>
                     </div>
                 </div>
 

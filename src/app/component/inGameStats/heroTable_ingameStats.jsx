@@ -37,6 +37,17 @@ export default function HeroTable_IngameStats({ inGameStatsData }) {
 
     return (
         <div className={"ingameStats-chartWrapper-heroTable"}>
+            <div className="userStats-filterBox-wrapper">
+                <h2 className={"userStats-title"}></h2>
+                <div className="itemStats-filterBox">
+                    <select className="itemStats-select">
+                        <option value="전체">시즌 선택</option>
+                    </select>
+                    <select className="itemStats-select">
+                        <option value="전체">높은 순</option>
+                    </select>
+                </div>
+            </div>
             {/* 테이블 영역 */}
             <div className="hero-summary-table">
                 <div className="row header">

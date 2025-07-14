@@ -31,7 +31,17 @@ export default function HeroPOTG_IngameStats({ inGameStatsData }) {
 
     return (
         <div className={"ingameStats-chartWrapper"}>
-            <h2 className={"userStats-title"}>전체 유저의 영웅별 최고의 플레이 비중</h2>
+            <div className="userStats-filterBox-wrapper">
+                <h2 className={"userStats-title"}>전체 유저의 영웅별 최고의 플레이 비중</h2>
+                <div className="itemStats-filterBox">
+                    <select className="itemStats-select">
+                        <option value="전체">시즌 선택</option>
+                    </select>
+                    <select className="itemStats-select">
+                        <option value="전체">높은 순</option>
+                    </select>
+                </div>
+            </div>
             <ResponsiveContainer width="100%" height={1120}>
                 <BarChart
                     data={pagedData}

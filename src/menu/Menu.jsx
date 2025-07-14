@@ -103,10 +103,10 @@ const Menu = () => {
                 <Link href="/#"> ✦ VIP 문의 내역</Link>
               </>
             )}
-            {activeMenu === 'menu_mail' && (
+            {activeMenu === 'mail' && (
               <>
-                <Link href="/#"> ✦ 발신 메일 목록</Link>
-                <Link href="/#"> ✦ 메일 발송</Link>
+                <Link href="/component/mail"> ✦ 발신 메일 목록</Link>
+                <Link href="/component/mailSend"> ✦ 메일 발송</Link>
               </>
             )}
           </div>
