@@ -7,6 +7,22 @@
     font-family: 'Pretendard', sans-serif;
 } */
 
+.stats_container {
+    position: fixed;
+    top: 80px;
+    left: 80px;
+    width: 97%;
+    padding: 20px;
+    box-sizing: border-box;
+    /* display: flex; */
+    overflow-y: auto;
+    height: calc(100vh - 56px);
+    border-radius: 8px;
+    background-color: transparent;
+    font-size: 18px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
 .mailList-title {
     color: #fff;
 }
@@ -313,13 +329,43 @@
 }
 
 /* 매출 통계 페이지 css */
+.salesStats-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.salesStats-card {
+    background-color: #1c1b22;
+    height: 150px;
+    border-left: 5px solid #a855f7;
+    padding: 20px 24px;
+    border-radius: 16px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.salesStats-card-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #ccc;
+}
+
+.salesStats-card-value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
 .salesStats-mainTitle {
     font-size: 28px;
     font-weight: 600;
-    margin-bottom: 16px;
+    /* margin-bottom: 16px; */
 }
 
 .salesStats-chartWrapper {
+    margin-top: 20px;
     width: 100%;
     height: 1000px;
     background: #1c1b23;
@@ -337,6 +383,7 @@
 }
 
 .salesStats-filterBox {
+    margin-top: 16px;
     margin-bottom: 16px;
     display: flex;
     align-items: center;
@@ -364,6 +411,21 @@
     background-color: #8e52e4;
 }
 
+.salesStats-chartWrapper-otherTable {
+    margin-top: 20px;
+    width: 100%;
+    height: 540px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.salesStats-table {
+    margin-top: 20px;
+}
+
 .row.header {
     font-weight: bold;
     background-color: #d4cad331;
@@ -386,10 +448,11 @@
 .itemStats-mainTitle {
     font-size: 28px;
     font-weight: 600;
-    margin-bottom: 16px;
+    /* margin-bottom: 16px; */
 }
 
 .itemStats-chartWrapper {
+    margin-top: 20px;
     width: 100%;
     height: 1000px;
     background: #1c1b23;
@@ -1107,5 +1170,93 @@
 }
 
 .hero-summary-table .header {
+    font-weight: bold;
+}
+
+/* 접속자 통계 페이지 css */
+.accessorStats-chartWrapper {
+    margin-top: 20px;
+    width: 100%;
+    height: 1000px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.accessorStats-title {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.accessorStats-filterBox {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.accessorStats-filterBox input[type="date"] {
+    background-color: #2b2b35;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.accessorStats-filterBox button {
+    background-color: #a367f9;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.accessorStats-filterBox button:hover {
+    background-color: #8e52e4;
+}
+
+.accessorStats-mainTitle {
+    font-size: 28px;
+    font-weight: 600;
+    /* margin-bottom: 16px; */
+}
+
+.accessorStats-mainTitle-date {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.accessorStats-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.accessorStats-card {
+    background-color: #1c1b22;
+    height: 150px;
+    border-left: 5px solid #a855f7;
+    padding: 20px 24px;
+    border-radius: 16px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.accessorStats-card-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #ccc;
+}
+
+.accessorStats-card-value {
+    font-size: 22px;
     font-weight: bold;
 }

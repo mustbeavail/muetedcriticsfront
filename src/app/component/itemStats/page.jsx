@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import '../mail/mail.css';
+import Header from '../../../Header/page';
+import Menu from '../../../menu/Menu';
 
 import IngameItemStats from './ingame_itemStats';
 import EventItemStats from './event_itemStats';
@@ -164,20 +166,23 @@ const ItemStats = () => {
 
   return (
     <>
-      <span className={"itemStats-mainTitle"}>아이템 통계</span>
+      <Header />
+      <Menu />
+      <div className="stats_container">
+        <span className={"itemStats-mainTitle"}>아이템 통계</span>
 
-      {/* 인게임별 아이템 정보 */}
-      <IngameItemStats itemList={itemList} />
+        {/* 인게임별 아이템 정보 */}
+        <IngameItemStats itemList={itemList} />
 
-      {/* 이벤트별 아이템 정보 */}
-      <EventItemStats itemList={itemList} uniqueSellTypes={uniqueSellTypes} />
+        {/* 이벤트별 아이템 정보 */}
+        <EventItemStats itemList={itemList} uniqueSellTypes={uniqueSellTypes} />
 
-      {/* 이벤트별 총 판매액(상위 3개), 이벤트별 아이템 상위 3개 판매액 */}
-      <EventTop3ItemStats itemList={itemList} uniqueSellTypes={uniqueSellTypes} />
+        {/* 이벤트별 총 판매액(상위 3개), 이벤트별 아이템 상위 3개 판매액 */}
+        <EventTop3ItemStats itemList={itemList} uniqueSellTypes={uniqueSellTypes} />
 
-      {/* 아이템별 환불 내역 */}
-      <RefundItemStats />
-      
+        {/* 아이템별 환불 내역 */}
+        <RefundItemStats />
+      </div>
     </>
   );
 };

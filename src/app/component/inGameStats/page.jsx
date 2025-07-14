@@ -1,5 +1,7 @@
 import React from 'react';
 import '../mail/mail.css';
+import Header from '../../../Header/page';
+import Menu from '../../../menu/Menu';
 import HeroPlaytime_IngameStats from './heroPlaytime_ingameStats';
 import HeroPOTG_IngameStats from './heroPOTG_ingameStats';
 import HeroItem_IngameStats from './heroItem_ingameStats';
@@ -850,24 +852,26 @@ const inGameStatsData = [
         item_idx: 420,
       }
     }
-  }  
+  }
 ]
 
 const InGameStats = () => {
   return (
     <>
+      <Header />
+      <Menu />
+      <div className="stats_container">
+        <span className={"userStats-mainTitle"}>인게임 통계</span>
 
-      <span className={"userStats-mainTitle"}>인게임 통계</span>
+        <HeroPlaytime_IngameStats inGameStatsData={inGameStatsData} />
+        <HeroPOTG_IngameStats inGameStatsData={inGameStatsData} />
+        <HeroItem_IngameStats inGameStatsData={inGameStatsData} />
+        <HeroTable_IngameStats inGameStatsData={inGameStatsData} />
 
-      <HeroPlaytime_IngameStats inGameStatsData={inGameStatsData} />
-      <HeroPOTG_IngameStats inGameStatsData={inGameStatsData} />
-      <HeroItem_IngameStats inGameStatsData={inGameStatsData} />
-      <HeroTable_IngameStats inGameStatsData={inGameStatsData} />
-
-      <ModePlaytime_IngameStats />
-      <HeroWinningRate_IngameStats inGameStatsData={inGameStatsData} />
-      <HeroPickorBan_IngameStats inGameStatsData={inGameStatsData} />
-
+        <ModePlaytime_IngameStats />
+        <HeroWinningRate_IngameStats inGameStatsData={inGameStatsData} />
+        <HeroPickorBan_IngameStats inGameStatsData={inGameStatsData} />
+      </div>
     </>
   );
 };

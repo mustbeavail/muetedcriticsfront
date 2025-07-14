@@ -51,7 +51,6 @@ export default function SalesByPeriod() {
                         <Bar
                             dataKey="value"
                             fill="url(#salesAmountGradient)"
-                            radius={[6, 6, 0, 0]}
                         />
                     </BarChart>
                 </ResponsiveContainer>

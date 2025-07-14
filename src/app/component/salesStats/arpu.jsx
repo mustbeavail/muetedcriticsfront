@@ -46,7 +46,7 @@ export default function Arpu() {
                             labelStyle={{ color: '#fff' }}
                             itemStyle={{ color: '#fff' }}
                         />
-                        <Bar dataKey="value" fill="url(#arpuGradient)" radius={[6, 6, 0, 0]} />
+                        <Bar dataKey="value" fill="url(#arpuGradient)" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>

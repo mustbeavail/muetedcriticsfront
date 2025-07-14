@@ -1,7 +1,9 @@
 import React from 'react';
+import '../mail/mail.css';
+import Header from '../../../Header/page';
+import Menu from '../../../menu/Menu';
 import All_InquiryStats from './all_inquiryStats';
 import Period_InquiryStats from './period_inquiryStats';
-import '../mail/mail.css';
 
 const inquiryStatsData = [
   {
@@ -449,13 +451,15 @@ const inquiryStatsData = [
 const InquiryStats = () => {
   return (
     <>
+      <Header />
+      <Menu />
+      <div className="stats_container">
+        <span className={"userStats-mainTitle"}>신고/문의 통계</span>
 
-      <span className={"userStats-mainTitle"}>신고/문의 통계</span>
+        <All_InquiryStats inquiryStatsData={inquiryStatsData} />
 
-      <All_InquiryStats inquiryStatsData={inquiryStatsData} />
-
-      <Period_InquiryStats inquiryStatsData={inquiryStatsData} />
-      
+        <Period_InquiryStats inquiryStatsData={inquiryStatsData} />
+      </div>
     </>
   );
 };
