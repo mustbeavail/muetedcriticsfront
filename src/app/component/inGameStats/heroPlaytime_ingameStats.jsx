@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function HeroPlaytime_IngameStats({ inGameStatsData }) {
@@ -15,19 +15,30 @@ export default function HeroPlaytime_IngameStats({ inGameStatsData }) {
         total_play_time,
     }));
 
+    // 차트 페이징 처리
+    const itemsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const totalPages = Math.ceil(chartData.length / itemsPerPage);
+
+    const pagedData = chartData.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
     return (
-        <div className={"userStats-chartWrapper"}>
+        <div className={"ingameStats-chartWrapper"}>
             <h2 className={"userStats-title"}>전체 유저의 영웅별 플레이타임</h2>
             <div>
-                <ResponsiveContainer width="100%" height={1200}>
+                <ResponsiveContainer width="100%" height={1120}>
                     <BarChart
-                        data={chartData}
+                        data={pagedData}
                         layout="vertical"
                         margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
                     >
                         <defs>
                             <linearGradient id="heroPlaytimeGradient" x1="1" y1="0" x2="0" y2="0">
-                                <stop offset="0%" stopColor="#a367f9" stopOpacity={1} />
+                                <stop offset="0%" stopColor="#9C27B0" stopOpacity={1} />
                                 <stop offset="100%" stopColor="#4b00a3" stopOpacity={0} />
                             </linearGradient>
                         </defs>
@@ -39,7 +50,18 @@ export default function HeroPlaytime_IngameStats({ inGameStatsData }) {
                         <Bar dataKey="total_play_time" fill="url(#heroPlaytimeGradient)" />
                     </BarChart>
                 </ResponsiveContainer>
-
+            </div>
+            {/* 페이징 버튼 */}
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                        key={i}
+                        onClick={() => setCurrentPage(i + 1)}
+                        className={currentPage === i + 1 ? "active" : ""}
+                    >
+                        {i + 1}
+                    </button>
+                ))}
             </div>
         </div>
     );
