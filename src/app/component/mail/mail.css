@@ -21,6 +21,7 @@
     background-color: transparent;
     font-size: 18px;
     font-family: 'Noto Sans KR', sans-serif;
+    margin-bottom: 20px;
 }
 
 .mailList-title {
@@ -251,12 +252,9 @@
 /**/
 
 .mailSend-container {
-    width: 90%;
-    margin: 40px auto;
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
     border-radius: 20px;
     background: linear-gradient(to bottom right, #1e1c28, #2e1f3a);
     color: white;
@@ -306,8 +304,8 @@
 }
 
 .mailSend-textarea {
-    min-height: 180px;
-    resize: vertical;
+    height: 99vh;
+    resize: none;
 }
 
 .mailSend-button {

@@ -6,9 +6,9 @@ import Menu from "../../../menu/Menu";
 export default function MailSend() {
     return (
         <>
-            {/* <Header /> */}
+            <Header />
             <Menu />
-            <div className="stats-container">
+            <div className="stats_container">
                 <h1 className="mailSend-title">메일 발송</h1>
                 <div className="mailSend-container">
                     <h3 className="mailSend-subtitle">🎯 수신 대상 설정</h3>
