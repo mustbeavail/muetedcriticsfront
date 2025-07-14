@@ -1,7 +1,35 @@
 'use client'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import { useState, useEffect } from 'react';
 
 export default function All_InquiryStats({ inquiryStatsData }) {
+    function TodayDate() {
+        const [today, setToday] = useState(getFormattedDate());
+
+        useEffect(() => {
+            // 매일 자정마다 날짜 갱신
+            const now = new Date();
+            const msUntilMidnight =
+                new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1) - now;
+
+            const timer = setTimeout(() => {
+                setToday(getFormattedDate()); // 자정 지나면 업데이트
+            }, msUntilMidnight);
+
+            return () => clearTimeout(timer);
+        }, [today]);
+
+        return <div>{today} 기준 (매일 1시마다 갱신)</div>;
+    }
+
+    function getFormattedDate() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = (`0${now.getMonth() + 1}`).slice(-2); // 월은 0부터 시작
+        const day = (`0${now.getDate()}`).slice(-2);
+        return `${year}.${month}.${day}`;
+    }
+
     const pastelColors = ["#f28b82", "#aecbfa", "#fff475"];
 
     const categoryCounts = inquiryStatsData.reduce((acc, curr) => {
@@ -18,6 +46,7 @@ export default function All_InquiryStats({ inquiryStatsData }) {
     return (
         <div className="inquiryStats-chartWrapper">
             <h2 className={"inquiryStats-title"}>전체 신고/문의 건수</h2>
+            <TodayDate />
             {/* 신고/문의 건수 통계 차트 */}
             <div className="inquiryStats-chart">
                 <ResponsiveContainer width="100%" height={400}>

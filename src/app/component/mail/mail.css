@@ -536,6 +536,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-bottom: 22px;
 }
 
 .itemStats-filterBox input[type="date"] {
@@ -692,6 +693,17 @@
     margin-bottom: 30px;
 }
 
+.userStats-chartWrapper-seasonTier {
+    margin-top: 20px;
+    width: 100%;
+    height: 1320px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
 .userStats-title {
     color: #ffffff;
     font-size: 24px;
@@ -826,17 +838,23 @@
 
 .userStats-progress {
     background-color: #333;
-    height: 16px;
-    border-radius: 10px;
-    overflow: hidden;
     margin-top: 6px;
+    width: 100%;
+    height: 20px;
     position: relative;
+    border-radius: 50px;
+    overflow: hidden;
 }
 
 .userStats-progress .bar {
     background-color: #7c3aed;
     height: 100%;
     position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .userStats-progress .percentage {
@@ -844,7 +862,9 @@
     right: 8px;
     top: 0;
     font-size: 0.8rem;
-    color: white;
+    color: #fff;
+    line-height: 20px;
+    font-weight: bold;
 }
 
 .userStats-playtime {
@@ -967,7 +987,7 @@
 .userStats-chartWrapper-tier {
     margin-top: 20px;
     width: 100%;
-    height: 1550px;
+    height: 1630px;
     background: #1c1b23;
     border-radius: 16px;
     padding: 20px;
@@ -1122,7 +1142,7 @@
 .ingameStats-chartWrapper-modePlaytime {
     margin-top: 20px;
     width: 100%;
-    height: 380px;
+    height: 390px;
     background: #1c1b23;
     border-radius: 16px;
     padding: 20px;
@@ -1133,7 +1153,7 @@
 .ingameStats-chartWrapper-heroPickorBan {
     margin-top: 20px;
     width: 100%;
-    height: 2500px;
+    height: 1350px;
     background: #1c1b23;
     border-radius: 16px;
     padding: 20px;
@@ -1144,7 +1164,18 @@
 .ingameStats-chartWrapper-heroTable {
     margin-top: 20px;
     width: 100%;
-    height: 670px;
+    height: 750px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.ingameStats-chartWrapper-heroWinningRate {
+    margin-top: 20px;
+    width: 100%;
+    height: 1390px;
     background: #1c1b23;
     border-radius: 16px;
     padding: 20px;

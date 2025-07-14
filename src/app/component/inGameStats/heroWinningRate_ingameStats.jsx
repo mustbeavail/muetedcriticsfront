@@ -38,23 +38,26 @@ export default function HeroWinningRate_IngameStats({ inGameStatsData }) {
     );
 
     return (
-        <div className={"ingameStats-chartWrapper"}>
-            <div>
+        <div className={"ingameStats-chartWrapper-heroWinningRate"}>
+            <div className="userStats-filterBox-wrapper">
                 <h2 className={"userStats-title"}>전체 유저의 영웅별 승률</h2>
-                <select>
-                    <option>시즌 선택</option>
-                    <option>시즌 1</option>
-                    <option>시즌 2</option>
-                    <option>시즌 3</option>
-                    <option>시즌 4</option>
-                    <option>시즌 5</option>
-                    <option>시즌 6</option>
-                </select>
-                <select>
+                <div className="itemStats-filterBox">
+                    <select className="itemStats-select">
+                        <option>높은 순</option>
+                        <option>낮은 순</option>
+                    </select>
+                </div>
+            </div>
+            <div className={"accessorStats-filterBox"}>
+                기간 시작일 <input type="date" />
+                기간 종료일 <input type="date" />
+                &nbsp;&nbsp;티어 선택 <select className="itemStats-select">
                     <option>높은 순</option>
                     <option>낮은 순</option>
                 </select>
+                <button>조회</button>
             </div>
+            전체 유저 중 (선택된 티어) 티어 유저의 영웅별 승률 (기간 시작일~기간 종료일)
             <ResponsiveContainer width="100%" height={1120}>
                 <BarChart
                     data={pagedData}

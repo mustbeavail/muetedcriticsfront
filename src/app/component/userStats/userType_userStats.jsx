@@ -278,7 +278,7 @@ export default function UserType_UserStats() {
 
     return (
         <div className="userStats-chartWrapper">
-            <h2 className={"userStats-title"}>유저 분류 통계 (유저 타입이 미분류라 아직 미완성)</h2>
+            <h2 className={"userStats-title"}>유저 분류 통계</h2>
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart
                     data={barChartData}

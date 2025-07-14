@@ -407,7 +407,7 @@ export default function SeasonTier_UserStats() {
     }));
 
     return (
-        <div className="userStats-chartWrapper">
+        <div className="userStats-chartWrapper-seasonTier">
             <h2 className={"userStats-title"}>시즌별 티어 통계</h2>
 
             <div style={{ marginBottom: "1rem" }}>

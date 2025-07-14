@@ -40,8 +40,13 @@ export default function HeroPickorBan_IngameStats({ inGameStatsData }) {
     );
 
     return (
-        <div className={"ingameStats-chartWrapper"}>
+        <div className={"ingameStats-chartWrapper-heroPickorBan"}>
             <h2 className={"userStats-title"}>영웅별 밴률 및 픽률</h2>
+            <div className={"accessorStats-filterBox"}>
+                기간 시작일 <input type="date" />
+                기간 종료일 <input type="date" />
+                <button>조회</button>
+            </div>
             <ResponsiveContainer width="100%" height={1120}>
                 <BarChart
                     data={pagedData}
