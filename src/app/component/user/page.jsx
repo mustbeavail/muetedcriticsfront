@@ -264,7 +264,7 @@ const User = () => {
               {openMenuId === user.id && (
                 <div className="user-list-dropdown">
                   <button onClick={() => openUserDetail(user)}>유저 상세보기</button>
-                  <button onClick={() => router.push(`/component/heroPlayData/${user.id}`)}>
+                  <button onClick={() => router.push(`/component/heroPlayData?id=${user.id}`)}>
                     유저 통계보기
                   </button>
                   <button onClick={() => router.push(`/component/userExpenditure?id=${user.id}`)}>
