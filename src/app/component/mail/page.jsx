@@ -20,22 +20,17 @@ export default function MailList() {
     }, []);
 
     const getList = async (token) => {
-        try {
-            const { data } = await axios.get("http://localhost/mail/list", {
-                headers: {
-                    Authorization: token
-                },
-                params: {
-                    page: 1,
-                    sort: "mailList",
-                    align: "dateDesc"
-                },
-            });
-            console.log(data);
-            setMailList(data.data);
-        } catch (error) {
-            console.error("메일 목록을 가져오는데 실패했습니다:", error);
-        }
+        const { data } = await axios.get("http://localhost/mail/list", {
+            headers: {
+                Authorization: token
+            },
+            params: {
+                sort: 'mailList',
+                page: 1,
+                align: 'dateDesc'
+            }
+        });
+        console.log(data);
     }
 
     return (

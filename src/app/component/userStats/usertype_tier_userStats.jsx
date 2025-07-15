@@ -399,7 +399,12 @@ const COLORS = [
 ];
 
 export default function Usertype_Tier_UserStats() {
+    
+    // 필터링 상태 관리
+    const [selectedSeason, setSelectedSeason] = useState("전체");
+    const [selectedTier, setSelectedTier] = useState("전체");
 
+    // 차트 데이터
     const tierCounts = {};
     tierData.forEach(({ tier_name }) => {
         tierCounts[tier_name] = (tierCounts[tier_name] || 0) + 1;
@@ -409,6 +414,7 @@ export default function Usertype_Tier_UserStats() {
         value
     }));
 
+    // 시즌 차트 데이터
     const seasonCounts = {};
     tierData.forEach(({ season_idx }) => {
         const key = `${season_idx}시즌`;
@@ -419,9 +425,7 @@ export default function Usertype_Tier_UserStats() {
         value
     }));
 
-    const [selectedSeason, setSelectedSeason] = useState("전체");
-    const [selectedTier, setSelectedTier] = useState("전체");
-
+    // 필터링
     const filtered = tierData.filter(item => {
         const matchSeason =
             selectedSeason === "전체" || `${item.season_idx}시즌` === selectedSeason;
@@ -430,16 +434,19 @@ export default function Usertype_Tier_UserStats() {
         return matchSeason && matchTier;
     });
 
+    // 필터링된 티어 카운트
     const filteredTierCounts = {};
     filtered.forEach(({ tier_name }) => {
         filteredTierCounts[tier_name] = (filteredTierCounts[tier_name] || 0) + 1;
     });
 
+    // 필터링된 차트 데이터
     const filteredChartData = Object.entries(filteredTierCounts).map(([name, value]) => ({
         name,
         value
     }));
 
+    // 완성된 차트 데이터
     const completeChartData = chartData.map(tier => {
         const found = filteredChartData.find(item => item.name === tier.name);
         return {
@@ -448,6 +455,7 @@ export default function Usertype_Tier_UserStats() {
         };
     });
 
+    // 클릭된 티어 유저 목록
     const [selectedTierFromChart, setSelectedTierFromChart] = useState(null);
     const selectedTierUsers = filtered.filter(user => user.tier_name === selectedTierFromChart);
 
@@ -468,27 +476,27 @@ export default function Usertype_Tier_UserStats() {
                 <div className="itemStats-filterBox">
                     유저 분류 선택 <select
                         className="itemStats-select"
-                        value={selectedTier}
-                        onChange={e => setSelectedTier(e.target.value)}
+                        // value={selectedTier}
+                        // onChange={e => setSelectedTier(e.target.value)}
                     >
                         <option value="전체">전체</option>
-                        {chartData.map((tier) => (
+                        {/* {chartData.map((tier) => (
                             <option key={tier.name} value={tier.name}>
                                 {tier.name}
                             </option>
-                        ))}
+                        ))} */}
                     </select>
                     시즌 선택 <select
                         className="itemStats-select"
-                        value={selectedSeason}
-                        onChange={e => setSelectedSeason(e.target.value)}
+                        // value={selectedSeason}
+                        // onChange={e => setSelectedSeason(e.target.value)}
                     >
                         <option value="전체">전체</option>
-                        {seasonChartData.map((season) => (
+                        {/* {seasonChartData.map((season) => (
                             <option key={season.name} value={season.name}>
                                 {season.name}
                             </option>
-                        ))}
+                        ))} */}
                     </select>
                 </div>
             </div>
@@ -523,12 +531,16 @@ export default function Usertype_Tier_UserStats() {
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Pie>
-                            <Tooltip formatter={(value) => `${value}명`} />
+                            <Tooltip
+                                formatter={(value) => `${value}명`}
+                                contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                                cursor={{ fill: '#1c1b23' }}
+                            />
                             <Legend verticalAlign="bottom" iconType="circle" />
                         </PieChart>
                     </ResponsiveContainer>
                 </div>
-                
+
                 {/* 테이블 */}
                 <div className="tierStats-chartWrapper-tableBox">
                     <div className="row header">
@@ -549,15 +561,23 @@ export default function Usertype_Tier_UserStats() {
                         {selectedTierFromChart} 티어 유저 목록 ({selectedTierUsers.length}명)
                     </h3>
                     {currentUsers.map((userObj, idx) => (
-                        <div key={idx} className="tierUserCard">
-                            <div className="tierUserCardContent">
-                                <div>{userObj.user.user_nick}</div>
-                                <div>{userObj.user.user_gender}</div>
-                                <div>{userObj.user.region}</div>
-                                <div>{userObj.user.join_date}</div>
+                        <div key={idx} className="userStats-user-list-card">
+                        <div className="user-list-info">
+                            <div className="user-list-header">
+                                <span className="user-list-name">{userObj.user.user_nick}</span>
                             </div>
-                            <div className="tierUserCardEmail">{userObj.user.user_id}</div>
+
+                            <div className="user-list-email">{userObj.user.user_id}</div>
+
+                            <div className="user-list-info">
+                                <div><span className="label">성별</span> {userObj.user.user_gender}</div>
+                                <div><span className="label">지역</span> {userObj.user.region}</div>
+                                <div><span className="label">가입일</span> {userObj.user.join_date}</div>
+                            </div>
                         </div>
+
+                        <div className="user-list-menu">⋮</div>
+                    </div>
                     ))}
                     <div className="pagination">
                         {Array.from({ length: totalPages }, (_, i) => (

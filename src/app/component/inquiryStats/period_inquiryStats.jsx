@@ -50,7 +50,10 @@ export default function Period_InquiryStats({ inquiryStatsData }) {
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="date" angle={-45} textAnchor="end" height={60} />
                                     <YAxis allowDecimals={false} />
-                                    <Tooltip />
+                                    <Tooltip
+                                        contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                                        formatter={(value) => `${value} 건`}
+                                    />
                                     <Line
                                         type="monotone"
                                         dataKey={cat}

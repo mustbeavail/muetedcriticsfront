@@ -57,7 +57,11 @@ export default function All_InquiryStats({ inquiryStatsData }) {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="category" />
                         <YAxis allowDecimals={false} />
-                        <Tooltip />
+                        <Tooltip
+                            formatter={(value) => `${value} 건`}
+                            contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                            cursor={{ fill: '#1c1b23' }}
+                        />
                         <Legend />
                         <Bar dataKey="count" name="문의 수" fill="#8884d8">
                             {chartData.map((entry, index) => (

@@ -58,7 +58,11 @@ export default function HeroPOTG_IngameStats({ inGameStatsData }) {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type="number" />
                     <YAxis dataKey="user_type" type="category" />
-                    <Tooltip />
+                    <Tooltip
+                        formatter={(value) => `${value} 건`}
+                        contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                        cursor={{ fill: '#1c1b23' }}
+                    />
                     <Bar dataKey="potg_count" fill="url(#potgGradient)" />
                 </BarChart>
             </ResponsiveContainer>

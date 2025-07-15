@@ -448,11 +448,11 @@ const getModePlaytimeData = (data) => {
 
 export default function WinningRate_Playtime_UserStats() {
     const [currentPage, setCurrentPage] = useState(1);
-    
+
     // 첫 번째 유저의 데이터만 사용
     const firstUserId = match_result.length > 0 ? match_result[0].user_id : "";
     const userData = match_result.filter(item => item.user_id === firstUserId);
-    
+
     const winCount = userData.filter(i => i.vitory_or_defeat === "victory").length;
     const totalCount = userData.length;
     const winRate = totalCount === 0 ? 0 : (winCount / totalCount) * 100;
@@ -467,7 +467,7 @@ export default function WinningRate_Playtime_UserStats() {
     return (
         <div className={"userStats-chartWrapper"}>
             <h2 className={"userStats-title"}>유저 승률 및 플레이타임</h2>
-            
+
             <div className={"userStats-search"}>
                 <span>유저 검색</span>
                 <div className={"userStats-input-wrapper"}>
@@ -478,7 +478,7 @@ export default function WinningRate_Playtime_UserStats() {
                     <button className={"userStats-search-btn"}><IoSearch /></button>
                 </div>
             </div>
-            
+
             <div className={"userStats-filterBox-wrapper"}>
                 <div className={"userStats-filterBox"}>
                     기간 시작일 <input type="date" />
@@ -513,7 +513,11 @@ export default function WinningRate_Playtime_UserStats() {
                         >
                             <XAxis type="number" tick={{ fill: "#fff" }} />
                             <YAxis type="category" dataKey="name" tick={{ fill: "#fff" }} />
-                            <Tooltip />
+                            <Tooltip
+                                formatter={(value) => `${value}분`}
+                                contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                                cursor={{ fill: '#1c1b23' }}
+                            />
                             <Bar dataKey="playtime" barSize={24}>
                                 {heroPlaytimeData.map((entry, index) => (
                                     <Cell key={entry.name} fill="#8a2be2" />
@@ -536,7 +540,11 @@ export default function WinningRate_Playtime_UserStats() {
                         >
                             <XAxis type="number" tick={{ fill: "#fff" }} />
                             <YAxis type="category" dataKey="mode" tick={{ fill: "#fff" }} />
-                            <Tooltip />
+                            <Tooltip
+                                formatter={(value) => `${value}분`}
+                                contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                                cursor={{ fill: '#1c1b23' }}
+                            />
                             <Bar dataKey="playtime" barSize={24} fill="#34d399" />
                         </BarChart>
                     </ResponsiveContainer>

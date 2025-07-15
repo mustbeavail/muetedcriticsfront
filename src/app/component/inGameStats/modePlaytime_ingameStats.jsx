@@ -435,7 +435,11 @@ export default function ModePlaytime_IngameStats() {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="match_mode" />
                         <YAxis unit="분" />
-                        <Tooltip formatter={(value) => `${value}분`} />
+                        <Tooltip
+                            formatter={(value) => `${value}분`}
+                            contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                            cursor={{ fill: '#1c1b23' }}
+                        />
                         <Bar dataKey="total_play_time" fill="#9C27B0" name="총 플레이 시간" />
                     </BarChart>
                 </ResponsiveContainer>

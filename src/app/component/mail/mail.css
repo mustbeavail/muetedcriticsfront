@@ -524,10 +524,9 @@
 
 .itemStats-filterBox-wrapper {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     gap: 8px;
     justify-content: space-between;
-    margin-bottom: 22px;
 }
 
 .itemStats-filterBox {
@@ -559,6 +558,7 @@
 }
 
 .itemStats-select {
+    width: 200px;
     padding: 0.5rem 0.9rem;
     font-size: 0.875rem;
     border: none;
@@ -622,6 +622,72 @@
 .itemStats-item-dates {
     font-size: 0.8rem;
     color: #aaa;
+}
+
+.itemStats-chartWrapper-top3 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.itemStats-chartWrapper-select-item-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    font-style: italic;
+    background-color: #1c1b23;
+    border: 1px dashed #666;
+    padding: 10px;
+}
+
+.itemStats-chartWrapper-top3-item {
+    flex: 1;
+    min-width: 0;
+}
+
+.itemStats-chartWrapper-top3-item-title {
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+}
+
+.itemStats-chartWrapper-top3-item-chart {
+    width: 100%;
+    height: 300px;
+    border: 1px dashed #666;
+    position: relative;
+}
+
+.itemStats-chartWrapper-top3-item-chart.has-data {
+    border: none;
+}
+
+.itemStats-chartWrapper-top3-item-chart-empty {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-style: italic;
+    background-color: #1c1b23;
+}
+
+.itemStats-chartWrapper-refund {
+    margin-top: 20px;
+    width: 100%;
+    height: 1000px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
 }
 
 .refundStats-summaryBox {
@@ -694,7 +760,18 @@
 .userStats-chartWrapper-seasonTier {
     margin-top: 20px;
     width: 100%;
-    height: 1320px;
+    height: 1380px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.userStats-chartWrapper-userType {
+    margin-top: 20px;
+    width: 100%;
+    height: 1520px;
     background: #1c1b23;
     border-radius: 16px;
     padding: 20px;
@@ -981,11 +1058,102 @@
     color: #bbb;
 }
 
+.user-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #121212;
+    color: #fff;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+.user-card-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.user-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.user-nickname {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.user-email {
+    font-size: 14px;
+    color: #bbb;
+    margin-bottom: 8px;
+}
+
+.user-info {
+    font-size: 14px;
+    color: #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.label {
+    color: #a78bfa;
+    /* 보라색 포인트 */
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+.refused {
+    color: #f87171;
+    /* 빨간색 */
+}
+
+.badge {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 9999px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.badge-purple {
+    background-color: #6d28d9;
+    color: white;
+}
+
+.badge-yellow {
+    background-color: #facc15;
+    color: black;
+}
+
+.user-menu {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+}
+
+
 /*------------------------------------*/
 .userStats-chartWrapper-tier {
     margin-top: 20px;
     width: 100%;
-    height: 1630px;
+    height: 1830px;
     background: #1c1b23;
     border-radius: 16px;
     padding: 20px;
@@ -1042,7 +1210,7 @@
 .inquiryStats-chartWrapper {
     margin-top: 20px;
     width: 100%;
-    height: 830px;
+    height: 880px;
     background: #1c1b23;
     border-radius: 16px;
     padding: 20px;
@@ -1206,7 +1374,7 @@
 .accessorStats-chartWrapper {
     margin-top: 20px;
     width: 100%;
-    height: 1000px;
+    height: 1020px;
     background: #1c1b23;
     border-radius: 16px;
     padding: 20px;
@@ -1289,3 +1457,16 @@
     font-size: 22px;
     font-weight: bold;
 }
+
+/*------------------------------------*/
+.userStats-user-list-card {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 16px 20px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 16px;
+  }

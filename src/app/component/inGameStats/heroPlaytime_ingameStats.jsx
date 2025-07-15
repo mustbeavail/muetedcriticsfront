@@ -57,7 +57,11 @@ export default function HeroPlaytime_IngameStats({ inGameStatsData }) {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis type="number" />
                         <YAxis dataKey="heroes_name" type="category" />
-                        <Tooltip />
+                        <Tooltip
+                            formatter={(value) => `${value} 분`}
+                            contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                            cursor={{ fill: '#1c1b23' }}
+                        />
                         <Bar dataKey="total_play_time" fill="url(#heroPlaytimeGradient)" />
                     </BarChart>
                 </ResponsiveContainer>

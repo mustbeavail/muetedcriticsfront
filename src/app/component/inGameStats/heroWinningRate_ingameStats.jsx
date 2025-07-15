@@ -73,7 +73,11 @@ export default function HeroWinningRate_IngameStats({ inGameStatsData }) {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type="number" domain={[0, 100]} tickFormatter={(tick) => `${tick}%`} />
                     <YAxis dataKey="heroes_name" type="category" />
-                    <Tooltip formatter={(value) => `${value}%`} />
+                    <Tooltip
+                        formatter={(value) => `${value}%`}
+                        contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                        cursor={{ fill: '#1c1b23' }}
+                    />
                     <Bar dataKey="win_rate" fill="url(#winRateGradient)" name="승률" />
                 </BarChart>
             </ResponsiveContainer>

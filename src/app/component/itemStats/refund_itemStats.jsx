@@ -162,8 +162,15 @@ export default function RefundItemStats() {
 
     return (
         <>
-            <div className={"itemStats-chartWrapper"}>
+            <div className={"itemStats-chartWrapper-refund"}>
                 <h2 className={"itemStats-title"}>아이템별 환불 내역</h2>
+                <div className={"itemStats-filterBox-wrapper"}>
+                    <div className={"itemStats-filterBox"}>
+                        기간 시작일 <input type="date" />
+                        기간 종료일 <input type="date" />
+                        <button>조회</button>
+                    </div>
+                </div>
                 <div className="refundStats-summaryBox">
                     <div className="refundStats-summaryCard">
                         <span className="label">총 환불 금액</span>
@@ -177,17 +184,15 @@ export default function RefundItemStats() {
                         <span className="label">최다 환불 품목</span>
                         <strong className="value">(데이터)</strong>
                     </div>
-                    <div className="refundStats-summaryCard">
-                        <span className="label">최다 환불 유저</span>
-                        <strong className="value">(데이터)</strong>
-                    </div>
                 </div>
                 <h2 className={"itemStats-title"}>아이템 환불 리스트</h2>
                 <div className={"itemStats-filterBox-wrapper"}>
-                    <div className={"itemStats-filterBox"}>
-                        기간 시작일 <input type="date" />
-                        기간 종료일 <input type="date" />
-                        <button>조회</button>
+                    <div className={"itemStats-search"}>
+                        <span>유저 ID로 검색</span>
+                        <div className={"itemStats-input-wrapper"}>
+                            <input type="text" placeholder="Search" />
+                            <button className={"itemStats-search-btn"}><IoSearch /></button>
+                        </div>
                     </div>
                     <div>
                         <select className={"itemStats-select"}>
@@ -201,14 +206,7 @@ export default function RefundItemStats() {
                         </select>
                     </div>
                 </div>
-                <span>모든 항목은 매일 1시마다 갱신됩니다.</span>
-                <div className={"itemStats-search"}>
-                    <span>유저 ID로 검색</span>
-                    <div className={"itemStats-input-wrapper"}>
-                        <input type="text" placeholder="Search" />
-                        <button className={"itemStats-search-btn"}><IoSearch /></button>
-                    </div>
-                </div>
+
 
                 <div className="row header">
                     <div className="cell">아이템명</div>

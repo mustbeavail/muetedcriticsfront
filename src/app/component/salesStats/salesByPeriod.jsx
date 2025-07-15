@@ -43,9 +43,9 @@ export default function SalesByPeriod() {
                         <XAxis dataKey="date" tick={{ fill: '#aaa', fontSize: 12 }} />
                         <YAxis tick={{ fill: '#aaa', fontSize: 12 }} />
                         <Tooltip
-                            contentStyle={{ backgroundColor: '#2b2b35', border: 'none' }}
-                            labelStyle={{ color: '#fff' }}
-                            itemStyle={{ color: '#fff' }}
+                            formatter={(value) => `${value} 원`}
+                            contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                            cursor={{ fill: '#1c1b23' }}
                         />
 
                         <Bar

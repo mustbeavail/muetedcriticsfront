@@ -1,5 +1,6 @@
 'use client'
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
+import { useState } from "react";
 
 const userData = [
     {
@@ -265,19 +266,47 @@ const userData = [
 ]
 
 export default function UserType_UserStats() {
-    const userTypeCounts = {};
 
+    // 유저 타입 카운트
+    const userTypeCounts = {};
     userData.forEach(({ user_type }) => {
         userTypeCounts[user_type] = (userTypeCounts[user_type] || 0) + 1;
     });
 
+    // 차트 데이터
     const barChartData = Object.entries(userTypeCounts).map(([type, count]) => ({
         user_type: type,
         count: count,
     }));
 
+    // 선택된 유저 타입 상태 관리
+    const [selectedUserType, setSelectedUserType] = useState(null);
+
+    // 선택된 유저 타입에 해당하는 유저 필터링
+    const filteredUsers = selectedUserType
+        ? userData.filter(user => user.user_type === selectedUserType)
+        : [];
+
+    // 페이지네이션 상태 관리
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+
+    // 현재 페이지에 표시할 유저 데이터
+    const indexOfLastUser = currentPage * itemsPerPage;
+    const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+    // 총 페이지 수 계산
+    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
+    // 차트 막대 클릭 핸들러
+    const handleBarClick = (data) => {
+        setSelectedUserType(data.user_type);
+        setCurrentPage(1); // 페이지 초기화
+    };
+
     return (
-        <div className="userStats-chartWrapper">
+        <div className="userStats-chartWrapper-userType">
             <h2 className={"userStats-title"}>유저 분류 통계</h2>
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart
@@ -295,10 +324,64 @@ export default function UserType_UserStats() {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type="number" />
                     <YAxis dataKey="user_type" type="category" />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="url(#userTypeGradient)" radius={[6, 6, 6, 6]} />
+                    <Tooltip
+                        formatter={(value) => `${value}명`}
+                        contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                        cursor={{ fill: '#1c1b23' }}
+                    />
+                    <Bar
+                        dataKey="count"
+                        fill="url(#userTypeGradient)"
+                        onClick={handleBarClick}
+                        cursor="pointer"
+                    />
                 </BarChart>
             </ResponsiveContainer>
+
+            {/* 선택된 유저 타입의 유저 목록 */}
+            {selectedUserType && (
+                <div className="user-type-details">
+                    <h3 style={{ color: "#fff", marginTop: "20px", marginBottom: "16px" }}>
+                        {selectedUserType} 유저 목록 ({filteredUsers.length}명)
+                    </h3>
+
+                    {currentUsers.map((user, idx) => (
+                        <div key={idx} className="userStats-user-list-card">
+                            <div className="user-list-info">
+                                <div className="user-list-header">
+                                    <span className="user-list-name">{user.user_nick}</span>
+                                </div>
+
+                                <div className="user-list-email">{user.user_id}</div>
+
+                                <div className="user-list-info">
+                                    <div><span className="label">성별</span> {user.user_gender}</div>
+                                    <div><span className="label">지역</span> {user.region}</div>
+                                    <div><span className="label">가입일</span> {user.join_date}</div>
+                                </div>
+                            </div>
+
+                            <div className="user-list-menu">⋮</div>
+                        </div>
+                    ))}
+
+
+                    {/* 페이지네이션 */}
+                    {totalPages > 0 && (
+                        <div className="pagination">
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setCurrentPage(i + 1)}
+                                    className={currentPage === i + 1 ? "active" : ""}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

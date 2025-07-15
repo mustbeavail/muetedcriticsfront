@@ -7,32 +7,83 @@ import PeriodDailyStats from './period_dailyStats';
 import PeriodWeeklyStats from './period_weeklyStats';
 import PeriodMonthlyStats from './period_monthlyStats';
 
-function TodayDate() {
-  const [today, setToday] = useState(getFormattedDate());
-
-  useEffect(() => {
-    // 매일 자정마다 날짜 갱신
-    const now = new Date();
-    const msUntilMidnight =
-      new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1) - now;
-
-    const timer = setTimeout(() => {
-      setToday(getFormattedDate()); // 자정 지나면 업데이트
-    }, msUntilMidnight);
-
-    return () => clearTimeout(timer);
-  }, [today]);
-
-  return <div>{today} 기준 (매일 1시마다 갱신)</div>;
-}
-
-function getFormattedDate() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = (`0${now.getMonth() + 1}`).slice(-2); // 월은 0부터 시작
-  const day = (`0${now.getDate()}`).slice(-2);
-  return `${year}.${month}.${day}`;
-}
+const access_stats = [
+  {
+    access_stats_idx: 1,
+    access_time: "2025-01-03 20:14:02",
+    user_id: "wayne.lemke@dickinson.com"
+  },
+  {
+    access_stats_idx: 2,
+    access_time: "2025-01-07 18:07:22",
+    user_id: "isis.klein@rutherford.com"
+  },
+  {
+    access_stats_idx: 3,
+    access_time: "2025-01-11 04:16:46",
+    user_id: "shanita.schneider@baumbach.com"
+  },
+  {
+    access_stats_idx: 4,
+    access_time: "2025-01-11 06:28:33",
+    user_id: "doloris.kohler@hane.com"
+  },
+  {
+    access_stats_idx: 5,
+    access_time: "2025-01-11 23:30:34",
+    user_id: "jarod.wuckert@halvorson.com"
+  },
+  {
+    access_stats_idx: 6,
+    access_time: "2025-01-12 04:06:45",
+    user_id: "kerry.schmidt@schaden.com"
+  },
+  {
+    access_stats_idx: 7,
+    access_time: "2025-01-12 23:23:19",
+    user_id: "chase.bradtke@kemmer.com"
+  },
+  {
+    access_stats_idx: 8,
+    access_time: "2025-01-13 03:09:03",
+    user_id: "kerry.schmidt@schaden.com"
+  },
+  {
+    access_stats_idx: 9,
+    access_time: "2025-01-13 17:32:11",
+    user_id: "bari.ohara@hansen.com"
+  },
+  {
+    access_stats_idx: 10,
+    access_time: "2025-01-13 17:40:44",
+    user_id: "contessa.sanford@labadie.com"
+  },
+  {
+    access_stats_idx: 11,
+    access_time: "2025-01-17 09:19:04",
+    user_id: "socorro.von@harris.com"
+  },
+  {
+    access_stats_idx: 12,
+    access_time: "2025-01-17 18:14:38",
+    user_id: "doloris.kohler@hane.com"
+  },
+  {
+    access_stats_idx: 13,
+    access_time: "2025-01-17 18:30:29",
+    user_id: "doloris.kohler@hane.com"
+  },
+  {
+    access_stats_idx: 14,
+    access_time: "2025-01-18 14:03:56",
+    user_id: "lashon.collins@hahn.com"
+  },
+  {
+    access_stats_idx: 15,
+    access_time: "2025-01-18 22:54:25",
+    user_id: "josh.howell@dare.com"
+  }
+];
 
 const AccessorStats = () => {
   return (
@@ -41,27 +92,10 @@ const AccessorStats = () => {
       <Menu />
       <div className="stats_container">
         <span className={"accessorStats-mainTitle"}>접속자 수 통계</span>
-        <div className={"accessorStats-mainTitle-date"}>
-          <TodayDate />
-        </div>
-        <div className="accessorStats-card-container">
-          <div className="accessorStats-card">
-            <div className="accessorStats-card-title">일일 접속자 수(DAU)</div>
-            <div className="accessorStats-card-value">(사람 수) 명</div>
-          </div>
-          <div className="accessorStats-card">
-            <div className="accessorStats-card-title">주간 접속자 수(WAU)</div>
-            <div className="accessorStats-card-value">(사람 수) 명</div>
-          </div>
-          <div className="accessorStats-card">
-            <div className="accessorStats-card-title">월간 접속자 수(MAU)</div>
-            <div className="accessorStats-card-value">(사람 수) 명</div>
-          </div>
-        </div>
 
-        <PeriodDailyStats />
-        <PeriodWeeklyStats />
-        <PeriodMonthlyStats />
+        <PeriodDailyStats access_stats={access_stats} />
+        <PeriodWeeklyStats access_stats={access_stats} />
+        <PeriodMonthlyStats access_stats={access_stats} />
       </div>
     </>
   );

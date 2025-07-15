@@ -386,21 +386,21 @@ const tierData = [
 ]
 
 export default function SeasonTier_UserStats() {
+    // 필터링 상태 관리
     const [selectedSeason, setSelectedSeason] = useState("전체");
 
-    const seasonOptions = Array.from(
-        new Set(tierData.map(({ season_idx }) => `${season_idx}시즌`))
-    );
-
+    // 필터링
     const filteredData = selectedSeason === "전체"
         ? tierData
         : tierData.filter(item => `${item.season_idx}시즌` === selectedSeason);
 
+    // 필터링된 티어 카운트
     const tierCounts = {};
     filteredData.forEach(({ tier_name }) => {
         tierCounts[tier_name] = (tierCounts[tier_name] || 0) + 1;
     });
 
+    // 필터링된 차트 데이터
     const chartData = Object.entries(tierCounts).map(([tier, count]) => ({
         tier,
         count
@@ -413,14 +413,14 @@ export default function SeasonTier_UserStats() {
             <div style={{ marginBottom: "1rem" }}>
                 시즌 선택&nbsp;
                 <select
-                    value={selectedSeason}
-                    onChange={e => setSelectedSeason(e.target.value)}
+                    // value={selectedSeason}
+                    // onChange={e => setSelectedSeason(e.target.value)}
                     className="itemStats-select"
                 >
                     <option value="전체">전체</option>
-                    {seasonOptions.map(season => (
+                    {/* {seasonOptions.map(season => (
                         <option key={season} value={season}>{season}</option>
-                    ))}
+                    ))} */}
                 </select>
             </div>
 

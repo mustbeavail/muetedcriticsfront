@@ -59,7 +59,11 @@ export default function HeroPickorBan_IngameStats({ inGameStatsData }) {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type="number" />
                     <YAxis dataKey="heroes_name" type="category" />
-                    <Tooltip />
+                    <Tooltip
+                        formatter={(value) => `${value} 건`}
+                        contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                        cursor={{ fill: '#1c1b23' }}
+                    />
                     <Legend />
                     <Bar dataKey="ban_count" fill="#f28b82" name="밴 횟수" />
                     <Bar dataKey="pick_count" fill="#81c995" name="픽 횟수" />

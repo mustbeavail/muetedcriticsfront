@@ -55,7 +55,11 @@ export default function HeroItem_IngameStats({ inGameStatsData }) {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type="number" />
                     <YAxis dataKey="heroes_name" type="category" />
-                    <Tooltip />
+                    <Tooltip
+                        formatter={(value) => `${value} 개`}
+                        contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                        cursor={{ fill: '#1c1b23' }}
+                    />
                     <Bar dataKey="item_count" fill="url(#itemCountGradient)" />
                 </BarChart>
             </ResponsiveContainer>
