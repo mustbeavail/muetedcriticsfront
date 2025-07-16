@@ -1,22 +1,22 @@
 :root {
   --font-main: 'Pretendard', sans-serif;
 
-  --radius: 12px; 
+  --radius: 12px;
 
-  --color-text-main: #fdfdff; 
-  --color-text-sub: #caadeb; 
+  --color-text-main: #fdfdff;
+  --color-text-sub: #caadeb;
   --color-bg: #2c2c2c;
 
-  --color-primary: #AECCEE; 
-  --color-accent: #c5c6c6; 
+  --color-primary: #AECCEE;
+  --color-accent: #c5c6c6;
   --color-secondary: #8d35f0;
 
   --color-success: #6BBF8D;
   --color-warning: #F4C150;
-  --color-error:   #E57373;
-  --color-info:    #74A9D8;
+  --color-error: #E57373;
+  --color-info: #74A9D8;
 
-  --color-surface: #212121; 
+  --color-surface: #212121;
   --color-shadow: rgba(0, 0, 0, 0.1);
 }
 
@@ -29,7 +29,8 @@
   vertical-align: baseline;
 }
 
-ol, ul {
+ol,
+ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -44,13 +45,11 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: var(--font-main);
-  background: linear-gradient(
-    to bottom,
-    #000000 0%,
-    #212121 50%,
-    #3b2a4d 90%,
-    #461e73 100%
-  );
+  background: linear-gradient(to bottom,
+      #000000 0%,
+      #212121 50%,
+      #3b2a4d 90%,
+      #461e73 100%);
   color: var(--color-text-main);
 
   height: auto;
@@ -59,7 +58,15 @@ html, body {
 }
 
 
-h1, h2, h3, h4, h5, h6, p, span, div {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div {
   margin: 0;
   font-family: var(--font-main);
   color: var(--color-text-main);
@@ -740,8 +747,8 @@ button {
 }
 
 .chat_chatList {
-  position: fixed; 
-  width: 480px; 
+  position: fixed;
+  width: 480px;
   max-height: 100%;
   display: flex;
   flex-direction: column;
@@ -953,7 +960,7 @@ button {
   right: 10px;
   top: 14px;
   font-size: 20px;
-  color: #999; 
+  color: #999;
   cursor: pointer;
   transition: color 0.3s ease, filter 0.3s ease;
   user-select: none;
@@ -1177,6 +1184,7 @@ button {
   border: 1px solid rgba(141, 53, 240, 0.3);
   transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
+
 .chat_highlight {
   border: 1.5px solid rgba(165, 94, 255, 0.5);
   padding: 10px 18px;
@@ -1323,7 +1331,7 @@ button {
   width: 3px;
   height: 100%;
   border-radius: 0 0 0 20px;
-  background: linear-gradient(to bottom, rgba(10,10,10,0.9), #a273efaa);
+  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.9), #a273efaa);
 }
 
 .chat_addMemberModal::after {
@@ -1334,7 +1342,7 @@ button {
   width: 3px;
   height: 100%;
   border-radius: 0 0 20px 0;
-  background: linear-gradient(to bottom, rgba(10,10,10,0.9), #a273efaa);
+  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.9), #a273efaa);
 }
 
 @keyframes slideDownFadeModal {
@@ -1342,6 +1350,7 @@ button {
     opacity: 0;
     transform: translateY(-30px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -1353,6 +1362,7 @@ button {
     opacity: 1;
     transform: translateY(0);
   }
+
   100% {
     opacity: 0;
     transform: translateY(-30px);
@@ -1411,6 +1421,7 @@ button {
   width: 6px;
   z-index: 12002 !important;
 }
+
 .chat_addMemberModal::-webkit-scrollbar-thumb,
 .chat_modal::-webkit-scrollbar-thumb {
   background: #8d35f0;
@@ -1603,4 +1614,466 @@ html, body {
   justify-content: center; 
   align-items: center; 
   color: #eee;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.user-list-searchInput,
+.user-list-sortSelect {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #444;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.user-list-sortSelect option {
+  background-color: #1e1d24;
+  color: #fff;
+}
+
+.user-list-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.user-list-card {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid #333;
+  border-radius: 14px;
+  padding: 16px 20px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.user-list-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.user-list-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.user-list-email {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.user-list-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.user-list-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.user-list-tag {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  background-color: #3d2d5c;
+  color: #fff;
+  box-shadow: inset 0 0 4px rgba(166, 120, 226, 0.4);
+}
+
+.user-list-tag_이탈위험군 {
+  background-color: #874b4b;
+}
+
+.user-list-tag_일반 {
+  background-color: #4b5787;
+}
+
+.user-list-tag_수신거부 {
+  background-color: #555555;
+}
+
+.user-list-tag_복귀 {
+  background-color: #3b7564;
+}
+
+.user-list-tag_휴면 {
+  background-color: #6b4c74;
+}
+
+.user-list-menu {
+  position: relative;
+}
+
+.user-list-dropdown {
+  left: -160px;
+  right: auto;
+  top: 28px;
+  background-color: #2a2932;
+  border: 1px solid #444;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+
+.user-list-moreBtn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #bbb;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.user-list-moreBtn:hover {
+  color: #a678e2;
+}
+
+.user-list-dropdown {
+  position: absolute;
+  top: 28px;
+  right: 0;
+  background-color: #2a2932;
+  border: 1px solid #444;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.user-list-dropdown button {
+  background: none;
+  border: none;
+  color: #eee;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.user-list-dropdown button:hover {
+  background-color: #3d3453;
+}
+
+/*----------------------------------------------------1234567890추가----------------------------------------------------*/
+.user-list-container1 {
+  width: 100%;
+  margin: 80px;
+  margin-left: 80px;
+  color: #fff;
+  padding: 24px;
+  min-height: 100vh;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.user-list-dropdown-item {
+  background: none;
+  border: none;
+  color: #eee;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.user-list-dropdown-item:hover {
+  background-color: #3d3453;
+}
+
+.user-list-header {
+  display: flex;
+}
+
+.user-list-heroPlayData {
+  width: 100%;
+  height: 100%;
+  background: #1c1b23;
+  border-radius: 16px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.user-list-heroPlayData-content {
+  display: flex;
+  gap: 20px;
+}
+
+.user-list-heroPlayData-allData {
+  flex: 1;
+  padding: 20px;
+  /* background-color: #111; */
+  color: white;
+  font-family: 'Noto Sans KR', sans-serif;
+  /* display: flex;
+  gap: 20px;  */
+}
+
+.user-list-heroPlayData-allData-header1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 5px solid #333;
+}
+
+.user-list-heroPlayData-allData-header2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  border-bottom: 5px solid #333;
+}
+
+.user-list-heroPlayData-allData-mainTitle {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.user-list-heroPlayData-characterPlaytime {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  /* background-color: #111; */
+  padding: 20px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: white;
+}
+
+.season-select {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.user-list-heroPlayData-allData-data {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.data-card {
+  flex: 1 1 30%;
+  min-width: 200px;
+  background-color: #1c1c1c;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  margin-bottom: 10px;
+}
+
+.data-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.data-value {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.divider {
+  width: 40px;
+  height: 2px;
+  background-color: #555;
+  margin: 8px auto;
+}
+
+.data-label {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.chart-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.chart-row {
+  display: flex;
+  align-items: center;
+  /* border-bottom: 2px solid white; */
+  padding: 8px 0;
+}
+
+.hero-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.bar-container {
+  flex: 1;
+  background-color: #333;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  background: linear-gradient(to right, #1a1a1a, #7f32ff);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.bar-label {
+  position: relative;
+  z-index: 2;
+}
+
+
+/*----------------------------------------------------추가----------------------------------------------------*/
+
+.user-list-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.user-list-pagination button {
+  padding: 6px 12px;
+  background-color: #2c2b35;
+  border: 1px solid #444;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.user-list-pagination button.active,
+.user-list-pagination button:hover {
+  background-color: #a678e2;
+  color: #fff;
+}
+
+.user-list-modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.user-list-modal {
+  background-color: #26242e;
+  border-radius: 18px;
+  padding: 24px;
+  width: 600px;
+  max-width: 90vw;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.user-list-modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-list-userName {
+  font-size: 20px;
+  font-weight: bold;
+  color: #a678e2;
+}
+
+.user-list-divider {
+  border: none;
+  border-bottom: 1px solid #444;
+  margin: 16px 0;
+}
+
+.user-list-memoInfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #bbb;
+  margin-bottom: 14px;
+}
+
+.user-list-memoTextarea {
+  width: 100%;
+  height: 140px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  background-color: #1e1d24;
+  color: #fff;
+  padding: 10px;
+  font-size: 15px;
+  resize: none;
+}
+
+.user-list-modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.user-list-closeBtn,
+.user-list-saveBtn,
+.user-list-editBtn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.user-list-closeBtn {
+  background-color: #555;
+  color: #fff;
+}
+
+.user-list-editBtn {
+  background-color: #a678e2;
+  color: #fff;
+}
+
+.user-list-saveBtn {
+  background-color: #56c1ff;
+  color: #1e1d24;
 }

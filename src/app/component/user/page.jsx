@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaUserShield, FaClock, FaGlobe } from 'react-icons/fa';
 import { FiMoreVertical } from 'react-icons/fi';
+import Link from 'next/link';
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
 
@@ -426,9 +427,11 @@ const User = () => {
               {openMenuId === user.id && (
                 <div className="user-list-dropdown">
                   <button onClick={() => openUserDetail(user)}>유저 상세보기</button>
-                  <button onClick={() => router.push(`/component/heroPlayData?id=${user.id}`)}>
+                  {/* <button onClick={() => router.push(`/component/heroPlayData?id=${user.id}`)}> */}
+                  <Link key={user.id} href={`/component/user/${user.id}`} className={"user-list-dropdown-item"}>
                     유저 통계보기
-                  </button>
+                  </Link>
+                  {/* </button> */}
                   <button onClick={() => router.push(`/component/userExpenditure?id=${user.id}`)}>
                     유저 지출 상세내역
                   </button>
