@@ -69,6 +69,8 @@ const ChatPage = () => {
   const [pinnedRooms, setPinnedRooms] = useState([]);
   const [selectedTeamFilter, setSelectedTeamFilter] = useState('전체');
 
+  const [isSending, setIsSending] = useState(false);
+
   const getToday = () => {
     const today = new Date();
     return `${today.getFullYear() % 100}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
@@ -94,33 +96,40 @@ const ChatPage = () => {
     }
   };
 
-  const handleSend = () => {
-    if (input.trim() === '') return;
+  // handleSend가 항상 최신 input 값을 받도록 수정
+  const handleSend = (inputValue) => {
+    if (isSending) return; // 중복 방지
+    if (!inputValue || inputValue.trim() === '') return;
+    setIsSending(true);
     const now = new Date();
 
     const currentMemberDetail = currentRoom ? memberDetails[currentRoom.name] : null;
     const isLeftMember = currentMemberDetail && currentMemberDetail.leaveDate !== '9999-99-99';
-    if (isLeftMember) return;
-
-    const newMessage = {
-      id: messages.length > 0 ? messages[messages.length - 1].id + 1 : 1,
-      sender: 'me',
-      text: input,
-      time: `${now.getHours()}시 ${String(now.getMinutes()).padStart(2, '0')}분`,
-    };
-
-    const updatedMessages = [...messages, newMessage];
-    setMessages(updatedMessages);
-    setRoomMessages(prev => ({ ...prev, [currentRoom.id]: updatedMessages }));
-
-    setChatRooms(prevRooms =>
-      prevRooms.map(room =>
-        room.id === currentRoom.id ? { ...room, preview: newMessage.text, date: getToday() } : room
-      )
-    );
+    if (isLeftMember) {
+      setIsSending(false);
+      return;
+    }
 
     setInput('');
-    setLastReadMessageIds(prev => ({ ...prev, [currentRoom.id]: newMessage.id }));
+
+    setMessages(prevMessages => {
+      const newMessage = {
+        id: prevMessages.length > 0 ? prevMessages[prevMessages.length - 1].id + 1 : 1,
+        sender: 'me',
+        text: inputValue,
+        time: `${now.getHours()}시 ${String(now.getMinutes()).padStart(2, '0')}분`,
+      };
+      const updatedMessages = [...prevMessages, newMessage];
+      setRoomMessages(prev => ({ ...prev, [currentRoom.id]: updatedMessages }));
+      setChatRooms(prevRooms =>
+        prevRooms.map(room =>
+          room.id === currentRoom.id ? { ...room, preview: newMessage.text, date: getToday() } : room
+        )
+      );
+      setLastReadMessageIds(prev => ({ ...prev, [currentRoom.id]: newMessage.id }));
+      setIsSending(false);
+      return updatedMessages;
+    });
   };
 
   const toggleRoomSelection = (roomId) => {
@@ -441,10 +450,16 @@ const ChatPage = () => {
                         placeholder="상대방에게 보낼 채팅을 입력해주세요."
                         value={input}
                         onChange={e => setInput(e.target.value)}
-                        onKeyDown={e => e.key === 'Enter' && handleSend()}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') {
+                            if (e.nativeEvent.isComposing) return; // 한글 조합 중이면 무시
+                            e.preventDefault();
+                            if (input.trim() !== '' && !isSending) handleSend(e.target.value);
+                          }
+                        }}
                         disabled={isCheckboxMode}
                       />
-                      <button className="chat_sendBtn" onClick={handleSend} disabled={isCheckboxMode || input.trim() === ''}>
+                      <button className="chat_sendBtn" onClick={() => handleSend(input)} disabled={isCheckboxMode || input.trim() === '' || isSending}>
                         <FiSend />
                       </button>
                     </>
