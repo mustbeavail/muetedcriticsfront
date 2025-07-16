@@ -1140,6 +1140,19 @@ button {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
+.user-list-backBtn {
+  width: 120px;
+  height: 40px;
+  margin-left: 15px;
+  background-color: #a367f9;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 .user-list-dropdown-item {
   background: none;
   border: none;

@@ -273,6 +273,42 @@ const dummyUsers = [{
     createdAt: '2024.12.01',
     updatedAt: '2025.01.10',
   },
+  match_results: [
+    { result_idx: 5002, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 32, match_idx: 1 },
+    { result_idx: 5325, match_play_time: 35, potg: 0, victory_or_defeat: "victory", heroes_idx: 42, match_idx: 33 },
+    { result_idx: 5471, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 22, match_idx: 48 },
+    { result_idx: 5626, match_play_time: 32, potg: 0, victory_or_defeat: "defeat", heroes_idx: 28, match_idx: 63 },
+    { result_idx: 5912, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 33, match_idx: 92 },
+    { result_idx: 5935, match_play_time: 33, potg: 0, victory_or_defeat: "victory", heroes_idx: 38, match_idx: 94 },
+    { result_idx: 5972, match_play_time: 38, potg: 0, victory_or_defeat: "victory", heroes_idx: 24, match_idx: 98 },
+    { result_idx: 6062, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 19, match_idx: 107 },
+    { result_idx: 6143, match_play_time: 38, potg: 0, victory_or_defeat: "victory", heroes_idx: 8, match_idx: 115 },
+    { result_idx: 6168, match_play_time: 33, potg: 0, victory_or_defeat: "defeat", heroes_idx: 36, match_idx: 117 },
+    { result_idx: 6241, match_play_time: 40, potg: 0, victory_or_defeat: "victory", heroes_idx: 1, match_idx: 125 },
+    { result_idx: 6812, match_play_time: 26, potg: 0, victory_or_defeat: "victory", heroes_idx: 33, match_idx: 182 },
+    { result_idx: 7301, match_play_time: 16, potg: 0, victory_or_defeat: "victory", heroes_idx: 9, match_idx: 231 },
+    { result_idx: 7992, match_play_time: 18, potg: 0, victory_or_defeat: "victory", heroes_idx: 17, match_idx: 300 },
+    { result_idx: 8049, match_play_time: 15, potg: 0, victory_or_defeat: "defeat", heroes_idx: 24, match_idx: 305 },
+    { result_idx: 8421, match_play_time: 25, potg: 0, victory_or_defeat: "victory", heroes_idx: 22, match_idx: 343 },
+    { result_idx: 8469, match_play_time: 29, potg: 0, victory_or_defeat: "defeat", heroes_idx: 16, match_idx: 347 },
+    { result_idx: 9311, match_play_time: 36, potg: 0, victory_or_defeat: "victory", heroes_idx: 29, match_idx: 432 },
+    { result_idx: 9462, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 15, match_idx: 447 },
+    { result_idx: 9496, match_play_time: 23, potg: 0, victory_or_defeat: "defeat", heroes_idx: 42, match_idx: 450 },
+    { result_idx: 9519, match_play_time: 19, potg: 0, victory_or_defeat: "defeat", heroes_idx: 34, match_idx: 452 },
+    { result_idx: 9531, match_play_time: 32, potg: 0, victory_or_defeat: "victory", heroes_idx: 29, match_idx: 454 },
+    { result_idx: 9597, match_play_time: 31, potg: 0, victory_or_defeat: "defeat", heroes_idx: 36, match_idx: 460 },
+    { result_idx: 9725, match_play_time: 40, potg: 0, victory_or_defeat: "victory", heroes_idx: 27, match_idx: 473 },
+    { result_idx: 10064, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 12, match_idx: 507 },
+    { result_idx: 10385, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 17, match_idx: 539 },
+    { result_idx: 10955, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 19, match_idx: 596 },
+    { result_idx: 10967, match_play_time: 20, potg: 0, victory_or_defeat: "defeat", heroes_idx: 20, match_idx: 597 },
+    { result_idx: 11046, match_play_time: 20, potg: 0, victory_or_defeat: "defeat", heroes_idx: 31, match_idx: 605 },
+    { result_idx: 11128, match_play_time: 20, potg: 0, victory_or_defeat: "defeat", heroes_idx: 43, match_idx: 613 },
+    { result_idx: 11156, match_play_time: 20, potg: 0, victory_or_defeat: "defeat", heroes_idx: 9, match_idx: 616 },
+    { result_idx: 11212, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 33, match_idx: 622 },
+    { result_idx: 11250, match_play_time: 20, potg: 1, victory_or_defeat: "defeat", heroes_idx: 29, match_idx: 625 },
+    { result_idx: 11406, match_play_time: 20, potg: 0, victory_or_defeat: "defeat", heroes_idx: 38, match_idx: 641 }
+  ]
 },
 {
   id: 3,
@@ -297,6 +333,31 @@ const dummyUsers = [{
     createdAt: '2025.04.20',
     updatedAt: '2025.06.15',
   },
+  match_results: [
+    { result_idx: 5003, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 27, match_idx: 1 },
+    { result_idx: 5428, match_play_time: 21, potg: 0, victory_or_defeat: "defeat", heroes_idx: 28, match_idx: 43 },
+    { result_idx: 6061, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 25, match_idx: 107 },
+    { result_idx: 6090, match_play_time: 27, potg: 0, victory_or_defeat: "defeat", heroes_idx: 28, match_idx: 109 },
+    { result_idx: 6532, match_play_time: 26, potg: 0, victory_or_defeat: "victory", heroes_idx: 27, match_idx: 154 },
+    { result_idx: 6679, match_play_time: 27, potg: 0, victory_or_defeat: "defeat", heroes_idx: 35, match_idx: 168 },
+    { result_idx: 7374, match_play_time: 26, potg: 1, victory_or_defeat: "victory", heroes_idx: 25, match_idx: 238 },
+    { result_idx: 7553, match_play_time: 18, potg: 0, victory_or_defeat: "victory", heroes_idx: 8, match_idx: 256 },
+    { result_idx: 7976, match_play_time: 24, potg: 0, victory_or_defeat: "defeat", heroes_idx: 13, match_idx: 298 },
+    { result_idx: 8994, match_play_time: 27, potg: 0, victory_or_defeat: "victory", heroes_idx: 21, match_idx: 400 },
+    { result_idx: 9129, match_play_time: 39, potg: 0, victory_or_defeat: "defeat", heroes_idx: 10, match_idx: 413 },
+    { result_idx: 9165, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 25, match_idx: 417 },
+    { result_idx: 9331, match_play_time: 15, potg: 0, victory_or_defeat: "victory", heroes_idx: 16, match_idx: 434 },
+    { result_idx: 9578, match_play_time: 28, potg: 0, victory_or_defeat: "defeat", heroes_idx: 7, match_idx: 458 },
+    { result_idx: 9760, match_play_time: 20, potg: 0, victory_or_defeat: "defeat", heroes_idx: 31, match_idx: 476 },
+    { result_idx: 9820, match_play_time: 34, potg: 0, victory_or_defeat: "defeat", heroes_idx: 42, match_idx: 482 },
+    { result_idx: 10063, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 35, match_idx: 507 },
+    { result_idx: 10383, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 22, match_idx: 539 },
+    { result_idx: 10464, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 9, match_idx: 547 },
+    { result_idx: 10591, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 17, match_idx: 560 },
+    { result_idx: 10853, match_play_time: 20, potg: 0, victory_or_defeat: "victory", heroes_idx: 7, match_idx: 586 },
+    { result_idx: 11189, match_play_time: 20, potg: 0, victory_or_defeat: "defeat", heroes_idx: 20, match_idx: 619 },
+    { result_idx: 11269, match_play_time: 20, potg: 0, victory_or_defeat: "defeat", heroes_idx: 15, match_idx: 627 },
+  ]
 },
 ];
 
@@ -375,7 +436,7 @@ export default function HeroPlayDataPage() {
       <Menu />
       <div className={"user-list-header"}>
         <h2 className="user-list-title">유저 통계 보기</h2>
-        <button>리스트로</button>
+        <button className="user-list-backBtn" onClick={() => location.href = "/component/user"}>← 리스트로</button>
       </div>
       <div className={"user-list-heroPlayData"}>
         <div style={{ marginBottom: "20px", fontSize: "20px" }}><span style={{ fontWeight: 600 }}>{user_detail.name}</span>의 통계 확인</div>
