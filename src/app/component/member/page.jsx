@@ -1,9 +1,13 @@
+import Header from '@/Header/page';
+import Menu from '@/menu/Menu';
 import React from 'react';
 
 const Member = () => {
   return (
     <div>
-      <h1>Member</h1>
+      <Header/>
+      <Menu/>
+      
     </div>
   );
 };
