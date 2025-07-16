@@ -439,7 +439,7 @@ export default function HeroPlayDataPage() {
         <button className="user-list-backBtn" onClick={() => location.href = "/component/user"}>← 리스트로</button>
       </div>
       <div className={"user-list-heroPlayData"}>
-        <div style={{ marginBottom: "20px", fontSize: "20px" }}><span style={{ fontWeight: 600 }}>{user_detail.name}</span>의 통계 확인</div>
+        <div style={{ fontSize: "20px" }}><span style={{ fontWeight: 600 }}>{user_detail.name}</span>의 통계 확인</div>
         <div className="user-list-heroPlayData-content">
           {/* 시즌별 데이터 및 전체 데이터 */}
           <div className="user-list-heroPlayData-allData">
@@ -502,21 +502,23 @@ export default function HeroPlayDataPage() {
                 <option value="2">모드별</option>
               </select>
             </div>
-            {heroPlayDataChart.map((hero, idx) => (
-              <div className="chart-row" key={idx}>
-                <img src={hero.image} alt={hero.name} className="hero-icon" />
-                <div className="bar-container">
-                  <div
-                    className="bar"
-                    style={{
-                      width: `${(hero.minutes / maxMinutes) * 100}%`,
-                    }}
-                  >
-                    <span className="bar-label">{hero.minutes}분</span>
+            <div className="user-list-heroPlayData-characterPlaytime-chart">
+              {heroPlayDataChart.map((hero, idx) => (
+                <div className="chart-row" key={idx}>
+                  <img src={hero.image} alt={hero.name} className="hero-icon" />
+                  <div className="bar-container">
+                    <div
+                      className="bar"
+                      style={{
+                        width: `${(hero.minutes / maxMinutes) * 100}%`,
+                      }}
+                    >
+                      <span className="bar-label">{hero.minutes}분</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

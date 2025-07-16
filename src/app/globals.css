@@ -1777,13 +1777,19 @@ html, body {
 
 /*----------------------------------------------------1234567890추가----------------------------------------------------*/
 .user-list-container1 {
-  width: 100%;
-  margin: 80px;
-  margin-left: 80px;
-  color: #fff;
-  padding: 24px;
-  min-height: 100vh;
+  position: fixed;
+  top: 80px;
+  left: 80px;
+  width: 97%;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  height: calc(100vh);
+  border-radius: 8px;
+  background-color: transparent;
+  font-size: 18px;
   font-family: 'Noto Sans KR', sans-serif;
+  /* margin-bottom: 20px; */
 }
 
 .user-list-backBtn {
@@ -1868,11 +1874,16 @@ html, body {
 .user-list-heroPlayData-characterPlaytime {
   flex: 1;
   height: 100%;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   /* background-color: #111; */
   padding: 20px;
   font-family: 'Noto Sans KR', sans-serif;
   color: white;
+}
+
+.user-list-heroPlayData-characterPlaytime-chart {
+  height: calc(100vh - 200px);
+  overflow-y: auto;
 }
 
 .season-select {
