@@ -2,8 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   devIndicators: {
-    buildActivity: false,
-    buildActivityPosition: 'bottom-right',
+    position: 'bottom-right',
   },
   images: {
     domains: ['localhost'],
