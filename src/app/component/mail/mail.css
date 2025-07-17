@@ -1,12 +1,4 @@
-/* body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to bottom, #1e1e1e, #1a132b, #35123b);
-    background-attachment: fixed;
-    min-height: 100vh;
-    font-family: 'Pretendard', sans-serif;
-} */
-
+/* ------------------------------ 공통 css ------------------------------ */
 .stats_container {
     position: fixed;
     top: 80px;
@@ -14,7 +6,6 @@
     width: 97%;
     padding: 20px;
     box-sizing: border-box;
-    /* display: flex; */
     overflow-y: auto;
     height: calc(100vh - 56px);
     border-radius: 8px;
@@ -24,6 +15,26 @@
     margin-bottom: 20px;
 }
 
+.row.header {
+    font-weight: bold;
+    background-color: #d4cad331;
+}
+
+.row {
+    display: flex;
+    border-bottom: 1px solid #cccccc6e;
+    padding: 10px 0;
+}
+
+.cell {
+    flex: 1;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* ------------------------------ 유저 개별 통계 css ------------------------------ */
+/* ------------------------------ 발신 메일 리스트 css ------------------------------ */
 .mailList-title {
     color: #fff;
 }
@@ -189,68 +200,7 @@
     font-weight: bold;
 }
 
-/**/
-
-.mailDetail-container {
-    padding: 40px;
-    color: white;
-}
-
-.mailDetail-title {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 24px;
-}
-
-.mailDetail-card {
-    background: linear-gradient(to bottom right, #1e1c28, #2e1f3a);
-    padding: 32px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-}
-
-.mailDetail-backBtn {
-    background-color: #444;
-    color: white;
-    border: none;
-    padding: 6px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
-
-.mailDetail-backBtn:hover {
-    background-color: #555;
-}
-
-.mailDetail-subject {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
-
-.mailDetail-meta {
-    font-size: 14px;
-    color: #ccc;
-    margin-bottom: 4px;
-}
-
-.mailDetail-meta span {
-    color: white;
-}
-
-.mailDetail-date {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #aaa;
-    margin: 16px 0;
-    font-size: 14px;
-}
-
-/**/
-
+/* ------------------------------ 메일 발송 css ------------------------------ */
 .mailSend-container {
     width: 100%;
     padding: 20px;
@@ -326,7 +276,7 @@
     background-color: #924df0;
 }
 
-/* 매출 통계 페이지 css */
+/* ------------------------------ 매출 통계 css ------------------------------ */
 .salesStats-card-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -424,24 +374,7 @@
     margin-top: 20px;
 }
 
-.row.header {
-    font-weight: bold;
-    background-color: #d4cad331;
-}
-
-.row {
-    display: flex;
-    border-bottom: 1px solid #cccccc6e;
-    padding: 10px 0;
-}
-
-.cell {
-    flex: 1;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-}
-
+/* ------------------------------ 아이템 통계 css ------------------------------ */
 /* 아이템 통계 페이지 css */
 .itemStats-mainTitle {
     font-size: 28px;
@@ -690,57 +623,8 @@
     margin-bottom: 30px;
 }
 
-.refundStats-summaryBox {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.refundStats-summaryCard {
-    flex: 1;
-    background-color: #2b2640;
-    padding: 1.2rem;
-    border-radius: 12px;
-    text-align: left;
-    color: #d1d1e9;
-}
-
-.refundStats-summaryCard .label {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    display: block;
-    color: #cfcfe2;
-}
-
-.refundStats-summaryCard .value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffffff;
-}
-
-.refundStats-pagination {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.refundStats-page-btn {
-    background-color: #2e2b3f;
-    border: none;
-    color: #fff;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.refundStats-page-btn.active {
-    background-color: #a259ff;
-}
-
-/* 유저 통계 페이지 css */
-
+/* ------------------------------ 접속자 수 통계 css ------------------------------ */
+/* ------------------------------ 유저 통계 css ------------------------------ */
 .userStats-mainTitle {
     font-size: 28px;
     font-weight: 600;
@@ -1057,6 +941,132 @@
     font-size: 13px;
     color: #bbb;
 }
+
+/* ------------------------------ 인게임 통계 css ------------------------------ */
+/* ------------------------------ 신고/문의 통계 css ------------------------------ */
+.refundStats-summaryBox {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.refundStats-summaryCard {
+    flex: 1;
+    background-color: #2b2640;
+    padding: 1.2rem;
+    border-radius: 12px;
+    text-align: left;
+    color: #d1d1e9;
+}
+
+.refundStats-summaryCard .label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #cfcfe2;
+}
+
+.refundStats-summaryCard .value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.refundStats-pagination {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.refundStats-page-btn {
+    background-color: #2e2b3f;
+    border: none;
+    color: #fff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.refundStats-page-btn.active {
+    background-color: #a259ff;
+}
+
+/* ------------------------------ 회원 리스트 css ------------------------------ */
+/* ------------------------------ 회원 상세보기 css ------------------------------ */
+/* ------------------------------ 회원 정보 수정 css ------------------------------ */
+/* ------------------------------ 문의/신고 리스트 css ------------------------------ */
+/* ------------------------------ 문의/신고 상세보기 css ------------------------------ */
+/* ------------------------------ 문의/신고 답변 내역 css ------------------------------ */
+
+.mailDetail-container {
+    padding: 40px;
+    color: white;
+}
+
+.mailDetail-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.mailDetail-card {
+    background: linear-gradient(to bottom right, #1e1c28, #2e1f3a);
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.mailDetail-backBtn {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.mailDetail-backBtn:hover {
+    background-color: #555;
+}
+
+.mailDetail-subject {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.mailDetail-meta {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 4px;
+}
+
+.mailDetail-meta span {
+    color: white;
+}
+
+.mailDetail-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #aaa;
+    margin: 16px 0;
+    font-size: 14px;
+}
+
+
+
+
+
+
+/* 유저 통계 페이지 css */
+
+
+
 
 .user-card {
     display: flex;

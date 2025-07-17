@@ -97,10 +97,8 @@ const Menu = () => {
             )}
             {activeMenu === 'inquiry' && (
               <>
-                <Link href="/#"> ✦ 유저 문의 내역</Link>
-                <Link href="/#"> ✦ 유저 신고 내역</Link>
-                <Link href="/#"> ✦ 문의 답변 내역</Link>
-                <Link href="/#"> ✦ VIP 문의 내역</Link>
+                <Link href="/component/inquiry"> ✦ 유저 문의 내역</Link>
+                <Link href="/component/report"> ✦ 유저 신고 내역</Link>
               </>
             )}
             {activeMenu === 'mail' && (

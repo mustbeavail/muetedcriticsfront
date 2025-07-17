@@ -3,18 +3,24 @@
 import React, { useState } from 'react';
 import { FaCheck, FaEye, FaEyeSlash } from 'react-icons/fa';
 import Link from 'next/link';
+import axios from 'axios';
 
-const Join = () => {
+const JoinPage = () => {
+  const URL = process.env.NEXT_PUBLIC_API_URL;
+
+  // 이메일, 성별 빠짐
   const [formData, setFormData] = useState({
-    userId: '',
-    password: '',
-    confirmPassword: '',
-    name: '',
+    memberId: '',
+    memberPw: '',
+    confirmPw: '',
+    memberName: '',
     officePhone: '',
-    personalPhone: '',
-    department: '',
+    mobilePhone: '',
+    deptName: '',
     position: '',
     receiveConsent: false,
+    // email: '',
+    // memberGender: '',
   });
 
   const [idCheckResult, setIdCheckResult] = useState(null);
@@ -36,7 +42,7 @@ const Join = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
-    if (name === 'userId') setIdCheckResult(null);
+    if (name === 'memberId') setIdCheckResult(null);
     if (errorMsg) setErrorMsg('');
   };
 
@@ -56,22 +62,23 @@ const Join = () => {
     setShowConsentModal(false);
   };
 
-  const handleIdCheck = () => {
-    if (!formData.userId.trim()) {
+  const handleIdCheck = async () => {
+    if (!formData.memberId.trim()) {
       alert('아이디를 입력하세요.');
       return;
     }
     setChecking(true);
     setIdCheckResult(null);
 
-    setTimeout(() => {
-      if (formData.userId.toLowerCase() === 'admin') {
-        setIdCheckResult('taken');
-      } else {
-        setIdCheckResult('available');
-      }
-      setChecking(false);
-    }, 1500);
+    const { data } = await axios.post(`${URL}/member/overlay_id`, { member_id: formData.memberId });
+    console.log(data);
+
+    if (data.used) {
+      setIdCheckResult('taken');
+    } else {
+      setIdCheckResult('available');
+    }
+    setChecking(false);
   };
 
   const applyDepartmentPosition = () => {
@@ -81,20 +88,20 @@ const Join = () => {
     }
     setFormData((prev) => ({
       ...prev,
-      department: tempDepartment,
+      deptName: tempDepartment,
       position: tempPosition,
     }));
     setShowModal(false);
   };
 
   const isPasswordMatch =
-    formData.confirmPassword.length > 0 &&
-    formData.password === formData.confirmPassword;
+    formData.confirmPw.length > 0 &&
+    formData.memberPw === formData.confirmPw;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.userId.trim()) {
+    if (!formData.memberId.trim()) {
       setErrorMsg('아이디를 입력해주십시오.');
       return;
     }
@@ -102,19 +109,19 @@ const Join = () => {
       setErrorMsg('아이디 중복체크를 해주세요.');
       return;
     }
-    if (formData.password.length < 8 || formData.password.length > 20) {
+    if (formData.memberPw.length < 8 || formData.memberPw.length > 20) {
       setErrorMsg('비밀번호는 8자 이상 20자 이하로 입력해주세요.');
       return;
     }
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.memberPw !== formData.confirmPw) {
       setErrorMsg('비밀번호가 일치하지 않습니다.');
       return;
     }
-    if (!formData.name.trim()) {
+    if (!formData.memberName.trim()) {
       setErrorMsg('이름을 입력해주십시오.');
       return;
     }
-    if (!formData.department || !formData.position) {
+    if (!formData.deptName || !formData.position) {
       setErrorMsg('부서와 직급을 선택해주세요.');
       return;
     }
@@ -127,6 +134,18 @@ const Join = () => {
     console.log('가입 데이터:', formData);
   };
 
+  const join = async () => {
+    const { data } = await axios.post(`${URL}/member/join`, formData);
+    console.log(data);
+
+    if (data.success) {
+      alert('회원가입 요청을 성공적으로 접수했습니다. 관리자 승인 후 서비스 이용이 가능합니다.');
+      location.href = '/';
+    } else {
+      alert('회원가입에 실패했습니다.');
+    }
+  };
+
   return (
     <div className="join-wrapper">
       <div className="join-container">
@@ -137,8 +156,8 @@ const Join = () => {
           <div className="join-inputWithButton">
             <input
               type="text"
-              name="userId"
-              value={formData.userId}
+              name="memberId"
+              value={formData.memberId}
               onChange={handleChange}
               placeholder="아이디"
               autoComplete="username"
@@ -166,8 +185,8 @@ const Join = () => {
           <div className="join-inputWithIcon">
             <input
               type={showPassword ? 'text' : 'password'}
-              name="password"
-              value={formData.password}
+              name="memberPw"
+              value={formData.memberPw}
               onChange={handleChange}
               placeholder="비밀번호 (8~20자)"
               autoComplete="new-password"
@@ -188,14 +207,14 @@ const Join = () => {
 
           <input
             type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
+            name="confirmPw"
+            value={formData.confirmPw}
             onChange={handleChange}
             placeholder="비밀번호 재확인"
             autoComplete="new-password"
             className="join-input"
           />
-          {formData.confirmPassword.length > 0 && (
+          {formData.confirmPw.length > 0 && (
             <p className={isPasswordMatch ? 'join-matchMsg' : 'join-notMatchMsg'}>
               {isPasswordMatch
                 ? '비밀번호가 일치합니다.'
@@ -205,8 +224,8 @@ const Join = () => {
 
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="memberName"
+            value={formData.memberName}
             onChange={handleChange}
             placeholder="이름"
             className="join-input"
@@ -221,8 +240,8 @@ const Join = () => {
           />
           <input
             type="tel"
-            name="personalPhone"
-            value={formData.personalPhone}
+            name="mobilePhone"
+            value={formData.mobilePhone}
             onChange={handleChange}
             placeholder="개인 연락처"
             className="join-input"
@@ -233,8 +252,8 @@ const Join = () => {
             className="join-selectBox"
             onClick={() => setShowModal(true)}
           >
-            {formData.department && formData.position
-              ? `${formData.department} / ${formData.position}`
+            {formData.deptName && formData.position
+              ? `${formData.deptName} / ${formData.position}`
               : '부서 및 직급 선택'}
           </button>
 
@@ -267,7 +286,7 @@ const Join = () => {
             </div>
           </div>
 
-          <button type="submit" className="join-button">
+          <button type="submit" className="join-button" onClick={join}>
             가입하기
           </button>
         </form>
@@ -332,9 +351,8 @@ const DepartmentPositionModal = ({
             <button
               key={dept}
               type="button"
-              className={`join-modalButton ${
-                tempDepartment === dept ? 'join-modalButtonSelected' : ''
-              }`}
+              className={`join-modalButton ${tempDepartment === dept ? 'join-modalButtonSelected' : ''
+                }`}
               onClick={() => {
                 setTempDepartment(dept);
                 setTempPosition('');
@@ -351,9 +369,8 @@ const DepartmentPositionModal = ({
             <button
               key={pos}
               type="button"
-              className={`join-modalButton ${
-                tempPosition === pos ? 'join-modalButtonSelected' : ''
-              }`}
+              className={`join-modalButton ${tempPosition === pos ? 'join-modalButtonSelected' : ''
+                }`}
               onClick={() => setTempPosition(pos)}
             >
               {pos}
@@ -419,4 +436,4 @@ const ConsentModal = ({ onAgree, onCancel }) => (
   </div>
 );
 
-export default Join;
+export default JoinPage;

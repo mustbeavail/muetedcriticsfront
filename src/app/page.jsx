@@ -6,6 +6,8 @@ import { FaCheck } from 'react-icons/fa';
 import styles from './page.module.css';
 import axios from 'axios';
 
+const URL = process.env.NEXT_PUBLIC_API_URL;
+
 const VerificationCodeInput = ({ length = 6, value, onChange }) => {
   const inputRef = useRef();
 
@@ -33,9 +35,8 @@ const VerificationCodeInput = ({ length = 6, value, onChange }) => {
       {Array.from({ length }).map((_, i) => (
         <div
           key={i}
-          className={`${styles['login-code-input-circle']} ${
-            value.length > i ? styles['filled'] : ''
-          }`}
+          className={`${styles['login-code-input-circle']} ${value.length > i ? styles['filled'] : ''
+            }`}
         >
           {value[i] || ''}
         </div>
@@ -45,26 +46,42 @@ const VerificationCodeInput = ({ length = 6, value, onChange }) => {
 };
 
 const PasswordChangeModal = ({ onClose }) => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [changePwInfo, setChangePwInfo] = useState({
+    member_id: sessionStorage.getItem('member_id'),
+    member_pw: '',
+    confirm_pw: ''
+  });
+
   const [changeError, setChangeError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleChangePassword = () => {
-    if (!newPassword || !confirmPassword) {
+  const handleChangePassword = async () => {
+    if (!changePwInfo.member_pw || !changePwInfo.confirm_pw) {
       setChangeError('');
       setChangeError('비밀번호를 모두 입력해주세요.');
       return;
     }
-    if (newPassword !== confirmPassword) {
+    if (changePwInfo.member_pw !== changePwInfo.confirm_pw) {
       setChangeError('비밀번호가 일치하지 않습니다.');
       return;
     }
-    setChangeError('');
-    setIsSuccess(true);
-    setTimeout(() => {
-      onClose();
-    }, 1500);
+
+    const { data } = await axios.post(`${URL}/member/change_password`, {
+      memberId: changePwInfo.member_id,
+      member_pw: changePwInfo.member_pw
+    });
+    console.log(data);
+
+    if (data.success === true) {
+      setChangeError('');
+      setIsSuccess(true);
+      setTimeout(() => {
+        onClose();
+      }, 1500);
+    } else {
+      setChangeError('비밀번호 변경에 실패했습니다.');
+    }
+
   };
 
   return (
@@ -81,9 +98,10 @@ const PasswordChangeModal = ({ onClose }) => {
         <input
           type="password"
           placeholder="새 비밀번호"
-          value={newPassword}
+          name="member_pw"
+          value={changePwInfo.member_pw}
           onChange={(e) => {
-            setNewPassword(e.target.value);
+            setChangePwInfo({ ...changePwInfo, member_pw: e.target.value });
             if (changeError) setChangeError('');
           }}
           className={styles['login-modalInput']}
@@ -92,9 +110,10 @@ const PasswordChangeModal = ({ onClose }) => {
         <input
           type="password"
           placeholder="비밀번호 확인"
-          value={confirmPassword}
+          name="confirm_pw"
+          value={changePwInfo.confirm_pw}
           onChange={(e) => {
-            setConfirmPassword(e.target.value);
+            setChangePwInfo({ ...changePwInfo, confirm_pw: e.target.value });
             if (changeError) setChangeError('');
           }}
           className={styles['login-modalInput']}
@@ -121,19 +140,28 @@ const Login = () => {
     member_id: '',
     member_pw: ''
   });
-  
+
   const [error, setError] = useState('');
   const [showFindModal, setShowFindModal] = useState(false);
   const [showPasswordChangeModal, setShowPasswordChangeModal] = useState(false);
   const [modalStep, setModalStep] = useState(0);
-  const [email, setEmail] = useState('');
+
+  const [findPwInfo, setFindPwInfo] = useState({
+    memberId: '',
+    email: '',
+    authCode: ''
+  });
+
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationError, setVerificationError] = useState(false);
 
   const closeModal = () => {
     setShowFindModal(false);
     setModalStep(0);
-    setEmail('');
+    setFindPwInfo({
+      memberId: '',
+      email: ''
+    });
     setVerificationCode('');
     setVerificationError(false);
   };
@@ -149,6 +177,7 @@ const Login = () => {
     }
   }, []);
 
+  // 로그인 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!info.member_id.trim()) {
@@ -160,8 +189,7 @@ const Login = () => {
       return;
     }
 
-    // 로그인 요청
-    const {data} = await axios.post('http://localhost/member/login', info);
+    const { data } = await axios.post(`${URL}/member/login`, info);
     console.log(data);
     if (data.success === true) {
       router.push('/component/main');
@@ -172,25 +200,38 @@ const Login = () => {
     }
   };
 
-  const handleSendCode = () => {
-    if (!email.trim()) {
+  // 인증 코드 전송
+  const handleSendCode = async () => {
+    if (!findPwInfo.email.trim()) {
       alert('이메일을 입력해주세요.');
+      return;
+    }
+    if (!findPwInfo.memberId.trim()) {
+      alert('아이디를 입력해주세요.');
       return;
     }
     setModalStep(1);
     setVerificationError(false);
+
+    const { data } = await axios.post(`${URL}/member/send_code`, findPwInfo);
+    console.log(data);
+    sessionStorage.setItem('member_id', findPwInfo.memberId);
   };
 
-  const handleVerifyCode = () => {
-    if (verificationCode.length !== 6) {
-      return;
-    }
-    if (verificationCode !== '123456') {
+  // 인증 코드 검증
+  const handleVerifyCode = async () => {
+    const { data } = await axios.post(`${URL}/member/verify_code`, {
+      memberId: findPwInfo.memberId,
+      email: findPwInfo.email,
+      authCode: verificationCode
+    });
+    console.log(data);
+    if (data.success === true) {
+      setVerificationError(false);
+      setShowPasswordChangeModal(true);
+    } else {
       setVerificationError(true);
-      return;
     }
-    setVerificationError(false);
-    setShowPasswordChangeModal(true);
   };
 
   return (
@@ -203,7 +244,7 @@ const Login = () => {
           name="member_id"
           value={info.member_id}
           onChange={(e) => {
-            setInfo({...info, member_id: e.target.value});
+            setInfo({ ...info, member_id: e.target.value });
             if (error) setError('');
           }}
           className={styles['login-input']}
@@ -215,7 +256,7 @@ const Login = () => {
           name="member_pw"
           value={info.member_pw}
           onChange={(e) => {
-            setInfo({...info, member_pw: e.target.value});
+            setInfo({ ...info, member_pw: e.target.value });
             if (error) setError('');
           }}
           className={styles['login-input']}
@@ -252,17 +293,25 @@ const Login = () => {
             </button>
 
             <div
-              className={`${styles['login-modal-step-container']} ${
-                modalStep === 1 ? styles['login-slide-out-left'] : styles['login-slide-in-right']
-              }`}
+              className={`${styles['login-modal-step-container']} ${modalStep === 1 ? styles['login-slide-out-left'] : styles['login-slide-in-right']
+                }`}
               style={{ display: modalStep === 0 ? 'block' : 'none' }}
             >
               <h3 className={styles['login-modalTitle']}>아이디/비밀번호 찾기</h3>
               <input
+                type="text"
+                className={styles['login-modalInput']}
+                placeholder="가입 시 등록한 아이디"
+                name="member_id"
+                value={findPwInfo.memberId}
+                onChange={(e) => setFindPwInfo({ ...findPwInfo, memberId: e.target.value })}
+              />
+              <input
                 className={styles['login-modalInput']}
                 placeholder="가입 시 등록한 이메일"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={findPwInfo.email}
+                onChange={(e) => setFindPwInfo({ ...findPwInfo, email: e.target.value })}
               />
               <button
                 className={styles['login-modalSubmitBtn']}
@@ -276,9 +325,8 @@ const Login = () => {
             </div>
 
             <div
-              className={`${styles['login-modal-step-container']} ${
-                modalStep === 1 ? styles['login-slide-in-left'] : styles['login-slide-out-right']
-              }`}
+              className={`${styles['login-modal-step-container']} ${modalStep === 1 ? styles['login-slide-in-left'] : styles['login-slide-out-right']
+                }`}
               style={{ display: modalStep === 1 ? 'block' : 'none' }}
             >
               <h3 className={styles['login-modalTitle']}>인증코드 입력</h3>
