@@ -10,6 +10,7 @@ import Menu from "../../../menu/Menu";
 
 export default function MailList() {
     const [mailList, setMailList] = useState([]);
+    const url = process.env.NEXT_PUBLIC_API_KEY;
 
     useEffect(() => {
         const member_id = sessionStorage.getItem("member_id");
@@ -20,7 +21,7 @@ export default function MailList() {
     }, []);
 
     const getList = async (token) => {
-        const { data } = await axios.get("http://localhost/mail/list", {
+        const { data } = await axios.get(`${url}/mail/list`, {
             headers: {
                 Authorization: token
             },
@@ -31,6 +32,11 @@ export default function MailList() {
             }
         });
         console.log(data);
+        data.content.forEach(mail => {
+            mail.mail_date = mail.mail_date.split(' ')[0];
+            setMailList(prev => [...prev, mail]);
+        });
+        console.log(mailList);
     }
 
     return (
