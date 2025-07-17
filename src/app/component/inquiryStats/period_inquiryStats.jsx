@@ -2,71 +2,57 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-export default function Period_InquiryStats({ inquiryStatsData }) {
-    const categories = Array.from(new Set(inquiryStatsData.map(item => item.category)));
+export default function Period_InquiryStats({
+    inquiryStatsPeriod,
+    startDate,
+    endDate,
+    setStartDate,
+    setEndDate,
+    handlePeriodSearch
+}) {
 
-    const grouped = inquiryStatsData.reduce((acc, item) => {
-        const date = item.created_at.slice(0, 10);
-        if (!acc[date]) {
-            acc[date] = { date };
-            categories.forEach(cat => acc[date][cat] = 0);
-        }
-        acc[date][item.category] = (acc[date][item.category] || 0) + 1;
-        return acc;
-    }, {});
-
-    const chartData = Object.values(grouped).sort(
-        (a, b) => new Date(a.date) - new Date(b.date)
-    );
-
-    const baseColors = ["#f28b82", "#aecbfa", "#fff475"];
-
-    const colors = React.useMemo(() => {
-        const map = {};
-        categories.forEach((cat, idx) => {
-            map[cat] = baseColors[idx % baseColors.length];
-        });
-        return map;
-    }, [categories]);
+    // 부모 컴포넌트에서 받은 데이터를 차트에 사용할 형식으로 변환
+    const chartData = inquiryStatsPeriod.map(item => ({
+        date: item.stats_date,
+        '문의': item.inquiry_count,
+        '신고': item.report_count,
+        '총합': item.inquiry_count + item.report_count // 총합 필드 추가
+    })).sort((a, b) => new Date(a.date) - new Date(b.date));
 
     return (
         <div className="inquiryStats-chartWrapper-period">
             <h2 className={"inquiryStats-title"}>기간별 신고/문의 건수</h2>
             <div className={"inquiryStats-filterBox-wrapper"}>
                 <div className={"inquiryStats-filterBox"}>
-                    기간 시작일 <input type="date" />
-                    기간 종료일 <input type="date" />
-                    <button>조회</button>
+                    기간 시작일 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                    기간 종료일 <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                    <button onClick={handlePeriodSearch}>조회</button>
                 </div>
                 <div>
-                    {categories.map((cat, idx) => (
-                        <div key={cat} style={{ width: "100%", height: 300, marginBottom: 40 }}>
-                            <h3 style={{ textAlign: "center" }}>{cat}</h3>
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart
-                                    data={chartData}
-                                    margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
-                                >
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="date" angle={-45} textAnchor="end" height={60} />
-                                    <YAxis allowDecimals={false} />
-                                    <Tooltip
-                                        contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
-                                        formatter={(value) => `${value} 건`}
-                                    />
-                                    <Line
-                                        type="monotone"
-                                        dataKey={cat}
-                                        stroke={colors[cat]}
-                                        strokeWidth={2}
-                                        dot={{ r: 3 }}
-                                        activeDot={{ r: 6 }}
-                                        name={cat}
-                                    />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
-                    ))}
+
+                    <div style={{ width: "100%", height: 800, marginBottom: 40 }}>
+                        <h3 style={{ textAlign: "center" }}>신고/문의</h3>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart
+                                data={chartData}
+                                margin={{ top: 20, right: 30, left: 20, bottom: 90 }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="date" angle={-45} textAnchor="end" height={60} />
+                                <YAxis allowDecimals={false} />
+                                <Tooltip
+                                    contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
+                                />
+
+                                {/* 차트 아래 글로벌 Legend */}
+                                <Legend />
+                                {/* 라인 차트 */}
+                                <Line type={'monotone'} dataKey={'문의'} stroke='#aecbfa' strokeWidth={2} />
+                                <Line type={'monotone'} dataKey={'신고'} stroke='#f28b82' strokeWidth={2} />
+                                <Line type={'monotone'} dataKey={'총합'} stroke='#8884d8' strokeWidth={2} />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
             </div>
         </div>
