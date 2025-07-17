@@ -375,7 +375,6 @@
 }
 
 /* ------------------------------ 아이템 통계 css ------------------------------ */
-/* 아이템 통계 페이지 css */
 .itemStats-mainTitle {
     font-size: 28px;
     font-weight: 600;
@@ -621,6 +620,55 @@
     padding: 20px;
     box-sizing: border-box;
     margin-bottom: 30px;
+}
+
+.refundStats-summaryBox {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.refundStats-summaryCard {
+    flex: 1;
+    background-color: #2b2640;
+    padding: 1.2rem;
+    border-radius: 12px;
+    text-align: left;
+    color: #d1d1e9;
+}
+
+.refundStats-summaryCard .label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #cfcfe2;
+}
+
+.refundStats-summaryCard .value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.refundStats-pagination {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.refundStats-page-btn {
+    background-color: #2e2b3f;
+    border: none;
+    color: #fff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.refundStats-page-btn.active {
+    background-color: #a259ff;
 }
 
 /* ------------------------------ 접속자 수 통계 css ------------------------------ */
@@ -944,54 +992,7 @@
 
 /* ------------------------------ 인게임 통계 css ------------------------------ */
 /* ------------------------------ 신고/문의 통계 css ------------------------------ */
-.refundStats-summaryBox {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
 
-.refundStats-summaryCard {
-    flex: 1;
-    background-color: #2b2640;
-    padding: 1.2rem;
-    border-radius: 12px;
-    text-align: left;
-    color: #d1d1e9;
-}
-
-.refundStats-summaryCard .label {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    display: block;
-    color: #cfcfe2;
-}
-
-.refundStats-summaryCard .value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffffff;
-}
-
-.refundStats-pagination {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.refundStats-page-btn {
-    background-color: #2e2b3f;
-    border: none;
-    color: #fff;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.refundStats-page-btn.active {
-    background-color: #a259ff;
-}
 
 /* ------------------------------ 회원 리스트 css ------------------------------ */
 /* ------------------------------ 회원 상세보기 css ------------------------------ */
