@@ -2,7 +2,7 @@
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './member.css';
 
 import { MdOutlinePhoneAndroid } from "react-icons/md";
@@ -12,32 +12,53 @@ import { FiMoreVertical } from 'react-icons/fi';
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Member = () => {
-  const page = useRef(1);
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
   const adminYn = typeof window !== "undefined" ? sessionStorage.getItem('admin_yn') : null;
+
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [memberList, setMemberList] = useState({ members: [] });
   const [activeDept, setActiveDept] = useState('전체');
   const [activePosition, setActivePosition] = useState('전체');
+  const [sortField, setSortField] = useState('memberId');
+  const [sortDirection, setSortDirection] = useState('asc');
   const [openMenuId, setOpenMenuId] = useState(null);
   const [selectedMember, setSelectedMember] = useState(null);
   const [memberInfoEditModal, setMemberInfoEditModal] = useState(false);
+  const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    getMemberList(page.current);
-  }, []);
 
-  const getMemberList = async (page) => {
-    const { data } = await axios.get(`${URL}/memberInfo/list/${page}`, {
+  const getMemberList = async (page, deptName = null, position = null, sortField = 'memberId', sortDirection = 'asc') => {
+    const params = new URLSearchParams();
+
+    if (deptName && deptName !== '전체') params.append('dept_name', deptName);
+    if (position && position !== '전체') params.append('position', position);
+    if (sortField) params.append('sortField', sortField);
+    if (sortDirection) params.append('sortDirection', sortDirection);
+    if (search && search.trim() !== '' && search.trim() !== 'null') {
+      params.append('keyword', search.trim());
+    }
+
+    const queryString = params.toString();
+    const { data } = await axios.get(`${URL}/memberInfo/list/${page}${queryString ? `?${queryString}` : ''}`, {
       headers: { authorization: token }
     });
+    setTotalPages(data.totalPages);
+    setCurrentPage(data.currentPage);
     setMemberList(data);
   };
 
   const handleClick = (dept, position) => {
     setActiveDept(dept);
     setActivePosition(position);
+    console.log(dept, position);
   };
+
+  useEffect(() => {
+    getMemberList(page, activeDept, activePosition, sortField, sortDirection, search);
+  }, [page, activeDept, activePosition, sortField, sortDirection, search]);
 
   const toggleMenu = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
@@ -65,7 +86,7 @@ const Member = () => {
       setOpenMenuId(null);
       setSelectedMember(null);
       setMemberInfoEditModal(false);
-      getMemberList(page.current);
+      getMemberList(page);
     } else {
       alert('회원 정보 수정에 실패했습니다.');
     }
@@ -83,7 +104,7 @@ const Member = () => {
       });
       if (data.success) {
         alert('관리자 권한이 박탈되었습니다.');
-        getMemberList(page.current);
+        getMemberList(page);
       } else {
         alert('관리자 권한 박탈에 실패했습니다.');
       }
@@ -102,11 +123,16 @@ const Member = () => {
       });
       if (data.success) {
         alert('관리자 권한이 부여되었습니다.');
-        getMemberList(page.current);
+        getMemberList(page);
       } else {
         alert('관리자 권한 부여에 실패했습니다.');
       }
     }
+  };
+
+  const goToPage = (page) => {
+    setPage(page);
+    getMemberList(page, activeDept, activePosition, sortField, sortDirection, search);
   };
 
   return (
@@ -120,11 +146,18 @@ const Member = () => {
           type="text"
           placeholder="Search"
           className="memberList-searchInput"
+          onChange={(e) => {
+            setPage(1);
+            setSearch(e.target.value);
+          }}
         />
-        <select className="memberList-sortSelect">
-          <option value="">정렬 기준 선택</option>
+        <select className="memberList-sortSelect" onChange={(e) => setSortField(e.target.value)}>
+          <option value="memberId">아이디</option>
+          <option value="memberName">이름</option>
+          <option value="joinDate">가입일</option>
+          <option value="withdrawDate">탈퇴일</option>
         </select>
-        <select className="memberList-sortSelect">
+        <select className="memberList-sortSelect" onChange={(e) => setSortDirection(e.target.value)}>
           <option value="asc">오름차순</option>
           <option value="desc">내림차순</option>
         </select>
@@ -134,7 +167,10 @@ const Member = () => {
             <button
               key={deptName}
               className={`memberList-tagFilterBtn${activeDept === deptName ? ' active ' + deptName : ''}`}
-              onClick={() => handleClick(deptName, activePosition)}
+              onClick={() => {
+                setPage(1);
+                handleClick(deptName, activePosition);
+              }}
             >
               {deptName}
             </button>
@@ -146,7 +182,10 @@ const Member = () => {
             <button
               key={position}
               className={`memberList-tagFilterBtn${activePosition === position ? ' active ' + position : ''}`}
-              onClick={() => handleClick(activeDept, position)}
+              onClick={() => {
+                setPage(1);
+                handleClick(activeDept, position);
+              }}
             >
               {position}
             </button>
@@ -231,6 +270,21 @@ const Member = () => {
         ))}
       </div>
 
+      <div className="user-list-pagination">
+        <button disabled={page === 1} onClick={() => goToPage(page - 1)}>이전</button>
+
+        {Array.from({ length: memberList.totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            className={page === page ? 'active' : ''}
+            onClick={() => goToPage(page)}
+          >
+            {page}
+          </button>
+        ))}
+        <button disabled={page === totalPages} onClick={() => goToPage(page + 1)}>다음</button>
+      </div>
+
       {/* 회원 정보 수정을 눌렀을 시 보이는 모달 */}
       {memberInfoEditModal && selectedMember && (
         <div className="memberList-modalBackdrop">
@@ -267,7 +321,7 @@ const Member = () => {
                 <div className="memberList-modalContent-row-half">
                   <label>부서</label>
                   <select name="deptName" value={selectedMember.deptName} onChange={(e) => setSelectedMember({ ...selectedMember, deptName: e.target.value })}>
-                    <option value="부서 선택">부서 선택</option>
+                    <option value="전체">전체</option>
                     <option value="CS팀">CS팀</option>
                     <option value="마케팅팀">마케팅팀</option>
                     <option value="개발팀">개발팀</option>
@@ -276,7 +330,7 @@ const Member = () => {
                 <div className="memberList-modalContent-row-half">
                   <label>직급</label>
                   <select name="position" value={selectedMember.position} onChange={(e) => setSelectedMember({ ...selectedMember, position: e.target.value })}>
-                    <option value="직급 선택">직급 선택</option>
+                    <option value="전체">전체</option>
                     <option value="사원">사원</option>
                     <option value="대리">대리</option>
                     <option value="과장">과장</option>
