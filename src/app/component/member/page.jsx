@@ -16,8 +16,6 @@ const Member = () => {
   const adminYn = typeof window !== "undefined" ? sessionStorage.getItem('admin_yn') : null;
 
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const [memberList, setMemberList] = useState({ members: [] });
   const [activeDept, setActiveDept] = useState('전체');
@@ -28,9 +26,12 @@ const Member = () => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [memberInfoEditModal, setMemberInfoEditModal] = useState(false);
   const [search, setSearch] = useState('');
+  const [state, setState] = useState('signUp');
 
+  const totalPagesCount = memberList.totalPages ?? 1;
 
-  const getMemberList = async (page, deptName = null, position = null, sortField = 'memberId', sortDirection = 'asc') => {
+  // 회원 리스트 조회
+  const getMemberList = async (page, deptName = null, position = null, sortField = 'memberId', sortDirection = 'asc', search = '', state = '') => {
     const params = new URLSearchParams();
 
     if (deptName && deptName !== '전체') params.append('dept_name', deptName);
@@ -40,16 +41,20 @@ const Member = () => {
     if (search && search.trim() !== '' && search.trim() !== 'null') {
       params.append('keyword', search.trim());
     }
+    if (state === 'signUp') {
+      params.append('acceptYn', 'true');
+    } else if (state === 'signUpWait') {
+      params.append('acceptYn', 'false');
+    }
 
     const queryString = params.toString();
     const { data } = await axios.get(`${URL}/memberInfo/list/${page}${queryString ? `?${queryString}` : ''}`, {
       headers: { authorization: token }
     });
-    setTotalPages(data.totalPages);
-    setCurrentPage(data.currentPage);
     setMemberList(data);
   };
 
+  // 부서 및 직급 필터 클릭 시 호출
   const handleClick = (dept, position) => {
     setActiveDept(dept);
     setActivePosition(position);
@@ -57,8 +62,8 @@ const Member = () => {
   };
 
   useEffect(() => {
-    getMemberList(page, activeDept, activePosition, sortField, sortDirection, search);
-  }, [page, activeDept, activePosition, sortField, sortDirection, search]);
+    getMemberList(page, activeDept, activePosition, sortField, sortDirection, search, state);
+  }, [page, activeDept, activePosition, sortField, sortDirection, search, state]);
 
   const toggleMenu = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
@@ -86,7 +91,7 @@ const Member = () => {
       setOpenMenuId(null);
       setSelectedMember(null);
       setMemberInfoEditModal(false);
-      getMemberList(page);
+      getMemberList(page, activeDept, activePosition, sortField, sortDirection, search, state);
     } else {
       alert('회원 정보 수정에 실패했습니다.');
     }
@@ -132,8 +137,43 @@ const Member = () => {
 
   const goToPage = (page) => {
     setPage(page);
-    getMemberList(page, activeDept, activePosition, sortField, sortDirection, search);
+    getMemberList(page, activeDept, activePosition, sortField, sortDirection, search, state);
   };
+
+  const memberAccept = async (member) => {
+    const confirmAccept = window.confirm(
+      `${member.memberName}님의 가입을 승인하시겠습니까?`
+    );
+
+    if (!confirmAccept) return;
+    const { data } = await axios.get(`${URL}/admin/accept/${member.memberId}`, {
+      headers: { authorization: token }
+    });
+    if (data.success) {
+      alert('해당 회원의 회원가입이 승인되었습니다.');
+      getMemberList(page);
+    }
+  }
+
+  const memberReject = async (member) => {
+    const confirmReject = window.confirm(
+      `${member.memberName}님의 가입을 거절하시겠습니까?`
+    );
+
+    if (!confirmReject) return;
+    const { data } = await axios.get(`${URL}/admin/reject/${member.memberId}`, {
+      headers: { authorization: token }
+    });
+    if (data.success) {
+      alert('해당 회원의 회원가입이 거절되었습니다.');
+      getMemberList(page);
+    }
+  }
+
+  // 회원과 채팅하기
+  const chatWithMember = async (member) => {
+    console.log(member.memberId + ' 채팅하기');
+  }
 
   return (
     <div className="memberList-container">
@@ -146,20 +186,42 @@ const Member = () => {
           type="text"
           placeholder="Search"
           className="memberList-searchInput"
+          value={search}
           onChange={(e) => {
             setPage(1);
             setSearch(e.target.value);
           }}
         />
-        <select className="memberList-sortSelect" onChange={(e) => setSortField(e.target.value)}>
+        <select className="memberList-sortSelect" onChange={(e) => {
+          setPage(1);
+          setSortField(e.target.value);
+        }}>
           <option value="memberId">아이디</option>
           <option value="memberName">이름</option>
           <option value="joinDate">가입일</option>
           <option value="withdrawDate">탈퇴일</option>
         </select>
-        <select className="memberList-sortSelect" onChange={(e) => setSortDirection(e.target.value)}>
+        <select className="memberList-sortSelect" onChange={(e) => {
+          setPage(1);
+          setSortDirection(e.target.value);
+        }}>
           <option value="asc">오름차순</option>
           <option value="desc">내림차순</option>
+        </select>
+        <select
+          className={`memberList-sortSelect-state ${state === 'signUp' ? 'signUpStyle' : 'signUpWaitStyle'}`}
+          value={state}
+          onChange={(e) => {
+            if (e.target.value === 'signUpWait' && adminYn !== 'true') {
+              alert('가입 대기 회원 페이지는 관리자만 확인할 수 있습니다.');
+              return;
+            }
+            setPage(1);
+            setState(e.target.value);
+          }}
+        >
+          <option value="signUp">가입 완료</option>
+          <option value="signUpWait">가입 대기</option>
         </select>
 
         <div className="memberList-tagFilterButtons">
@@ -195,7 +257,7 @@ const Member = () => {
 
       <div className="memberList-list">
         {memberList.members.map((member) => (
-          <div className="user-list-card" key={member.memberId}>
+          <div className={`user-list-card ${member.acceptYn === false ? 'memberList-waitCard' : ''}`} key={member.memberId}>
             <div className="memberList-info">
               <div className="memberList-nameTagWrapper">
                 <div className="memberList-tagsAndName">
@@ -209,6 +271,7 @@ const Member = () => {
                   </div>
                 </div>
 
+                {member.acceptYn === true && (
                 <div className="memberList-menu">
                   <button className="memberList-moreBtn" onClick={() => {
                     setSelectedMember(member);
@@ -221,15 +284,23 @@ const Member = () => {
                       <button onClick={memberInfoEdit}>회원 정보 수정</button>
                       {member.adminYn && <button onClick={adminRevoke}>관리자 권한 박탈</button>}
                       {!member.adminYn && <button onClick={adminGrant}>관리자 권한 부여</button>}
-                      <button>채팅하기</button>
+                      <button onClick={() => chatWithMember(member)}>채팅하기</button>
                     </div>
                   )}
-                  {openMenuId === member.memberId && adminYn !== 'true' && (
+                  {openMenuId === member.memberId && adminYn !== true && (
                     <div className="memberList-dropdown">
-                      <button>채팅하기</button>
+                      <button onClick={() => chatWithMember(member)}>채팅하기</button>
                     </div>
                   )}
-                </div>
+                  </div>
+                )}
+                {member.acceptYn === false && (
+                  <div className="memberList-menu">
+                    <button className="memberList-waitBtn-true" onClick={() => memberAccept(member)}>가입 승인</button>
+                    <button className="memberList-waitBtn-false" onClick={() => memberReject(member)}>가입 거절</button>
+                  </div>
+                )}
+
               </div>
 
               <div className="memberList-id">
@@ -239,19 +310,19 @@ const Member = () => {
 
               <div className="memberList-email">
                 <span className="label">이메일 </span>
-                <span className="value">{member.email || '이메일 없음'}</span>
+                <span className="value">{member.email || '-'}</span>
               </div>
 
               <div className="memberList-meta">
                 <div className="memberList-officePhone">
                   <TbDeviceDesktop />
                   <span className="label"> 사내 연락처 </span>
-                  <span className="value">{member.officePhone || '없음'}</span>
+                  <span className="value">{member.officePhone || '-'}</span>
                 </div>
                 <div className="memberList-mobilePhone">
                   <MdOutlinePhoneAndroid />
                   <span className="label"> 개인 연락처 </span>
-                  <span className="value">{member.mobilePhone || '없음'}</span>
+                  <span className="value">{member.mobilePhone || '-'}</span>
                 </div>
               </div>
 
@@ -270,19 +341,19 @@ const Member = () => {
         ))}
       </div>
 
-      <div className="user-list-pagination">
+      <div className="memberList-pagination">
         <button disabled={page === 1} onClick={() => goToPage(page - 1)}>이전</button>
 
-        {Array.from({ length: memberList.totalPages }, (_, i) => i + 1).map((page) => (
+        {Array.from({ length: totalPagesCount }, (_, i) => i + 1).map((pageNum) => (
           <button
-            key={page}
-            className={page === page ? 'active' : ''}
-            onClick={() => goToPage(page)}
+            key={pageNum}
+            className={pageNum === page ? 'active' : ''}
+            onClick={() => goToPage(pageNum)}
           >
-            {page}
+            {pageNum}
           </button>
         ))}
-        <button disabled={page === totalPages} onClick={() => goToPage(page + 1)}>다음</button>
+        <button disabled={page === totalPagesCount} onClick={() => goToPage(page + 1)}>다음</button>
       </div>
 
       {/* 회원 정보 수정을 눌렀을 시 보이는 모달 */}

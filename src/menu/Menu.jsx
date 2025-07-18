@@ -36,12 +36,9 @@ const Menu = () => {
           </div>
 
           <div className={styles.menu_navItem}>
-            <a
-              onClick={() => toggleMenu('member')}
-              className={activeMenu === 'member' ? styles.menu_activeIcon : ''}
-            >
+            <Link href="/component/member" className={styles.menu_navIcon}>
               <FaUserFriends />
-            </a>
+            </Link>
           </div>
 
           <div className={styles.menu_navItem}>
@@ -88,12 +85,6 @@ const Menu = () => {
       {activeMenu && (
         <div className={styles.menu_subOverlay}>
           <div className={styles.menu_subInner}>
-            {activeMenu === 'member' && (
-              <>
-                <Link href="/component/member"> ✦ 회원 리스트</Link>
-                <Link href="/component/memberApproval"> ✦ 가입 대기 인원</Link>
-              </>
-            )}
             {activeMenu === 'stat' && (
               <>
                 <Link href="/component/salesStats"> ✦ 매출 통계</Link>
