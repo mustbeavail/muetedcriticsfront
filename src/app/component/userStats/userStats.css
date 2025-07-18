@@ -1,3 +1,38 @@
+/* ------------------------------ 공통 css ------------------------------ */
+.stats_container {
+  position: fixed;
+  top: 80px;
+  left: 80px;
+  width: 97%;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  height: calc(100vh - 56px);
+  border-radius: 8px;
+  background-color: transparent;
+  font-size: 18px;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin-bottom: 20px;
+}
+
+.row.header {
+  font-weight: bold;
+  background-color: #d4cad331;
+}
+
+.row {
+  display: flex;
+  border-bottom: 1px solid #cccccc6e;
+  padding: 10px 0;
+}
+
+.cell {
+  flex: 1;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+}
+
 /* ------------------------------ 유저 통계 css ------------------------------ */
 .userStats-mainTitle {
   font-size: 28px;
@@ -18,7 +53,7 @@
 .userStats-chartWrapper-seasonTier {
   margin-top: 20px;
   width: 100%;
-  height: 1380px;
+  height: auto;
   background: #1c1b23;
   border-radius: 16px;
   padding: 20px;
@@ -29,7 +64,7 @@
 .userStats-chartWrapper-userType {
   margin-top: 20px;
   width: 100%;
-  height: 1520px;
+  height: auto;
   background: #1c1b23;
   border-radius: 16px;
   padding: 20px;
@@ -319,7 +354,7 @@
 .userStats-chartWrapper-tier {
   margin-top: 20px;
   width: 100%;
-  height: 1830px;
+  height: auto;
   background: #1c1b23;
   border-radius: 16px;
   padding: 20px;
@@ -407,4 +442,16 @@
   color: #fff;
   font-weight: 700;
   box-shadow: 0 0 8px rgba(141, 53, 240, 0.4);
+}
+
+.itemStats-button {
+  background-color: #8d35f0;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }

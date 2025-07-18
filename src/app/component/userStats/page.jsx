@@ -30,7 +30,7 @@ const UserStats = () => {
         <span className={"userStats-mainTitle"}>유저 통계</span>
         <WinningRate_Playtime_UserStats />
         <Usertype_Tier_UserStats />
-        {/* <UserType_UserStats /> */}
+        <UserType_UserStats />
         <SeasonTier_UserStats />
       </div>
     </>

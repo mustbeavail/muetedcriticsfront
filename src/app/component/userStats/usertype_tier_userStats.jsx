@@ -11,28 +11,30 @@ const COLORS = [
 ];
 
 export default function Usertype_Tier_UserStats() {
-    const [heroData, setHeroData] = useState([]);
-    const [completeChartData, setCompleteChartData] = useState([]);
+    const [heroData, setHeroData] = useState([]); // 영웅 리스트
+    const [completeChartData, setCompleteChartData] = useState([]); // 차트(티어 통계) 데이터
 
-    const [currentUsers, setCurrentUsers] = useState([]);
-    const [totalPages, setTotalPages] = useState(1);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentUsers, setCurrentUsers] = useState([]); // 선택한 티어의 유저 리스트
+    const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
 
     // 필터 상태들
-    const [seasonIdx, setSeasonIdx] = useState(1);
-    const [selectedGender, setSelectedGender] = useState(null);
-    const [selectedRegion, setSelectedRegion] = useState(null);
-    const [selectedVip, setSelectedVip] = useState(null);
-    const [selectedHero, setSelectedHero] = useState(null);
-    const [selectedTier, setSelectedTier] = useState(null);
+    const [seasonIdx, setSeasonIdx] = useState(4); // 기본값 4(현재 시즌)
+    const [selectedGender, setSelectedGender] = useState(null); // 성별
+    const [selectedRegion, setSelectedRegion] = useState(null); // 지역
+    const [selectedVip, setSelectedVip] = useState(null); // VIP
+    const [selectedHero, setSelectedHero] = useState(null); // 영웅
+    const [selectedTier, setSelectedTier] = useState(null); // Pie 에서 클릭한 티어
 
     useEffect(() => {
+        // 최초 마운트 시 영웅 데이터만 불러오기
         const token = sessionStorage.getItem('token');
         if (!token) return;
         getHeroData(token);
     }, []);
 
-    // 영웅 정보 불러오기
+
+    // 영웅 정보 불러오기(최초 1회)
     const getHeroData = async (token) => {
         try {
             const { data } = await axios.get(`${URL}/get/hero-data`, {
@@ -44,58 +46,82 @@ export default function Usertype_Tier_UserStats() {
         }
     };
 
-    // 조회 버튼 클릭시 불러오기
-    const handleSearch = useCallback(() => {
+    // params 를 값이 있을 때만 동적으로 생성
+    const makeParams = (tierName = null, page = null, size = null) => {
+        const params = { seasonIdx }; // 필수
+        if (selectedGender) params.gender = selectedGender;
+        if (selectedRegion) params.region = selectedRegion;
+        if (selectedVip !== null) params.vip = selectedVip;
+        if (selectedHero) params.heroId = selectedHero;
+        if (tierName) params.tierName = tierName;
+        if (page) params.page = page;
+        if (size) params.size = size;
+        return params;
+    }
+
+    // ------------------------------ 조회 ------------------------------
+    // 조회 버튼 눌렀을 때 전체 Pie 데이터만 불러오기
+    // 유저 리스트, 선택 티어 초기화
+
+    // 1. 조회 버튼: Pie, 인원표만 조회, 리스트/티어는 초기화
+    const handleSearch = useCallback(async () => {
         const token = sessionStorage.getItem('token');
         if (!token) return;
-        getUserTypeTierStats(token, seasonIdx, selectedGender, selectedVip, selectedHero, selectedTier);
-    }, [seasonIdx, selectedGender, selectedVip, selectedHero, selectedTier]);
-
-    // 차트 클릭 핸들러
-    const handlePieClick = (data) => {
-        setSelectedTier(data.name); // 필터 상태 업데이트
-        setCurrentPage(1); // 새 필터링이니 1페이지부터
-    };
-
-    // selectedTier 변경 시 필터링된 유저 목록 업데이트
-    useEffect(() => {
-        handleSearch();
-    }, [selectedTier]); // seletedTier 가 바뀔 때도 검색 실행
-
-    const getUserTypeTierStats = async (token) => {
         try {
             const { data } = await axios.get(`${URL}/user-tier-stats`, {
                 headers: { Authorization: token },
-                params: {
-                    seasonIdx,
-                    gender: selectedGender,
-                    region: selectedRegion,
-                    vip: selectedVip,
-                    heroId: selectedHero,
-                    tierName: selectedTier,
-                    page: currentPage,
-                    size: 10
-                }
+                params: makeParams()
             });
-
-            if (data) {
-                // Pie chart 데이터
-                setCompleteChartData(data.tierStats.map(t => ({
-                    name: t.tierName,
-                    value: t.userCount
-                })));
-
-                setCurrentUsers(data.userClassificationPage.content);
-                setTotalPages(Math.ceil(data.userClassificationPage.totalCount / data.userClassificationPage.size));
-            }
+            setCompleteChartData(data.tierStats.map(t => ({
+                name: t.tierName,
+                value: t.userCount
+            })));
+            setSelectedTier(null); // Pie 클릭 해제
+            setCurrentUsers([]); // 유저 리스트 초기화
+            setTotalPages(1); // 페이지 수 초기화
+            setCurrentPage(1); // 페이지 번호 초기화
         } catch (error) {
             console.log('유저 분류별 티어 통계 조회 실패: ', error);
         }
-    };
+    }, [seasonIdx, selectedGender, selectedRegion, selectedVip, selectedHero]);
 
+    // 2. Pie 클릭: 해당 Pie(티어)에 현재 모든 필터를 포함해 리스트 조회
+    const handlePieClick = useCallback((data) => {
+        setSelectedTier(data.name); // 클릭한 티어명
+        setCurrentPage(1); // 항상 1페이지부터
+    }, []);
+
+    // Pie 클릭 시에만 리스트 불러옴 (필터 & 페이지 바뀔 때마다)
     useEffect(() => {
-        handleSearch();
-    }, [currentPage]);
+        if (!selectedTier) {
+            setCurrentUsers([]);
+            setTotalPages(1);
+            return;
+        }
+
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        const fetchUsers = async () => {
+            try {
+                const { data } = await axios.get(`${URL}/user-tier-stats`, {
+                    headers: { Authorization: token },
+                    params: makeParams(selectedTier, currentPage, 10)
+                });
+                setCurrentUsers(data.userClassificationPage.content);
+                setTotalPages(Math.max(1, Math.ceil(data.userClassificationPage.totalCount / data.userClassificationPage.size)));
+            } catch (error) {
+                console.log('유저 분류별 티어 통계 조회 실패: ', error);
+            }
+        };
+        fetchUsers();
+    }, [selectedTier, currentPage, seasonIdx, selectedGender, selectedRegion, selectedVip, selectedHero]);
+
+    // 드롭다운 필터가 바뀌면 Pie 선택/리스트/페이지도 초기화
+    useEffect(() => {
+        setCurrentPage(1);
+        setSelectedTier(null);
+        setCurrentUsers([]);
+    }, [seasonIdx, selectedGender, selectedRegion, selectedVip, selectedHero]);
 
 
     return (
@@ -225,13 +251,12 @@ export default function Usertype_Tier_UserStats() {
                         <div key={idx} className="userStats-user-list-card">
                             <div className="user-list-info">
                                 <div className="user-list-header">
-                                    <span className="user-list-name">{userObj.userNick || userObj.userId}</span>
+                                    <span className="user-list-name">{userObj.userId}</span>
                                 </div>
-                                <div className="user-list-email">{userObj.userId}</div>
                                 <div className="user-list-info">
-                                    <div><span className="label">성별</span> {userObj.userGender}</div>
-                                    <div><span className="label">지역</span> {userObj.region}</div>
-                                    <div><span className="label">주 영웅</span> {userObj.mainHero}</div>
+                                    <div><span className="label">성별: </span> {userObj.userGender}</div>
+                                    <div><span className="label">지역: </span> {userObj.region}</div>
+                                    <div><span className="label">주 영웅: </span> {userObj.mainHero || '없음'}</div>
                                 </div>
                             </div>
                             <div className="user-list-menu">⋮</div>
