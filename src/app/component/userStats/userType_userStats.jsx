@@ -20,6 +20,9 @@ const categoryMapping = {
 };
 
 // raw → label 로 뒤집기
+// categoryMapping 객체를 [키, 값] 배열로 변환
+// 각 배열을 [raw, label] 형태로 변환
+// 변환된 배열을 객체로 다시 만듦 (raw → label 매핑)
 const rawToLabel = Object.fromEntries(
     Object.entries(categoryMapping).map(([label, { raw }]) => [raw, label])
 );
@@ -33,6 +36,7 @@ export default function UserType_UserStats() {
     // 리스트 전용 상태
     const [userList, setUserList] = useState([]); // 현재 보여줄 유저 목록
     const [totalPage, setTotalPage] = useState(1); // 총 페이지 수
+    const [userTotalCount, setUserTotalCount] = useState(0); // 총 유저 수
 
     // 공용 상태
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
@@ -58,6 +62,7 @@ export default function UserType_UserStats() {
             // 응답 데이터로 상태 업데이트
             setUserList(data.userCategoryList);        // 유저 목록
             setTotalPage(data.totalPage);              // 총 페이지 수
+            setUserTotalCount(data.totalCount);
 
             // 차트 데이터 변환 및 설정
             setBarChartData(
@@ -94,6 +99,7 @@ export default function UserType_UserStats() {
     const handleBarClick = (entry) => {
         setSelectedCategory(entry.raw);  // 선택된 카테고리 설정
         setCurrentPage(1);              // 클릭할 때마다 1페이지로 이동
+        setUserTotalCount(0);
     }
 
     // === 렌더링 ===
@@ -137,7 +143,7 @@ export default function UserType_UserStats() {
             {selectedCategory && (
                 <div className="user-type-details">
                     <h3 style={{ color: "#fff", marginTop: "20px", marginBottom: "16px" }}>
-                        {rawToLabel[selectedCategory] || selectedCategory} 유저 목록 ({userList.length}명)
+                        {rawToLabel[selectedCategory] || selectedCategory} 유저 목록 ({userTotalCount}명)
                     </h3>
 
                     {/* 유저 목록 렌더링 */}

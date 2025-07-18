@@ -17,6 +17,7 @@ export default function Usertype_Tier_UserStats() {
     const [currentUsers, setCurrentUsers] = useState([]); // 선택한 티어의 유저 리스트
     const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+    const [tierUserTotalCount, setTierUserTotalCount] = useState(0); // 선택한 티어의 유저 총 인원 수
 
     // 필터 상태들
     const [seasonIdx, setSeasonIdx] = useState(4); // 기본값 4(현재 시즌)
@@ -96,6 +97,7 @@ export default function Usertype_Tier_UserStats() {
         if (!selectedTier) {
             setCurrentUsers([]);
             setTotalPages(1);
+            setTierUserTotalCount(0);
             return;
         }
 
@@ -109,6 +111,7 @@ export default function Usertype_Tier_UserStats() {
                 });
                 setCurrentUsers(data.userClassificationPage.content);
                 setTotalPages(Math.max(1, Math.ceil(data.userClassificationPage.totalCount / data.userClassificationPage.size)));
+                setTierUserTotalCount(data.userClassificationPage.totalCount);
             } catch (error) {
                 console.log('유저 분류별 티어 통계 조회 실패: ', error);
             }
@@ -245,7 +248,7 @@ export default function Usertype_Tier_UserStats() {
             {currentUsers.length > 0 && (
                 <div className="tier-clicked-users">
                     <h3 style={{ color: "#fff" }}>
-                        {selectedTier} 티어 유저 목록 ({currentUsers.length}명)
+                        {selectedTier} 티어 유저 목록 ({tierUserTotalCount}명)
                     </h3>
                     {currentUsers.map((userObj, idx) => (
                         <div key={idx} className="userStats-user-list-card">
