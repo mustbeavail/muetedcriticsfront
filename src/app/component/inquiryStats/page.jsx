@@ -17,7 +17,7 @@ const InquiryStats = () => {
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
-    console.log(token);
+    // console.log(token);
     getInquiryStatsAll(token); // 신고/문의 전체 불러오기
   }, []);
 
@@ -29,12 +29,12 @@ const InquiryStats = () => {
           Authorization: token
         }
       });
-      console.log(data.list);
       if (data.success) {
+        console.log(data.list);
         setInquiryStatsAll(data.list);
       }
     } catch (error) {
-      console.error('전체 통계 데이터 불러오기 실패:', error);
+      console.error('전체 통계 데이터 불러오기 실패: ', error);
     }
   };
 
@@ -48,14 +48,14 @@ const InquiryStats = () => {
           endDate: end
         }
       });
-      if (data.success && data.data) {
+      if (data.success) {
         console.log(data.data);
         setInquiryStatsPeriod(data.data);
       } else {
         setInquiryStatsPeriod([]);
       }
     } catch (error) {
-      console.error("기간별 통계 데이터 불러오기 실패:", error);
+      console.error("기간별 통계 데이터 불러오기 실패: ", error);
       setInquiryStatsPeriod([]);
     }
   };
