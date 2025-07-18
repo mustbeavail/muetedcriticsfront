@@ -57,7 +57,6 @@ export default function MailList() {
                 searchType: searchType,
                 page: currentPage,
                 sort: sort
-
             }
         });
     }
