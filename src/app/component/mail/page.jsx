@@ -15,6 +15,8 @@ export default function MailList() {
     const [sort, setSort] = useState('mailList');
     const [align, setAlign] = useState('dateDesc');
     const [search, setSearch] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalFilteredPages, setTotalFilteredPages] = useState(1);
 
     useEffect(() => {
         const member_id = sessionStorage.getItem("member_id");
@@ -31,15 +33,17 @@ export default function MailList() {
             },
             params: {
                 sort: sort,
-                page: 1,
+                page: currentPage,
                 align: align
             }
         });
         console.log(data);
         if (sort === 'mailList') {
             setMailList(data.mailList.content);
+            setTotalFilteredPages(data.mailList.totalPages);
         } else {
             setMailList(data.autoSendList.content);
+            setTotalFilteredPages(data.autoSendList.totalPages);
         }
     }
 
@@ -51,9 +55,8 @@ export default function MailList() {
             params: {
                 search: search,
                 searchType: searchType,
-                page: page,
+                page: currentPage,
                 sort: sort
-
             }
         });
     }
@@ -120,19 +123,18 @@ export default function MailList() {
                             </div>
                         </Link>
                     ))}
-                    <div className="mail-list-pagination">
-                        <button disabled={currentPage === 1} onClick={() => goToPage(currentPage - 1)}>이전</button>
-
+                    <div className="mailList-pagination">
+                        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>이전</button>
                         {Array.from({ length: totalFilteredPages }, (_, i) => i + 1).map((page) => (
                             <button
                             key={page}
                             className={currentPage === page ? 'active' : ''}
-                            onClick={() => goToPage(page)}
+                            onClick={() => setCurrentPage(page)}
                             >
-                            {page}
+                                {page}
                             </button>
                         ))}
-                        <button disabled={currentPage === totalFilteredPages} onClick={() => goToPage(currentPage + 1)}>다음</button>
+                        <button disabled={currentPage === totalFilteredPages} onClick={() => setCurrentPage(currentPage + 1)}>다음</button>
                     </div>
                 </div>
             </div>
