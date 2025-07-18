@@ -125,7 +125,6 @@
     color: #fff;
 }
 
-
 .memberList-tagFilterBtn.active.총괄 {
     background: linear-gradient(135deg, rgba(128, 255, 200, 0.4), rgba(70, 180, 130, 0.3));
     border-color: rgba(128, 255, 200, 0.9);
@@ -212,7 +211,7 @@
     gap: 24px;
 }
 
-.memberList-card {
+/* .memberList-card {
     background: #1e1e1e;
     border-radius: 12px;
     padding: 20px;
@@ -221,9 +220,10 @@
     align-items: flex-start;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
+} */
 
 .memberList-info {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -231,9 +231,25 @@
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.memberList-nameTagWrapper {}
+.memberList-nameTagWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 6px;
+}
 
-.memberList-tags {}
+.memberList-tagsAndName {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.memberList-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
 
 .memberList-tag {
     font-size: 18px;
@@ -326,4 +342,216 @@
     background: linear-gradient(135deg, rgba(230, 95, 95, 0.3), rgba(100, 30, 30, 0.2));
     border-color: rgba(230, 95, 95, 0.9);
     box-shadow: 0 0 12px rgba(230, 95, 95, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-name {
+    font-size: 22px;
+    font-weight: 800;
+    color: #e0d7ff;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-shadow:
+        0 0 5px rgba(166, 120, 226, 0.7),
+        0 0 10px rgba(166, 120, 226, 0.5);
+}
+
+.memberList-menu {
+    position: relative;
+}
+
+.memberList-moreBtn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.memberList-moreBtn:hover {
+    color: #a678e2;
+}
+
+.memberList-dropdown {
+    position: absolute;
+    top: -2;
+    left: -220px;
+    right: auto;
+    background: rgba(42, 41, 50, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 220px;
+    z-index: 999;
+}
+
+.memberList-dropdown button {
+    background: none;
+    border: none;
+    color: #eee;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.memberList-dropdown button:hover {
+    background-color: #3d3453;
+}
+
+.memberList-email {
+    color: #bbb;
+    font-style: normal;
+    letter-spacing: normal;
+    transition: color 0.2s ease;
+}
+
+.memberList-email:hover {
+    color: #a678e2;
+    cursor: pointer;
+}
+
+.memberList-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    color: #d0c8ff;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.label {
+    color: #AC9EBC;
+}
+
+/* 모달 백드롭 */
+.memberList-modalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+.memberList-modal {
+    background-color: #2f2937;
+    color: #fff;
+    border-radius: 16px;
+    width: 500px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.memberList-modalHeader h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #a179f2;
+    margin: 0;
+}
+
+.memberList-divider {
+    border: none;
+    border-top: 1px solid #4e455a;
+    margin: 8px 0;
+}
+
+.memberList-modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.memberList-modalContent-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.memberList-modalContent-row label,
+.memberList-modalContent-row-half label {
+    color: #d0c9dd;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.memberList-modalContent input,
+.memberList-modalContent select {
+    margin-top: 8px;
+    background-color: #3c3545;
+    color: white;
+    border: 1px solid #5c5270;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.memberList-modalContent input:focus,
+.memberList-modalContent select:focus {
+    border-color: #a179f2;
+}
+
+.memberList-contactRow {
+    display: flex;
+    gap: 12px;
+}
+
+.memberList-contactRow>div {
+    flex: 1;
+}
+
+.memberList-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.memberList-modalFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.memberList-closeBtn,
+.memberList-submitBtn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.memberList-closeBtn {
+    background-color: #5c5270;
+    color: white;
+}
+
+.memberList-submitBtn {
+    background-color: #a179f2;
+    color: white;
+}
+
+.memberList-closeBtn:hover {
+    background-color: #6b6185;
+}
+
+.memberList-submitBtn:hover {
+    background-color: #8d66f3;
 }
