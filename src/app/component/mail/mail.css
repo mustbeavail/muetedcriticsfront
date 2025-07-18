@@ -274,6 +274,733 @@
     background-color: #924df0;
 }
 
+<<<<<<< HEAD
+=======
+/* ------------------------------ 매출 통계 css ------------------------------ */
+.salesStats-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.salesStats-card {
+    background-color: #1c1b22;
+    height: 150px;
+    border-left: 5px solid #a855f7;
+    padding: 20px 24px;
+    border-radius: 16px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.salesStats-card-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #ccc;
+}
+
+.salesStats-card-value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.salesStats-mainTitle {
+    font-size: 28px;
+    font-weight: 600;
+    /* margin-bottom: 16px; */
+}
+
+.salesStats-chartWrapper {
+    margin-top: 20px;
+    width: 100%;
+    height: 1000px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.salesStats-title {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.salesStats-filterBox {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.salesStats-filterBox input[type="date"] {
+    background-color: #2b2b35;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.salesStats-filterBox button {
+    background-color: #a367f9;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.salesStats-filterBox button:hover {
+    background-color: #8e52e4;
+}
+
+.salesStats-chartWrapper-otherTable {
+    margin-top: 20px;
+    width: 100%;
+    height: 540px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.salesStats-table {
+    margin-top: 20px;
+}
+
+/* ------------------------------ 아이템 통계 css ------------------------------ */
+.itemStats-mainTitle {
+    font-size: 28px;
+    font-weight: 600;
+    /* margin-bottom: 16px; */
+}
+
+.itemStats-chartWrapper {
+    margin-top: 20px;
+    width: 100%;
+    height: 1000px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.itemStats-title {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 22px;
+    font-weight: 600;
+}
+
+.itemStats-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 22px;
+}
+
+.itemStats-search span {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.itemStats-search input {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 8px;
+    width: 200px;
+    background-color: #2c2538;
+    color: white;
+    border: none;
+    outline: none;
+}
+
+.itemStats-search input::placeholder {
+    color: #bbb;
+}
+
+.itemStats-input-wrapper {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    background-color: #2c2538;
+    overflow: hidden;
+}
+
+.itemStats-input-wrapper input {
+    flex: 1;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+}
+
+.itemStats-search-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.itemStats-filterBox-wrapper {
+    display: flex;
+    /* align-items: center; */
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.itemStats-filterBox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.itemStats-filterBox input[type="date"] {
+    background-color: #2b2b35;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.itemStats-filterBox button {
+    background-color: #a367f9;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.itemStats-filterBox button:hover {
+    background-color: #8e52e4;
+}
+
+.itemStats-select {
+    width: 200px;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #2c2538;
+    color: white;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg fill="white" height="10" viewBox="0 0 20 20" width="10" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 20,0 10,10"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 0.65rem;
+    margin-left: 15px;
+}
+
+.itemStats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    max-height: 770px;
+}
+
+.itemStats-item-card {
+    background-color: #121212;
+    border-left: 4px solid #9C27B0;
+    border-radius: 8px;
+    padding: 14px 18px;
+    color: #ffffff;
+    transition: background-color 0.2s ease;
+}
+
+.itemStats-item-card:hover {
+    background-color: #1d1d1d;
+}
+
+.itemStats-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.itemStats-item-cate {
+    font-size: 0.85rem;
+    color: #ccc;
+}
+
+.itemStats-item-type {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #d246eb;
+}
+
+.itemStats-item-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #e0e0e0;
+}
+
+.itemStats-item-dates {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.itemStats-chartWrapper-top3 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.itemStats-chartWrapper-select-item-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    font-style: italic;
+    background-color: #1c1b23;
+    border: 1px dashed #666;
+    padding: 10px;
+}
+
+.itemStats-chartWrapper-top3-item {
+    flex: 1;
+    min-width: 0;
+}
+
+.itemStats-chartWrapper-top3-item-title {
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+}
+
+.itemStats-chartWrapper-top3-item-chart {
+    width: 100%;
+    height: 300px;
+    border: 1px dashed #666;
+    position: relative;
+}
+
+.itemStats-chartWrapper-top3-item-chart.has-data {
+    border: none;
+}
+
+.itemStats-chartWrapper-top3-item-chart-empty {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-style: italic;
+    background-color: #1c1b23;
+}
+
+.itemStats-chartWrapper-refund {
+    margin-top: 20px;
+    width: 100%;
+    height: 1000px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.refundStats-summaryBox {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.refundStats-summaryCard {
+    flex: 1;
+    background-color: #2b2640;
+    padding: 1.2rem;
+    border-radius: 12px;
+    text-align: left;
+    color: #d1d1e9;
+}
+
+.refundStats-summaryCard .label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #cfcfe2;
+}
+
+.refundStats-summaryCard .value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.refundStats-pagination {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.refundStats-page-btn {
+    background-color: #2e2b3f;
+    border: none;
+    color: #fff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.refundStats-page-btn.active {
+    background-color: #a259ff;
+}
+
+/* ------------------------------ 접속자 수 통계 css ------------------------------ */
+/* ------------------------------ 유저 통계 css ------------------------------ */
+.userStats-mainTitle {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.userStats-chartWrapper {
+    margin-top: 20px;
+    width: 100%;
+    height: 1260px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.userStats-chartWrapper-seasonTier {
+    margin-top: 20px;
+    width: 100%;
+    height: 1430px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.userStats-chartWrapper-userType {
+    margin-top: 20px;
+    width: 100%;
+    height: 1520px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.userStats-title {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.userStats-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 22px;
+}
+
+.userStats-search span {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.userStats-search input {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 8px;
+    width: 200px;
+    background-color: #2c2538;
+    color: white;
+    border: none;
+    outline: none;
+}
+
+.userStats-search input::placeholder {
+    color: #bbb;
+}
+
+.userStats-input-wrapper {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    background-color: #2c2538;
+    overflow: hidden;
+}
+
+.userStats-input-wrapper input {
+    flex: 1;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+}
+
+.userStats-search-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.userStats-filterBox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.userStats-filterBox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.userStats-filterBox input[type="date"] {
+    background-color: #2b2b35;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.userStats-filterBox button {
+    background-color: #a367f9;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.userStats-filterBox button:hover {
+    background-color: #8e52e4;
+}
+
+.userStats-result {
+    background-color: #121212;
+    border-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    border: 1px solid #7F748C;
+}
+
+.userStats-result h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+}
+
+.userStats-result .win {
+    color: #5cc6ff;
+    margin-left: 4px;
+}
+
+.userStats-result .lose {
+    color: #ff4f4f;
+    margin-left: 4px;
+}
+
+.userStats-winrate {
+    margin-top: 16px;
+}
+
+.userStats-winrate label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.userStats-progress {
+    background-color: #333;
+    margin-top: 6px;
+    width: 100%;
+    height: 20px;
+    position: relative;
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.userStats-progress .bar {
+    background-color: #7c3aed;
+    height: 100%;
+    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.userStats-progress .percentage {
+    position: absolute;
+    right: 8px;
+    top: 0;
+    font-size: 0.8rem;
+    color: #fff;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+.userStats-playtime {
+    margin-top: 24px;
+}
+
+.userStats-playtime-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 16px;
+}
+
+.userStats-playtime ul {
+    list-style: none;
+    padding: 0;
+}
+
+.userStats-playtime li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.userStats-playtime .bar {
+    background-color: #7c3aed;
+    height: 24px;
+    border-radius: 6px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    color: white;
+}
+
+.userStats-playtime-role {
+    font-size: 1.2rem;
+    color: #7F748C;
+    margin-bottom: 16px;
+}
+
+.userStats-playtime-role strong {
+    font-weight: 600;
+}
+
+.tierStats-chartWrapper-datalist {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 30px;
+}
+
+.tierStats-chartWrapper-chartBox {
+    flex: 1;
+    min-width: 400px;
+}
+
+.tierStats-chartWrapper-tableBox {
+    flex: 1;
+    min-width: 300px;
+}
+
+.tierStats-chartWrapper-tableBox .row {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.tierStats-chartWrapper-tableBox .row.header {
+    background-color: #aba2ab31;
+    font-weight: bold;
+}
+
+.tierStats-chartWrapper-tableBox .cell {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+}
+
+.tier-clicked-users h3 {
+    color: #fff;
+    margin-bottom: 16px;
+}
+
+.tierUserCard {
+    background-color: #010101;
+    border-radius: 6px;
+    border-left: 4px solid #9C27B0;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.tierUserCard:hover {
+    background-color: #252125;
+}
+
+.tierUserCardContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    height: 150px;
+}
+
+.tierUserCardContent>div {
+    min-width: 80px;
+}
+
+.tierUserCardEmail {
+    white-space: nowrap;
+    font-size: 13px;
+    color: #bbb;
+}
+
+/* ------------------------------ 인게임 통계 css ------------------------------ */
+/* ------------------------------ 신고/문의 통계 css ------------------------------ */
+
+
+/* ------------------------------ 회원 리스트 css ------------------------------ */
+/* ------------------------------ 회원 상세보기 css ------------------------------ */
+/* ------------------------------ 회원 정보 수정 css ------------------------------ */
+/* ------------------------------ 문의/신고 리스트 css ------------------------------ */
+/* ------------------------------ 문의/신고 상세보기 css ------------------------------ */
+/* ------------------------------ 문의/신고 답변 내역 css ------------------------------ */
+>>>>>>> origin/main
 
 .mailDetail-container {
     padding: 40px;
@@ -331,4 +1058,430 @@
     color: #aaa;
     margin: 16px 0;
     font-size: 14px;
+<<<<<<< HEAD
+=======
+}
+
+
+
+
+
+
+/* 유저 통계 페이지 css */
+
+
+
+
+.user-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #121212;
+    color: #fff;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+.user-card-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.user-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.user-nickname {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.user-email {
+    font-size: 14px;
+    color: #bbb;
+    margin-bottom: 8px;
+}
+
+.user-info {
+    font-size: 14px;
+    color: #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.label {
+    color: #a78bfa;
+    /* 보라색 포인트 */
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+.refused {
+    color: #f87171;
+    /* 빨간색 */
+}
+
+.badge {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 9999px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.badge-purple {
+    background-color: #6d28d9;
+    color: white;
+}
+
+.badge-yellow {
+    background-color: #facc15;
+    color: black;
+}
+
+.user-menu {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+}
+
+
+/*------------------------------------*/
+.userStats-chartWrapper-tier {
+    margin-top: 20px;
+    width: 100%;
+    height: 1830px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+/*------------------------------------*/
+
+.pagination {
+    margin-top: 16px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.pagination button {
+    background: #222;
+    border: none;
+    color: #bbb;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.pagination button:hover {
+    background-color: #9C27B0;
+    color: #fff;
+}
+
+.pagination button.active {
+    background-color: #9C27B0;
+    color: white;
+    font-weight: bold;
+}
+
+.tierUserList-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.tierUserList-card {
+    background-color: #111;
+    color: #fff;
+    padding: 1rem;
+    border-left: 4px solid #9C27B0;
+    border-radius: 8px;
+}
+
+/* 신고/문의 통계 페이지 css */
+.inquiryStats-chartWrapper {
+    margin-top: 20px;
+    width: 100%;
+    height: 880px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.inquiryStats-title {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.inquiryStats-chartWrapper-tableBox {
+    flex: 1;
+    min-width: 300px;
+}
+
+.inquiryStats-chartWrapper-tableBox .row {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.inquiryStats-chartWrapper-tableBox .row.header {
+    background-color: #aba2ab31;
+    font-weight: bold;
+}
+
+.inquiryStats-chartWrapper-tableBox .cell {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+}
+
+.inquiryStats-chartWrapper-tableBox .row.total {
+    font-weight: bold;
+}
+
+.inquiryStats-filterBox {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.inquiryStats-filterBox input[type="date"] {
+    background-color: #2b2b35;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.inquiryStats-filterBox button {
+    background-color: #a367f9;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.inquiryStats-filterBox button:hover {
+    background-color: #8e52e4;
+}
+
+.inquiryStats-chartWrapper-period {
+    margin-top: 20px;
+    width: 100%;
+    height: 1150px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.row.total {
+    font-weight: bold;
+}
+
+/**/
+.ingameStats-chartWrapper {
+    margin-top: 20px;
+    width: 100%;
+    height: 1300px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.ingameStats-chartWrapper-modePlaytime {
+    margin-top: 20px;
+    width: 100%;
+    height: 390px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.ingameStats-chartWrapper-heroPickorBan {
+    margin-top: 20px;
+    width: 100%;
+    height: 1350px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.ingameStats-chartWrapper-heroTable {
+    margin-top: 20px;
+    width: 100%;
+    height: 750px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.ingameStats-chartWrapper-heroWinningRate {
+    margin-top: 20px;
+    width: 100%;
+    height: 1390px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.hero-summary-table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: #fff;
+}
+
+.hero-summary-table .row {
+    display: table-row;
+}
+
+.hero-summary-table .cell {
+    display: table-cell;
+    padding: 12px;
+}
+
+.hero-summary-table .header {
+    font-weight: bold;
+}
+
+/* 접속자 통계 페이지 css */
+.accessorStats-chartWrapper {
+    margin-top: 20px;
+    width: 100%;
+    height: 1020px;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.accessorStats-title {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.accessorStats-filterBox {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.accessorStats-filterBox input[type="date"] {
+    background-color: #2b2b35;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.accessorStats-filterBox button {
+    background-color: #a367f9;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.accessorStats-filterBox button:hover {
+    background-color: #8e52e4;
+}
+
+.accessorStats-mainTitle {
+    font-size: 28px;
+    font-weight: 600;
+    /* margin-bottom: 16px; */
+}
+
+.accessorStats-mainTitle-date {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.accessorStats-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.accessorStats-card {
+    background-color: #1c1b22;
+    height: 150px;
+    border-left: 5px solid #a855f7;
+    padding: 20px 24px;
+    border-radius: 16px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.accessorStats-card-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #ccc;
+}
+
+.accessorStats-card-value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/*------------------------------------*/
+.userStats-user-list-card {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 16px 20px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 16px;
+>>>>>>> origin/main
 }

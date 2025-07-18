@@ -1,0 +1,329 @@
+.memberList-container {
+    position: fixed;
+    top: 80px;
+    left: 80px;
+    width: 97%;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    height: calc(100vh - 56px);
+    border-radius: 8px;
+    background-color: transparent;
+    font-size: 18px;
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-bottom: 20px;
+}
+
+.memberList-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: hsl(0, 0%, 100%);
+    letter-spacing: 0.06em;
+    user-select: none;
+    text-shadow: none;
+}
+
+.memberList-topRow {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.memberList-searchInput {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 16px;
+    color: #f0f0f0;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.memberList-searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.memberList-searchInput:focus {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: #b295f9;
+    box-shadow: 0 0 12px rgba(178, 149, 249, 0.6);
+    color: #fff;
+}
+
+.memberList-sortSelect {
+    min-width: 120px;
+    padding: 8px 14px;
+    font-size: 17px;
+    border-radius: 10px;
+    background-color: rgba(40, 40, 40, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    cursor: pointer;
+    appearance: none;
+    transition: background-color 0.2s ease;
+}
+
+.memberList-sortSelect:focus {
+    background-color: rgba(60, 60, 60, 0.7);
+}
+
+.memberList-sortSelect:disabled {
+    color: #555;
+    background-color: rgba(20, 20, 20, 0.4);
+    cursor: not-allowed;
+}
+
+.memberList-tagFilterButtons {}
+
+.memberList-tagFilterBtn {
+    min-width: 120px;
+    padding: 8px 14px;
+    font-size: 17px;
+    border-radius: 10px;
+    background-color: rgba(40, 40, 40, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    cursor: pointer;
+    appearance: none;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease;
+    margin-right: 10px;
+}
+
+.memberList-tagFilterBtn:hover {
+    background-color: rgba(60, 60, 60, 0.7);
+}
+
+.memberList-tagFilterBtn.active.CS팀 {
+    background: linear-gradient(135deg, rgba(173, 83, 83, 0.4), rgba(110, 56, 56, 0.3));
+    border-color: rgba(173, 83, 83, 0.9);
+    box-shadow:
+        0 0 12px rgba(173, 83, 83, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.마케팅팀 {
+    background: linear-gradient(135deg, rgba(83, 92, 139, 0.4), rgba(43, 49, 81, 0.3));
+    border-color: rgba(83, 92, 139, 0.9);
+    box-shadow:
+        0 0 12px rgba(83, 92, 139, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.개발팀 {
+    background: linear-gradient(135deg, rgba(255, 180, 100, 0.35), rgba(255, 110, 60, 0.25));
+    border-color: rgba(255, 140, 60, 0.9);
+    box-shadow:
+        0 0 12px rgba(255, 140, 60, 0.6),
+        inset 0 0 10px rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+
+.memberList-tagFilterBtn.active.총괄 {
+    background: linear-gradient(135deg, rgba(128, 255, 200, 0.4), rgba(70, 180, 130, 0.3));
+    border-color: rgba(128, 255, 200, 0.9);
+    box-shadow:
+        0 0 12px rgba(128, 255, 200, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.사원 {
+    background: linear-gradient(135deg, rgba(103, 68, 138, 0.4), rgba(50, 27, 79, 0.3));
+    border-color: rgba(103, 68, 138, 0.9);
+    box-shadow:
+        0 0 12px rgba(103, 68, 138, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.대리 {
+    background: linear-gradient(135deg, rgba(204, 174, 0, 0.4), rgba(148, 126, 0, 0.3));
+    border-color: rgba(204, 174, 0, 0.9);
+    box-shadow:
+        0 0 12px rgba(204, 174, 0, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.과장 {
+    background: linear-gradient(135deg, rgba(131, 0, 0, 0.4), rgba(88, 0, 0, 0.3));
+    border-color: rgba(131, 0, 0, 0.9);
+    box-shadow:
+        0 0 12px rgba(131, 0, 0, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.차장 {
+    background: linear-gradient(135deg, rgba(102, 178, 255, 0.4), rgba(30, 90, 180, 0.3));
+    border-color: rgba(102, 178, 255, 0.9);
+    box-shadow:
+        0 0 12px rgba(102, 178, 255, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.부장 {
+    background: linear-gradient(135deg, rgba(255, 153, 102, 0.4), rgba(180, 90, 30, 0.3));
+    border-color: rgba(255, 153, 102, 0.9);
+    box-shadow:
+        0 0 12px rgba(255, 153, 102, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.이사 {
+    background: linear-gradient(135deg, rgba(153, 102, 255, 0.4), rgba(90, 30, 180, 0.3));
+    border-color: rgba(153, 102, 255, 0.9);
+    box-shadow:
+        0 0 12px rgba(153, 102, 255, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.상무 {
+    background: linear-gradient(135deg, rgba(102, 255, 178, 0.4), rgba(30, 180, 90, 0.3));
+    border-color: rgba(102, 255, 178, 0.9);
+    box-shadow:
+        0 0 12px rgba(102, 255, 178, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.전무 {
+    background: linear-gradient(135deg, rgba(255, 102, 178, 0.4), rgba(180, 30, 90, 0.3));
+    border-color: rgba(255, 102, 178, 0.9);
+    box-shadow:
+        0 0 12px rgba(255, 102, 178, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-tagFilterBtn.active.사장 {
+    background: linear-gradient(135deg, rgba(255, 255, 102, 0.4), rgba(180, 180, 30, 0.3));
+    border-color: rgba(255, 255, 102, 0.9);
+    box-shadow:
+        0 0 12px rgba(255, 255, 102, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.memberList-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.memberList-card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.memberList-info {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.memberList-nameTagWrapper {}
+
+.memberList-tags {}
+
+.memberList-tag {
+    font-size: 18px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 999px;
+    color: #fff;
+    cursor: default;
+    border: 1.5px solid transparent;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.15);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    margin-right: 10px;
+}
+
+.memberList-tag_CS팀 {
+    background: linear-gradient(135deg, rgba(180, 70, 70, 0.35), rgba(100, 30, 30, 0.25));
+    border-color: rgba(180, 70, 70, 0.9);
+    box-shadow: 0 0 12px rgba(180, 70, 70, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_마케팅팀 {
+    background: linear-gradient(135deg, rgba(60, 75, 140, 0.35), rgba(30, 40, 100, 0.25));
+    border-color: rgba(60, 75, 140, 0.9);
+    box-shadow: 0 0 12px rgba(60, 75, 140, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_개발팀 {
+    background: linear-gradient(135deg, rgba(255, 130, 50, 0.35), rgba(180, 80, 20, 0.25));
+    border-color: rgba(255, 130, 50, 0.9);
+    box-shadow: 0 0 12px rgba(255, 130, 50, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_총괄 {
+    background: linear-gradient(135deg, rgba(50, 150, 120, 0.35), rgba(20, 80, 60, 0.25));
+    border-color: rgba(50, 150, 120, 0.9);
+    box-shadow: 0 0 12px rgba(50, 150, 120, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_사원 {
+    background: linear-gradient(135deg, rgba(100, 70, 150, 0.35), rgba(50, 30, 100, 0.25));
+    border-color: rgba(100, 70, 150, 0.9);
+    box-shadow: 0 0 12px rgba(100, 70, 150, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_대리 {
+    background: linear-gradient(135deg, rgba(200, 170, 50, 0.35), rgba(150, 120, 30, 0.25));
+    border-color: rgba(200, 170, 50, 0.9);
+    box-shadow: 0 0 12px rgba(200, 170, 50, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_과장 {
+    background: linear-gradient(135deg, rgba(160, 50, 50, 0.35), rgba(90, 20, 20, 0.25));
+    border-color: rgba(160, 50, 50, 0.9);
+    box-shadow: 0 0 12px rgba(160, 50, 50, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_차장 {
+    background: linear-gradient(135deg, rgba(94, 183, 183, 0.3), rgba(41, 117, 117, 0.2));
+    border-color: rgba(94, 183, 183, 0.9);
+    box-shadow: 0 0 12px rgba(94, 183, 183, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_부장 {
+    background: linear-gradient(135deg, rgba(163, 115, 198, 0.3), rgba(91, 64, 122, 0.2));
+    border-color: rgba(163, 115, 198, 0.9);
+    box-shadow: 0 0 12px rgba(163, 115, 198, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_이사 {
+    background: linear-gradient(135deg, rgba(230, 145, 56, 0.3), rgba(150, 80, 20, 0.2));
+    border-color: rgba(230, 145, 56, 0.9);
+    box-shadow: 0 0 12px rgba(230, 145, 56, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_상무 {
+    background: linear-gradient(135deg, rgba(181, 88, 133, 0.3), rgba(112, 41, 84, 0.2));
+    border-color: rgba(181, 88, 133, 0.9);
+    box-shadow: 0 0 12px rgba(181, 88, 133, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_전무 {
+    background: linear-gradient(135deg, rgba(125, 168, 80, 0.3), rgba(70, 90, 40, 0.2));
+    border-color: rgba(125, 168, 80, 0.9);
+    box-shadow: 0 0 12px rgba(125, 168, 80, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.memberList-tag_사장 {
+    background: linear-gradient(135deg, rgba(230, 95, 95, 0.3), rgba(100, 30, 30, 0.2));
+    border-color: rgba(230, 95, 95, 0.9);
+    box-shadow: 0 0 12px rgba(230, 95, 95, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
