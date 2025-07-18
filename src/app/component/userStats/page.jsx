@@ -1,6 +1,6 @@
 "use client"
-import React, { useEffect, useState } from 'react';
-import '../mail/mail.css';
+import React, { useEffect } from 'react';
+import '../userStats/userStats.css';
 import Header from '../../../Header/page';
 import Menu from '../../../menu/Menu';
 import WinningRate_Playtime_UserStats from './winningRate_playtime_userStats';
@@ -29,7 +29,7 @@ const UserStats = () => {
       <div className="stats_container">
         <span className={"userStats-mainTitle"}>유저 통계</span>
         <WinningRate_Playtime_UserStats />
-        {/* <Usertype_Tier_UserStats /> */}
+        <Usertype_Tier_UserStats />
         {/* <UserType_UserStats /> */}
         <SeasonTier_UserStats />
       </div>
