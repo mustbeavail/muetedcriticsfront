@@ -1745,10 +1745,6 @@ body {
   background-color: #6b4c74;
 }
 
-.user-list-menu {
-  position: relative;
-}
-
 .user-list-dropdown {
   left: -160px;
   right: auto;

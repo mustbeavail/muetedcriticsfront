@@ -1,4 +1,8 @@
 /* ------------------------------ 발신 메일 리스트 css ------------------------------ */
+.hidden {
+    display: none;
+}
+
 .mailList-title {
     color: #fff;
 }
@@ -308,6 +312,13 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
+.mailDetail-btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
 .mailDetail-backBtn {
     background-color: #444;
     color: white;
@@ -317,6 +328,19 @@
     font-size: 14px;
     cursor: pointer;
     margin-bottom: 20px;
+    margin-right: 10px;
+}
+
+.mailDetail-updateBtn {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left: auto;
 }
 
 .mailDetail-backBtn:hover {
@@ -346,6 +370,12 @@
     color: #aaa;
     margin: 16px 0;
     font-size: 14px;
+}
+
+.mailDetail-content {
+    overflow-y: auto;
+    height: auto;
+    max-height: 500px;
 }
 
 .mailList-noResult {

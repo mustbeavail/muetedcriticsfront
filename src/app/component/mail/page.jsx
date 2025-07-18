@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import "./mail.css";
 import { IoSearch } from "react-icons/io5";
 import Link from "next/link";
-import { listItem } from "./data";
 import axios from "axios";
 import Header from "../../../Header/page";
 import Menu from "../../../menu/Menu";
@@ -154,7 +153,7 @@ export default function MailList() {
                         mailList.map((mail) => (
                             <Link
                                 key={mail.mailIdx ? mail.mailIdx : mail.scheduleIdx}
-                                href={`/component/mail/${mail.mailIdx ? mail.mailIdx : mail.scheduleIdx}`}
+                                href={`/component/mail/detail/${mail.mailIdx ? `mailIdxEQ${mail.mailIdx}` : `scheduleIdxEQ${mail.scheduleIdx}`}`}
                                 className={"mailList-item"}>
                                 <div className={"mailList-subItem"}>
                                     <div className={"mailList-left"}>

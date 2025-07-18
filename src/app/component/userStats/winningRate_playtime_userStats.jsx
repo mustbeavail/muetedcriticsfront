@@ -33,8 +33,8 @@ export default function WinningRate_Playtime_UserStats() {
     // 조회 버튼 클릭시 실행
     const handleSearch = () => {
         const token = sessionStorage.getItem('token');
-        if (!token || !searchId) {
-            alert('검색할 유저 ID 를 입력하세요.');
+        if (!token || !searchId || !startDate || !endDate) {
+            alert('검색할 유저 ID 를 입력하고 기간을 설정하세요.');
             return;
         }
         getUserStatsOverview(token, searchId, startDate, endDate);
