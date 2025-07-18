@@ -256,7 +256,7 @@ export default function Usertype_Tier_UserStats() {
                                 <div className="user-list-info">
                                     <div><span className="label">성별: </span> {userObj.userGender}</div>
                                     <div><span className="label">지역: </span> {userObj.region}</div>
-                                    <div><span className="label">주 영웅: </span> {userObj.mainHero || '없음'}</div>
+                                    <div><span className="label">주 영웅: </span> {userObj.mainHero || '-'}</div>
                                 </div>
                             </div>
                             <div className="user-list-menu">⋮</div>
