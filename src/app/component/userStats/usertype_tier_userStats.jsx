@@ -86,13 +86,18 @@ export default function Usertype_Tier_UserStats() {
         }
     }, [seasonIdx, selectedGender, selectedRegion, selectedVip, selectedHero]);
 
+    // 자동 조회용
+    useEffect(() => {
+        handleSearch();
+    }, [seasonIdx, selectedGender, selectedRegion, selectedVip, selectedHero, handleSearch]);
+
     // 2. Pie 클릭: 해당 Pie(티어)에 현재 모든 필터를 포함해 리스트 조회
     const handlePieClick = useCallback((data) => {
         setSelectedTier(data.name); // 클릭한 티어명
         setCurrentPage(1); // 항상 1페이지부터
     }, []);
 
-    // Pie 클릭 시에만 리스트 불러옴 (필터 & 페이지 바뀔 때마다)
+    // Pie 클릭(티어 선택) 시에만 리스트 불러옴 (필터 & 페이지 바뀔 때마다)
     useEffect(() => {
         if (!selectedTier) {
             setCurrentUsers([]);
@@ -127,15 +132,19 @@ export default function Usertype_Tier_UserStats() {
     }, [seasonIdx, selectedGender, selectedRegion, selectedVip, selectedHero]);
 
 
+
     return (
         <div className="userStats-chartWrapper-tier">
             <div className="userStats-filterBox-wrapper">
                 <h2 className={"userStats-title"}>유저 분류별 티어 통계</h2>
                 <div className="itemStats-filterBox">
-                    VIP {/* 이 부분은 체크박스로 */}
-                    <input type="checkbox" className="itemStats-checkbox"
-                        checked={selectedVip === true}
-                        onChange={e => setSelectedVip(e.target.checked ? true : null)} />
+                    VIP
+                    <select className="itemStats-select"
+                        value={selectedVip}
+                        onChange={e => setSelectedVip(e.target.value)}>
+                        <option value="">-</option>
+                        <option value="1">VIP</option>
+                    </select>
 
                     성별
                     <select className="itemStats-select"
@@ -150,7 +159,7 @@ export default function Usertype_Tier_UserStats() {
                     <select className="itemStats-select"
                         value={selectedRegion || ""}
                         onChange={e => setSelectedRegion(e.target.value || null)}>
-                        <option value="">-</option>
+                        <option value="">전체</option>
                         <option value="아시아">아시아</option>
                         <option value="북미">북미</option>
                         <option value="오세아니아">오세아니아</option>
@@ -171,21 +180,6 @@ export default function Usertype_Tier_UserStats() {
                         ))}
                     </select>
 
-                    티어
-                    <select className="itemStats-select"
-                        value={selectedTier || ""}
-                        onChange={e => setSelectedTier(e.target.value || null)}>
-                        <option value="">전체</option>
-                        <option value="브론즈">브론즈</option>
-                        <option value="실버">실버</option>
-                        <option value="골드">골드</option>
-                        <option value="플래티넘">플래티넘</option>
-                        <option value="다이아몬드">다이아몬드</option>
-                        <option value="마스터">마스터</option>
-                        <option value="그랜드마스터">그랜드마스터</option>
-                        <option value="챌린저">챌린저</option>
-                    </select>
-
                     시즌
                     <select className="itemStats-select"
                         value={seasonIdx}
@@ -195,8 +189,6 @@ export default function Usertype_Tier_UserStats() {
                         <option value="3">시즌 3</option>
                         <option value="4">시즌 4</option>
                     </select>
-
-                    <button className="itemStats-button" onClick={handleSearch}>조회</button>
                 </div>
 
             </div>
@@ -231,6 +223,7 @@ export default function Usertype_Tier_UserStats() {
                     </ResponsiveContainer>
                 </div>
 
+                {/* 티어 통계 테이블 */}
                 <div className="tierStats-chartWrapper-tableBox">
                     <div className="row header">
                         <div className="cell">티어 이름</div>
@@ -245,6 +238,7 @@ export default function Usertype_Tier_UserStats() {
                 </div>
             </div>
 
+            {/* 티어 클릭시 유저 리스트 */}
             {currentUsers.length > 0 && (
                 <div className="tier-clicked-users">
                     <h3 style={{ color: "#fff" }}>
@@ -265,6 +259,7 @@ export default function Usertype_Tier_UserStats() {
                             <div className="user-list-menu">⋮</div>
                         </div>
                     ))}
+                    {/* 페이지네이션 */}
                     <div className="pagination">
                         {(() => {
                             const buttons = [];

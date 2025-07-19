@@ -287,8 +287,16 @@
 }
 
 .tierStats-chartWrapper-chartBox {
-  flex: 1;
-  min-width: 400px;
+  flex: none;
+  /* flex-grow 방지 */
+  width: 800px;
+  /* 가로 800px 고정 */
+  height: 500px;
+  /* 세로 500px 고정 */
+  min-width: unset;
+  /* 기존 min-width 해제 */
+  position: relative;
+  /* ResponsiveContainer 를 위한 기준점 */
 }
 
 .tierStats-chartWrapper-tableBox {
