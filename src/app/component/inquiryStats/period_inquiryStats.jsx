@@ -1,5 +1,6 @@
 'use client'
 import React from 'react';
+import dayjs from 'dayjs';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function Period_InquiryStats({
@@ -10,6 +11,7 @@ export default function Period_InquiryStats({
     setEndDate,
     handlePeriodSearch
 }) {
+    const today = dayjs().format('YYYY-MM-DD'); // 오늘 날짜
 
     // 부모 컴포넌트에서 받은 데이터를 차트에 사용할 형식으로 변환
     const chartData = inquiryStatsPeriod.map(item => ({
@@ -25,7 +27,7 @@ export default function Period_InquiryStats({
             <div className={"inquiryStats-filterBox-wrapper"}>
                 <div className={"inquiryStats-filterBox"}>
                     기간 시작일 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                    기간 종료일 <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                    기간 종료일 <input type="date" value={endDate} max={today} onChange={(e) => setEndDate(e.target.value)} />
                     <button onClick={handlePeriodSearch}>조회</button>
                 </div>
                 <div>
@@ -38,7 +40,7 @@ export default function Period_InquiryStats({
                                 margin={{ top: 20, right: 30, left: 20, bottom: 90 }}
                             >
                                 <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="date" angle={-45} textAnchor="end" height={60} />
+                                <XAxis dataKey="date" angle={-45} textAnchor="end" height={120} />
                                 <YAxis allowDecimals={false} />
                                 <Tooltip
                                     contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}

@@ -1,5 +1,5 @@
 'use client'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { useState, useEffect } from 'react';
 
 export default function All_InquiryStats({ inquiryStatsAll }) {
@@ -63,8 +63,7 @@ export default function All_InquiryStats({ inquiryStatsAll }) {
                             contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
                             cursor={{ fill: '#1c1b23' }}
                         />
-                        {/* Legend 제거 - 각 막대에 다른 색상이 적용되어 있어서 범례가 의미가 없음 */}
-                        <Bar dataKey="count" name="신고/문의 건수">
+                        <Bar dataKey="count" name="건수">
                             {chartData.map((entry, index) => (
                                 <Cell
                                     key={`cell-${index}`}

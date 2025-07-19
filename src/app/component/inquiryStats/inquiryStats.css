@@ -1,0 +1,121 @@
+/* ------------------------------ 통계, 메일 공통 css ------------------------------ */
+.stats_container {
+    position: fixed;
+    top: 80px;
+    left: 80px;
+    width: 97%;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    height: calc(100vh - 56px);
+    border-radius: 8px;
+    background-color: transparent;
+    font-size: 18px;
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-bottom: 20px;
+}
+
+.row.header {
+    font-weight: bold;
+    background-color: #d4cad331;
+}
+
+.row {
+    display: flex;
+    border-bottom: 1px solid #cccccc6e;
+    padding: 10px 0;
+}
+
+.cell {
+    flex: 1;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* 신고/문의 통계 페이지 css */
+.inquiryStats-chartWrapper {
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.inquiryStats-title {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.inquiryStats-chartWrapper-tableBox {
+    flex: 1;
+    min-width: 300px;
+}
+
+.inquiryStats-chartWrapper-tableBox .row {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.inquiryStats-chartWrapper-tableBox .row.header {
+    background-color: #aba2ab31;
+    font-weight: bold;
+}
+
+.inquiryStats-chartWrapper-tableBox .cell {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+}
+
+.inquiryStats-chartWrapper-tableBox .row.total {
+    font-weight: bold;
+}
+
+.inquiryStats-filterBox {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.inquiryStats-filterBox input[type="date"] {
+    background-color: #2b2b35;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.inquiryStats-filterBox button {
+    background-color: #a367f9;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.inquiryStats-filterBox button:hover {
+    background-color: #8e52e4;
+}
+
+.inquiryStats-chartWrapper-period {
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    background: #1c1b23;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+.row.total {
+    font-weight: bold;
+}

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import '../mail/mail.css';
+import './inquiryStats.css';
 import Header from '../../../Header/page';
 import Menu from '../../../menu/Menu';
 import All_InquiryStats from './all_inquiryStats';
@@ -16,8 +16,13 @@ const InquiryStats = () => {
   const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
+    const id = sessionStorage.getItem('member_id');
     const token = sessionStorage.getItem('token');
-    // console.log(token);
+    if (!id || !token) {
+      alert('로그인 후 접근 가능합니다.');
+      window.location.href = "/";
+      return;
+    }
     getInquiryStatsAll(token); // 신고/문의 전체 불러오기
   }, []);
 
