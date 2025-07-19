@@ -19,7 +19,7 @@ export default function MailDetailPage() {
     mailSub: '', recipient: '', memberId: '',
     mailDate: '', mailContent: '',
     mailIdx: 0, scheduleIdx: 0, toAll: false,
-    createdAt: '', nextSendDate: '', interValDays: 0,
+    createdAt: '', nextSendDate: '', intervalDays: 0,
     active: false
   };
 
@@ -36,21 +36,27 @@ export default function MailDetailPage() {
 
   // 메일 상세 정보 조회
   const getMailDetail = async (idx, token) => {
-
-    const { data } = await axios.get(`${URL}/mail/detail`, {
-      headers: {
-        Authorization: token
-      },
-      params: {
-        mailIdx: idx.includes("mailIdx") ? idx.split("EQ")[1] : null,
-        scheduleIdx: idx.includes("scheduleIdx") ? idx.split("EQ")[1] : null
+    try {
+      const { data } = await axios.get(`${URL}/mail/detail`, {
+        headers: {
+          Authorization: token
+        },
+        params: {
+          mailIdx: idx.includes("mailIdx") ? idx.split("EQ")[1] : null,
+          scheduleIdx: idx.includes("scheduleIdx") ? idx.split("EQ")[1] : null
+        }
+      });
+      console.log(data);
+      if (data.mail) {
+        setMailDetail(prev => ({...emptyDetail, ...data.mail}));
+      } else {
+        setMailDetail(prev => ({...emptyDetail, ...data.autoSend}));
       }
-    });
-    console.log(data);
-    if (data.mail) {
-      setMailDetail(prev => ({...emptyDetail, ...data.mail}));
-    } else {
-      setMailDetail(prev => ({...emptyDetail, ...data.autoSend}));
+    } catch (error) {
+      alert("메일 상세 정보 조회 중 오류가 발생했습니다. 다시 로그인 후 이용해주세요.");
+      sessionStorage.removeItem("member_id");
+      sessionStorage.removeItem("token");
+      location.href = '/';
     }
   }
 
@@ -85,7 +91,7 @@ export default function MailDetailPage() {
                 다음 발송 일자: <span>{mailDetail.nextSendDate}</span>
               </p>
               <p className={"mailDetail-meta"}>
-                발송 주기: <span>{mailDetail.interValDays}일</span>
+                발송 주기: <span>{mailDetail.intervalDays}일</span>
               </p>
               <p className={"mailDetail-meta"}>
                 활성화 여부: <span>{mailDetail.active ? "활성화" : "비활성화"}</span>
@@ -101,7 +107,7 @@ export default function MailDetailPage() {
           </div>
         </section>
 
-        <div className={"mailDetail-content"} dangerouslySetInnerHTML={{ __html: mailDetail.mailContent }} />
+        <div className={"mailDetail-content"} dangerouslySetInnerHTML={{ __html: mailDetail.mailContent }}/>
       </div>
     </div>
   );
