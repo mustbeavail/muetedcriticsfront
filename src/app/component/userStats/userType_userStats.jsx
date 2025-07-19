@@ -173,15 +173,20 @@ export default function UserType_UserStats() {
                     {/* 페이지네이션 */}
                     {totalPage > 0 && (
                         <div className="pagination">
-                            {Array.from({ length: totalPage }, (_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => setCurrentPage(i + 1)}
-                                    className={currentPage === i + 1 ? "active" : ""}
-                                >
-                                    {i + 1}
-                                </button>
-                            ))}
+                            {(() => {
+                                const buttons = [];
+                                for (let i = 0; i < totalPage; i++) {
+                                    buttons.push(
+                                        <button
+                                            key={i}
+                                            onClick={() => setCurrentPage(i + 1)}
+                                            className={currentPage === i + 1 ? "active" : ""}>
+                                            {i + 1}
+                                        </button>
+                                    )
+                                }
+                                return buttons;
+                            })()}
                         </div>
                     )}
                 </div>
