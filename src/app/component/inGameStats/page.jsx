@@ -34,12 +34,12 @@ const InGameStats = () => {
         <span className={"userStats-mainTitle"}>인게임 통계</span>
 
         <HeroPlaytime_IngameStats />
-        {/* <HeroPOTG_IngameStats /> */}
+        <HeroPOTG_IngameStats />
         <HeroItem_IngameStats />
-        {/* <HeroTable_IngameStats /> */}
+        <HeroTable_IngameStats />
 
         <ModePlaytime_IngameStats />
-        {/* <HeroWinningRate_IngameStats /> */}
+        <HeroWinningRate_IngameStats />
         {/* <HeroPickorBan_IngameStats /> */}
       </div >
     </>

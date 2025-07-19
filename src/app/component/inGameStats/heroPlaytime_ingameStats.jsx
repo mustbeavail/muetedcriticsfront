@@ -21,7 +21,7 @@ export default function HeroPlaytime_IngameStats() {
     const [heroPlaytimeData, setHeroPlaytimeData] = useState([]); // API로부터 받은 영웅별 플레이타임 데이터
     const [sortOrder, setSortOrder] = useState('desc'); // 정렬 순서 ('desc': 내림차순, 'asc': 오름차순)
 
-    const itemsPerPage = 10; // 페이지 당 보여줄 아이템(영웅) 수
+    const itemsPerPage = 10; // 페이지 당 보여줄 영웅 수
 
     // --- DATA FETCHING ---
     // 컴포넌트가 마운트되거나 'sortOrder' 상태가 변경될 때 데이터를 가져옵니다.
@@ -97,13 +97,13 @@ export default function HeroPlaytime_IngameStats() {
                         </defs>
                         {/* 그래프의 배경 그리드 선입니다. */}
                         <CartesianGrid stroke='rgba(255, 255, 255, 0.1)' />
-                        {/* X축 (플레이타임) */}
-                        <XAxis type="number" />
+                        {/* X축 (플레이타임을 시간 단위로 변환하여 표시) */}
+                        <XAxis type="number" tickFormatter={(value) => `${(value / 60).toFixed(1)} 시간`} />
                         {/* Y축 (영웅 이름) */}
                         <YAxis dataKey="heroName" type="category" />
                         {/* 마우스를 올렸을 때 표시되는 툴팁입니다. */}
                         <Tooltip
-                            formatter={(value) => `${value} 분`} // 툴팁 값의 형식을 지정합니다.
+                            formatter={(value) => `${(value / 60).toFixed(1)} 시간`} // 툴팁 값의 형식을 지정합니다.
                             contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
                             cursor={{ fill: '#1c1b23' }}
                         />
@@ -111,13 +111,13 @@ export default function HeroPlaytime_IngameStats() {
                         <Bar
                             dataKey="totalPlayTime" // 데이터 키를 지정합니다.
                             fill="url(#heroPlaytimeGradient)" // 위에서 정의한 그라데이션으로 채웁니다.
-                            label={{ position: 'right', formatter: (value) => `${value} 분` }} // 막대 오른쪽에 값을 표시합니다.
+                            label={{ position: 'right', formatter: (value) => `${(value / 60).toFixed(1)} 시간` }} // 막대 오른쪽에 값을 표시합니다.
                             name="플레이 시간"
                         />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
-            {/* 페이지네이션 버튼 */}
+            {/* 페이지네이션 */}
             <div className="pagination">
                 {(() => {
                     const buttons = [];

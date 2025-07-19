@@ -69,7 +69,7 @@ const InquiryStats = () => {
   const handlePeriodSearch = () => {
     // 조회 버튼 클릭 시 날짜 선택 여부 확인
     if (!startDate || !endDate) {
-      alert('시작일과 종료일을 모두 선택해 주세요.');
+      alert('기간을 설정해 주세요.');
       return;
     }
     if (new Date(startDate) > new Date(endDate)) {

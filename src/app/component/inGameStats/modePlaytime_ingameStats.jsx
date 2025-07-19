@@ -1,12 +1,14 @@
 "use client"
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { useEffect, useMemo, useState } from 'react';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ModePlaytime_IngameStats() {
+
+    const pastelColors = ["#f28b82", "#aecbfa", "#fff475"];
 
     // 모드별 플레이타임 데이터를 저장하는 state
     const [modePlaytimeData, setModePlaytimeData] = useState([]);
@@ -90,7 +92,14 @@ export default function ModePlaytime_IngameStats() {
                             contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }} // 툴팁 스타일
                             cursor={{ fill: '#1c1b23' }} // 툴팁 커서 스타일
                         />
-                        <Bar dataKey="totalPlayTime" fill="#9C27B0" name="총 플레이 시간" /> {/* 막대: 총 플레이 시간 */}
+                        <Bar dataKey="totalPlayTime" name="총 플레이 시간">
+                            {chartDataWithTotal.map((entry, index) => (
+                                <Cell
+                                    key={`cell-${index}`}
+                                    fill={pastelColors[index % pastelColors.length]}
+                                />
+                            ))}
+                        </Bar>
                     </BarChart>
                 </ResponsiveContainer>
             </div>

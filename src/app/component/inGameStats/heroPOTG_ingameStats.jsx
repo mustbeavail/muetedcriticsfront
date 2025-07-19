@@ -1,44 +1,88 @@
 "use client"
-import React, { useState } from 'react';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-export default function HeroPOTG_IngameStats({ inGameStatsData }) {
-    const potgByCategory = inGameStatsData.reduce((acc, cur) => {
-        const category = cur.heros.heroes_name;
-        const potg = cur.potg_count || 0;
+const URL = process.env.NEXT_PUBLIC_API_URL;
 
-        if (!acc[category]) acc[category] = 0;
-        acc[category] += potg;
+export default function HeroPOTG_IngameStats() {
 
-        return acc;
-    }, {});
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+    const [totalPages, setTotalPages] = useState(1);   // 전체 페이지 수
+    const [potgData, setPotgData] = useState([]); // API로부터 받은 영웅별 최고의 플레이 비중 데이터
+    const [sortOrder, setSortOrder] = useState('desc'); // 정렬 순서 ('desc': 내림차순, 'asc': 오름차순)
 
-    const potgChartData = Object.entries(potgByCategory).map(([category, potg_count]) => ({
-        user_type: category,
-        potg_count,
-    }));
+    const itemsPerPage = 10; // 페이지 당 보여줄 영웅 수
 
-    // 차트 페이징 처리
-    const itemsPerPage = 10;
-    const [currentPage, setCurrentPage] = useState(1);
+    const today = dayjs().format('YYYY-MM-DD');
 
-    const totalPages = Math.ceil(potgChartData.length / itemsPerPage);
+    useEffect(() => {
+        const token = sessionStorage.getItem('token');
+        if (!token) return;
+        getPotgData(token);
+        setCurrentPage(1);
+    }, [sortOrder]);
 
-    const pagedData = potgChartData.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
+
+    // 영웅별 최고의 플레이 비중 불러오기
+    const getPotgData = async (token) => {
+        try {
+            const { data } = await axios.get(`${URL}/get/hero-potg-rate`, {
+                headers: { Authorization: token },
+                params: {
+                    sortOrder: sortOrder,
+                    startDate: '2025-01-01',
+                    endDate: today
+                }
+            });
+            console.log(data);
+            setPotgData(data.list);
+            setTotalPages(Math.ceil(data.list.length / itemsPerPage));
+        } catch (error) {
+            console.log("영웅별 최고의 플레이 비중 불러오기 실패", error);
+        }
+    };
+
+    // --- PAGINATION ---
+    // 현재 페이지에 표시할 데이터를 계산합니다.
+    // 'heroPlaytimeData'나 'currentPage'가 변경될 때만 재계산하여 성능을 최적화합니다.
+    const pagedData = useMemo(() => {
+        const start = (currentPage - 1) * itemsPerPage;
+        return potgData.slice(start, start + itemsPerPage);
+    }, [potgData, currentPage]);
+
+
+    // 커스텀 툴팁 컴포넌트
+    // recharts의 <Tooltip content={...}/>에서 자동으로 active, payload, label을 props로 넘겨줌
+    // active: 툴팁 활성화 여부, payload: hover된 데이터, label: 축 값(영웅 이름)
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            const data = payload[0].payload; // 툴팁에 표시될 현재 데이터
+            return (
+                <div className="custom-tooltip" style={{ background: '#1c1b23', border: '1px solid #ddd', padding: '10px', color: '#fff', fontSize: 15 }}>
+                    <p className="label">{`영웅: ${label}`}</p>
+                    <p className="intro">{`총 매치 수: ${data.totalMatches}회`}</p>
+                    <p className="intro">{`최고의 플레이 수: ${data.potgCount}회`}</p>
+                    <p className="intro">{`최고의 플레이 비중: ${data.potgRate.toFixed(1)}%`}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+
 
     return (
         <div className={"ingameStats-chartWrapper"}>
             <div className="userStats-filterBox-wrapper">
                 <h2 className={"userStats-title"}>전체 유저의 영웅별 최고의 플레이 비중</h2>
                 <div className="itemStats-filterBox">
-                    <select className="itemStats-select">
-                        <option value="전체">시즌 선택</option>
-                    </select>
-                    <select className="itemStats-select">
-                        <option value="전체">높은 순</option>
+                    <select className="itemStats-select"
+                        value={sortOrder}
+                        onChange={(e) => setSortOrder(e.target.value)}
+                    >
+                        <option value="desc">높은 순</option>
+                        <option value="asc">낮은 순</option>
                     </select>
                 </div>
             </div>
@@ -55,28 +99,40 @@ export default function HeroPOTG_IngameStats({ inGameStatsData }) {
                         </linearGradient>
                     </defs>
 
-                    <CartesianGrid strokeDasharray="3 3" />
+                    {/* 그래프의 배경 그리드 선입니다. */}
+                    <CartesianGrid stroke='rgba(255, 255, 255, 0.1)' />
                     <XAxis type="number" />
-                    <YAxis dataKey="user_type" type="category" />
+                    <YAxis dataKey="heroName" type="category" />
                     <Tooltip
-                        formatter={(value) => `${value} 건`}
+                        formatter={(value) => `${value}%`}
                         contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
                         cursor={{ fill: '#1c1b23' }}
+                        content={<CustomTooltip />}
                     />
-                    <Bar dataKey="potg_count" fill="url(#potgGradient)" />
+                    <Bar dataKey="potgRate"
+                        fill="url(#potgGradient)"
+                        label={{ position: 'right', formatter: (value) => `${value}%` }}
+                        name="최고의 플레이 비중"
+                    />
                 </BarChart>
             </ResponsiveContainer>
             {/* 페이징 버튼 */}
             <div className="pagination">
-                {Array.from({ length: totalPages }, (_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => setCurrentPage(i + 1)}
-                        className={currentPage === i + 1 ? "active" : ""}
-                    >
-                        {i + 1}
-                    </button>
-                ))}
+                {(() => {
+                    const buttons = [];
+                    for (let i = 0; i < totalPages; i++) {
+                        buttons.push(
+                            <button
+                                key={i}
+                                onClick={() => setCurrentPage(i + 1)}
+                                className={currentPage === i + 1 ? "active" : ""} // 현재 페이지일 경우 'active' 클래스를 적용합니다.
+                            >
+                                {i + 1}
+                            </button>
+                        );
+                    }
+                    return buttons;
+                })()}
             </div>
         </div>
     );
