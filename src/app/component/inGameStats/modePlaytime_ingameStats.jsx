@@ -1,449 +1,99 @@
 "use client"
+import axios from 'axios';
+import dayjs from 'dayjs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useEffect, useMemo, useState } from 'react';
 
-const match_result = [
-    {
-        result_idx: 5001,
-        match_play_time: 20,
-        potg: 0,
-        vitory_or_defeat: "victory",
-        heroes: {
-            heroes_idx: 19,
-            heros_name: "소전",
-            role: "공격",
-        },
-        match_table: {
-            match_idx: 1,
-            match_date: "2025-12-16",
-            match_mode: "경쟁전",
-            match_end_time: "2025-12-16 21:06:00.000",
-            match_start_time: "2025-12-16 20:46:00.000",
-        },
-        user_id: "annamarie.jast@rogahn.com",
-    },
-    {
-        result_idx: 5002,
-        match_play_time: 20,
-        potg: 0,
-        vitory_or_defeat: "victory",
-        heroes: {
-            heroes_idx: 32,
-            heros_name: "한조",
-            role: "공격",
-        },
-        match_table: {
-            match_idx: 1,
-            match_date: "2025-12-16",
-            match_mode: "경쟁전",
-            match_end_time: "2025-12-16 21:06:00.000",
-            match_start_time: "2025-12-16 20:46:00.000",
-        },
-        user_id: "shaunta.bechtelar@prosacco.com"
-    },
-    {
-        result_idx: 5003,
-        match_play_time: 20,
-        potg: 0,
-        vitory_or_defeat: "victory",
-        heroes: {
-            heroes_idx: 27,
-            heros_name: "캐서디",
-            role: "공격",
-        },
-        match_table: {
-            match_idx: 1,
-            match_date: "2025-12-16",
-            match_mode: "경쟁전",
-            match_end_time: "2025-12-16 21:06:00.000",
-            match_start_time: "2025-12-16 20:46:00.000",
-        },
-        user_id: "josh.howell@dare.com"
-    },
-    {
-        result_idx: 5004,
-        match_play_time: 20,
-        potg: 0,
-        vitory_or_defeat: "victory",
-        heroes: {
-            heroes_idx: 3,
-            heros_name: "라마트라",
-            role: "돌격",
-        },
-        match_table: {
-            match_idx: 1,
-            match_date: "2025-12-16",
-            match_mode: "경쟁전",
-            match_end_time: "2025-12-16 21:06:00.000",
-            match_start_time: "2025-12-16 20:46:00.000",
-        },
-        user_id: "jarod.wuckert@halvorson.com"
-    },
-    {
-        result_idx: 5005,
-        match_play_time: 20,
-        potg: 0,
-        vitory_or_defeat: "victory",
-        heroes: {
-            heroes_idx: 25,
-            heros_name: "위도우메이커",
-            role: "공격",
-        },
-        match_table: {
-            match_idx: 1,
-            match_date: "2025-12-16",
-            match_mode: "경쟁전",
-            match_end_time: "2025-12-16 21:06:00.000",
-            match_start_time: "2025-12-16 20:46:00.000",
-        },
-        user_id: "gil.dickens@hahn.com"
-    },
-    {
-        result_idx: 5006,
-        match_play_time: 20,
-        potg: 0,
-        vitory_or_defeat: "defeat",
-        heroes: {
-            heroes_idx: 31,
-            heros_name: "프레야",
-            role: "공격",
-        },
-        match_table: {
-            match_idx: 1,
-            match_date: "2025-12-16",
-            match_mode: "경쟁전",
-            match_end_time: "2025-12-16 21:06:00.000",
-            match_start_time: "2025-12-16 20:46:00.000",
-        },
-        user_id: "nathanael.pfeffer@deckow.com"
-    },
-    {
-        result_idx: 5007,
-        match_play_time: 20,
-        potg: 0,
-        vitory_or_defeat: "defeat",
-        heroes: {
-            heroes_idx: 13,
-            heros_name: "해저드",
-            role: "돌격",
-        },
-        match_table: {
-            match_idx: 1,
-            match_date: "2025-12-16",
-            match_mode: "경쟁전",
-            match_end_time: "2025-12-16 21:06:00.000",
-            match_start_time: "2025-12-16 20:46:00.000",
-        },
-        user_id: "charolette.johnson@collins.com"
-    },
-    {
-        result_idx: 5008,
-        match_play_time: 20,
-        potg: 0,
-        vitory_or_defeat: "defeat",
-        heroes: {
-            heroes_idx: 41,
-            heros_name: "젠야타",
-            role: "지원",
-        },
-        match_table: {
-            match_idx: 1,
-            match_date: "2025-12-16",
-            match_mode: "경쟁전",
-            match_end_time: "2025-12-16 21:06:00.000",
-            match_start_time: "2025-12-16 20:46:00.000",
-        },
-        user_id: "maria.torp@beer.com"
-    },
-    {
-        result_idx: 5009,
-        match_play_time: 20,
-        potg: 0,
-        vitory_or_defeat: "defeat",
-        heroes: {
-            heroes_idx: 43,
-            heros_name: "키리코",
-            role: "지원",
-        },
-        match_table: {
-            match_idx: 1,
-            match_date: "2025-12-16",
-            match_mode: "경쟁전",
-            match_end_time: "2025-12-16 21:06:00.000",
-            match_start_time: "2025-12-16 20:46:00.000",
-        },
-        user_id: "malcom.windler@lehner.com"
-    },
-    {
-        result_idx: 5010,
-        match_play_time: 20,
-        potg: 1,
-        vitory_or_defeat: "defeat",
-        heroes: {
-            heroes_idx: 30,
-            heros_name: "파라",
-            role: "공격",
-        },
-        match_table: {
-            match_idx: 1,
-            match_date: "2025-12-16",
-            match_mode: "경쟁전",
-            match_end_time: "2025-12-16 21:06:00.000",
-            match_start_time: "2025-12-16 20:46:00.000",
-        },
-        user_id: "doloris.kohler@hane.com"
-    },
-    {
-        result_idx: 5011,
-        match_play_time: 36,
-        potg: 0,
-        vitory_or_defeat: "victory",
-        heroes: {
-            heroes_idx: 8,
-            heros_name: "시그마",
-            role: "돌격",
-        },
-        match_table: {
-            match_idx: 2,
-            match_date: "2025-08-14",
-            match_mode: "빠른대전",
-            match_end_time: "2025-08-14 01:09:00.000",
-            match_start_time: "2025-08-14 00:33:00.000",
-        },
-        user_id: "maggie.pfannerstill@witting.com"
-    },
-    {
-        result_idx: 5012,
-        match_play_time: 36,
-        potg: 1,
-        vitory_or_defeat: "victory",
-        heroes: {
-            heroes_idx: 39,
-            heros_name: "아나",
-            role: "지원",
-        },
-        match_table: {
-            match_idx: 2,
-            match_date: "2025-08-14",
-            match_mode: "빠른대전",
-            match_end_time: "2025-08-14 01:09:00.000",
-            match_start_time: "2025-08-14 00:33:00.000",
-        },
-        user_id: "ma.kassulke@roob.com"
-    },
-    {
-        result_idx: 5013,
-        match_play_time: 36,
-        potg: 0,
-        vitory_or_defeat: "victory",
-        heroes: {
-            heroes_idx: 36,
-            heros_name: "모이라",
-            role: "지원",
-        },
-        match_table: {
-            match_idx: 2,
-            match_date: "2025-08-14",
-            match_mode: "빠른대전",
-            match_end_time: "2025-08-14 01:09:00.000",
-            match_start_time: "2025-08-14 00:33:00.000",
-        },
-        user_id: "xavier.boyle@wuckert.com"
-    },
-    {
-        result_idx: 5014,
-        match_play_time: 36,
-        potg: 0,
-        vitory_or_defeat: "victory",
-        heroes: {
-            heroes_idx: 42,
-            heros_name: "주노",
-            role: "지원",
-        },
-        match_table: {
-            match_idx: 2,
-            match_date: "2025-08-14",
-            match_mode: "빠른대전",
-            match_end_time: "2025-08-14 01:09:00.000",
-            match_start_time: "2025-08-14 00:33:00.000",
-        },
-        user_id: "helene.ledner@grimes.com"
-    },
-    {
-        result_idx: 5015,
-        match_play_time: 36,
-        potg: 0,
-        vitory_or_defeat: "victory",
-        heroes: {
-            heroes_idx: 4,
-            heros_name: "라인하르트",
-            role: "돌격",
-        },
-        match_table: {
-            match_idx: 2,
-            match_date: "2025-08-14",
-            match_mode: "빠른대전",
-            match_end_time: "2025-08-14 01:09:00.000",
-            match_start_time: "2025-08-14 00:33:00.000",
-        },
-        user_id: "pete.emard@white.com"
-    },
-    {
-        result_idx: 5016,
-        match_play_time: 36,
-        potg: 0,
-        vitory_or_defeat: "defeat",
-        heroes: {
-            heroes_idx: 11,
-            heros_name: "자리야",
-            role: "돌격",
-        },
-        match_table: {
-            match_idx: 2,
-            match_date: "2025-08-14",
-            match_mode: "빠른대전",
-            match_end_time: "2025-08-14 01:09:00.000",
-            match_start_time: "2025-08-14 00:33:00.000",
-        },
-        user_id: "kennith.jacobson@brown.com"
-    },
-    {
-        result_idx: 5017,
-        match_play_time: 36,
-        potg: 0,
-        vitory_or_defeat: "defeat",
-        heroes: {
-            heroes_idx: 24,
-            heros_name: "에코",
-            role: "공격",
-        },
-        match_table: {
-            match_idx: 2,
-            match_date: "2025-08-14",
-            match_mode: "빠른대전",
-            match_end_time: "2025-08-14 01:09:00.000",
-            match_start_time: "2025-08-14 00:33:00.000",
-        },
-        user_id: "isis.klein@rutherford.com"
-    },
-    {
-        result_idx: 5018,
-        match_play_time: 36,
-        potg: 0,
-        vitory_or_defeat: "defeat",
-        heroes: {
-            heroes_idx: 43,
-            heros_name: "키리코",
-            role: "지원",
-        },
-        match_table: {
-            match_idx: 2,
-            match_date: "2025-08-14",
-            match_mode: "빠른대전",
-            match_end_time: "2025-08-14 01:09:00.000",
-            match_start_time: "2025-08-14 00:33:00.000",
-        },
-        user_id: "ronny.sporer@gerlach.com"
-    },
-    {
-        result_idx: 5019,
-        match_play_time: 36,
-        potg: 0,
-        vitory_or_defeat: "defeat",
-        heroes: {
-            heroes_idx: 2,
-            heros_name: "둠피스트",
-            role: "돌격",
-        },
-        match_table: {
-            match_idx: 2,
-            match_date: "2025-08-14",
-            match_mode: "빠른대전",
-            match_end_time: "2025-08-14 01:09:00.000",
-            match_start_time: "2025-08-14 00:33:00.000",
-        },
-        user_id: "keturah.oconner@leuschke.com"
-    },
-    {
-        result_idx: 5020,
-        match_play_time: 36,
-        potg: 0,
-        vitory_or_defeat: "defeat",
-        heroes: {
-            heroes_idx: 21,
-            heros_name: "솜브라",
-            role: "공격",
-        },
-        match_table: {
-            match_idx: 2,
-            match_date: "2025-08-14",
-            match_mode: "빠른대전",
-            match_end_time: "2025-08-14 01:09:00.000",
-            match_start_time: "2025-08-14 00:33:00.000",
-        },
-        user_id: "daniell.welch@borer.com"
-    }
-]
+const URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ModePlaytime_IngameStats() {
-    const playTimeByMode = {};
 
-    match_result.forEach((entry) => {
-        const mode = entry.match_table?.match_mode ?? "기타";
-        const time = entry.match_play_time ?? 0;
+    // 모드별 플레이타임 데이터를 저장하는 state
+    const [modePlaytimeData, setModePlaytimeData] = useState([]);
 
-        if (!playTimeByMode[mode]) {
-            playTimeByMode[mode] = 0;
+    // 오늘 날짜를 'YYYY-MM-DD' 형식으로 저장
+    const today = dayjs().format('YYYY-MM-DD');
+
+    // 컴포넌트가 마운트될 때 한 번만 실행
+    useEffect(() => {
+        // 세션 스토리지에서 토큰을 가져옴
+        const token = sessionStorage.getItem('token');
+        // 토큰이 없으면 함수 종료
+        if (!token) return;
+        // 토큰이 있으면 모드별 플레이타임 데이터를 가져오는 함수 호출
+        getModePlaytimeData(token);
+    }, []);
+
+    // API로부터 모드별 플레이타임 데이터를 가져오는 비동기 함수
+    const getModePlaytimeData = async (token) => {
+        try {
+            // API에 GET 요청을 보내 데이터를 가져옴
+            const { data } = await axios.get(`${URL}/get/mode-playtime`, {
+                headers: { Authorization: token } // 요청 헤더에 인증 토큰 추가
+            });
+            console.log(data); // 받아온 데이터를 콘솔에 출력
+            // 받아온 데이터 리스트를 state에 저장
+            setModePlaytimeData(data.list);
+        } catch (error) {
+            // 에러 발생 시 콘솔에 에러 메시지 출력
+            console.error('모드별 플레이타임 불러오기 실패:', error);
         }
-        playTimeByMode[mode] += time;
-    });
+    };
 
-    const chartData = Object.entries(playTimeByMode).map(([match_mode, total_play_time]) => ({
-        match_mode,
-        total_play_time
-    }));
+    // useMemo를 사용하여 modePlaytimeData가 변경될 때만 총 플레이타임을 다시 계산
+    const total = useMemo(() => {
+        // reduce를 사용하여 모든 모드의 플레이타임을 합산
+        return modePlaytimeData.reduce((sum, item) => sum + item.totalPlayTime, 0);
+    }, [modePlaytimeData]);
+
+    // useMemo를 사용하여 modePlaytimeData나 total이 변경될 때만 차트 데이터를 다시 생성
+    const chartDataWithTotal = useMemo(() => {
+        return [
+            ...modePlaytimeData, // 기존 모드별 데이터
+            { matchMode: '총합', totalPlayTime: total } // 총합 데이터 추가
+        ];
+    }, [modePlaytimeData, total]);
+
+
 
     return (
         <div className={"ingameStats-chartWrapper-modePlaytime"}>
-            <h2 className={"userStats-title"}>전체 유저의 모드별 플레이타임</h2>
+            <h2 className={"userStats-title"}>전체 유저의 모드별 플레이타임 <span className="ingameStats-date">{today} 기준</span></h2>
             <div className="tierStats-chartWrapper-datalist">
-                {/* 표 영역 */}
+                {/* 표 영역: 모드별 플레이타임을 표 형태로 표시 */}
                 <div className="tierStats-chartWrapper-tableBox">
                     <div className="row header">
                         <div className="cell">게임 모드</div>
                         <div className="cell">총 플레이 시간</div>
                     </div>
-                    {chartData.map((mode, idx) => (
+                    {/* chartDataWithTotal 배열을 순회하며 각 모드의 데이터를 행으로 표시 */}
+                    {chartDataWithTotal.map((mode, idx) => (
                         <div className="row" key={idx}>
-                            <div className="cell">{mode.match_mode}</div>
-                            <div className="cell">{mode.total_play_time}분</div>
+                            <div className="cell">{mode.matchMode}</div>
+                            {/* 플레이타임을 분 단위에서 시간 단위로 변환하여 소수점 첫째 자리까지 표시 */}
+                            <div className="cell">{(mode.totalPlayTime / 60).toFixed(1)} 시간</div>
                         </div>
                     ))}
-                    <div className="row total">
-                        <div className="cell">총합</div>
-                        <div className="cell">
-                            {
-                                chartData.reduce((sum, item) => sum + item.total_play_time, 0)
-                            }분
-                        </div>
-                    </div>
+
                 </div>
-                <ResponsiveContainer width="60%" height={310}>
+                {/* 차트 영역: 모드별 플레이타임을 막대 차트로 시각화 */}
+                <ResponsiveContainer width="100%" height={600}>
                     <BarChart
-                        data={chartData}
-                        margin={{ top: 20, right: 30, left: 40, bottom: 20 }}
+                        data={chartDataWithTotal} // 차트에 사용될 데이터
+                        margin={{ top: 20, right: 30, left: 40, bottom: 20 }} // 차트 여백 설정
                     >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="match_mode" />
-                        <YAxis unit="분" />
+                        <CartesianGrid strokeDasharray="3 3" /> {/* 차트 배경 그리드 */}
+                        <XAxis dataKey="matchMode" /> {/* X축: 게임 모드 */}
+                        <YAxis unit="시간" tickFormatter={(value) => (value / 60).toFixed(0)} /> {/* Y축: 단위 '시간', 60으로 나누어 시간 단위로 표시 */}
                         <Tooltip
-                            formatter={(value) => `${value}분`}
-                            contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
-                            cursor={{ fill: '#1c1b23' }}
+                            formatter={(value) => `${(value / 60).toFixed(1)} 시간`} // 툴팁 내용 포맷 지정 (시간 단위로 변환)
+                            contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }} // 툴팁 스타일
+                            cursor={{ fill: '#1c1b23' }} // 툴팁 커서 스타일
                         />
-                        <Bar dataKey="total_play_time" fill="#9C27B0" name="총 플레이 시간" />
+                        <Bar dataKey="totalPlayTime" fill="#9C27B0" name="총 플레이 시간" /> {/* 막대: 총 플레이 시간 */}
                     </BarChart>
                 </ResponsiveContainer>
             </div>
         </div>
     );
-}   
+}
