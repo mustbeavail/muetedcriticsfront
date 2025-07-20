@@ -75,6 +75,8 @@
 }
 
 .itemStats-select {
+    display: flex;
+    justify-content: end;
     width: 200px;
     padding: 0.5rem 0.9rem;
     font-size: 0.875rem;

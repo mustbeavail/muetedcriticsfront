@@ -1,5 +1,4 @@
 "use client"
-// 필요한 라이브러리 및 컴포넌트 임포트
 import axios from 'axios';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -45,9 +44,9 @@ export default function HeroItem_IngameStats() {
         }
     }
 
-    /**
-     * 현재 페이지에 해당하는 데이터를 계산하는 Memoized 값
-     */
+    // --- PAGINATION ---
+    // 현재 페이지에 표시할 데이터를 계산합니다.
+    // 'heroItemData'나 'currentPage'가 변경될 때만 재계산하여 성능을 최적화합니다.
     const pagedData = useMemo(() => {
         const start = (currentPage - 1) * itemsPerPage; // 현재 페이지의 시작 인덱스
         return heroItemData.slice(start, start + itemsPerPage); // heroItemData에서 현재 페이지에 해당하는 부분만 잘라내기

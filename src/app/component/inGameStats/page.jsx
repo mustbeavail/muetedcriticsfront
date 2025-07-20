@@ -40,7 +40,7 @@ const InGameStats = () => {
 
         <ModePlaytime_IngameStats />
         <HeroWinningRate_IngameStats />
-        {/* <HeroPickorBan_IngameStats /> */}
+        <HeroPickorBan_IngameStats />
       </div >
     </>
   );
