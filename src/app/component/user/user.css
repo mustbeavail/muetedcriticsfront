@@ -50,8 +50,7 @@
 
 .user-list-heroPlayData {
     width: 100%;
-    /* height: 100%; */
-    background: #1c1b23;
+    background: #1c1b2350;
     border-radius: 16px;
     padding: 20px;
     box-sizing: border-box;
