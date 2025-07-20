@@ -112,7 +112,7 @@ const Report = () => {
               <div className="cell">처리 여부</div>
             </div>
             {currentReportList.map((report, index) => (
-              <div className="row" key={index}>
+              <div className={`row ${report.status === "완료" ? "status-complete" : ''}`} key={index}>
                 <div className="cell">{formatDate(report.createdAt)}</div>
                 <div className="cell">
                   <Link className='report-detail-link' href={`/component/report/${report.inquiryIdx}`}>

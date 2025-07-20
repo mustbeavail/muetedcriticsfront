@@ -148,6 +148,10 @@
     text-decoration: underline;
 }
 
+.status-complete {
+    background-color: #7f748c40;
+}
+
 @media (max-width: 768px) {
     .report-table .row {
         flex-direction: column;

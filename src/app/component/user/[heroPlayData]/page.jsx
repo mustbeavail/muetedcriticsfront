@@ -2,6 +2,7 @@
 import { useParams } from "next/navigation";
 import Header from "@/Header/page";
 import Menu from "@/menu/Menu";
+import "../user.css";
 
 import { FaCrown } from "react-icons/fa";
 import { MdMoreTime } from "react-icons/md";

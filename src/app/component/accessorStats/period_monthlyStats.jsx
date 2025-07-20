@@ -1,75 +1,103 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import axios from 'axios';
 
-export default function PeriodMonthlyStats({ access_stats }) {
-    const [filteredStats, setFilteredStats] = useState(access_stats);
+const URL = process.env.NEXT_PUBLIC_API_URL;
 
-    // 월간 이용자 수 데이터 가공
-    const monthlyAccessData = useMemo(() => {
-        // 날짜별로 그룹화된 데이터 생성
-        const dailyCounts = {};
+export default function PeriodMonthlyStats() {
+    const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
 
-        filteredStats.forEach(stat => {
-            const date = stat.access_time.split(' ')[0]; // 날짜 부분만 추출
-            if (!dailyCounts[date]) {
-                dailyCounts[date] = { date, uniqueUsers: new Set() };
+    const [fromYear, setFromYear] = useState('');
+    const [fromMonth, setFromMonth] = useState('');
+    const [toYear, setToYear] = useState('');
+    const [toMonth, setToMonth] = useState('');
+    const [monthlyData, setMonthlyData] = useState([]);
+
+    useEffect(() => {
+        const now = new Date();
+        setFromYear(now.getFullYear().toString());
+        setFromMonth((now.getMonth() + 1).toString());
+        setToYear(now.getFullYear().toString());
+        setToMonth((now.getMonth() + 1).toString());
+    }, []);
+
+    const monthlyAccessData = async () => {
+        if (!fromYear || !fromMonth || !toYear || !toMonth) {
+            alert("모든 날짜 값을 선택해 주세요.");
+            return;
+        }
+        if (fromYear > toYear) {
+            alert("시작 년도는 종료 년도보다 앞서야 합니다.");
+            return;
+        }
+        if (fromYear === toYear && fromMonth > toMonth) {
+            alert("시작 월은 종료 월보다 앞서야 합니다.");
+            return;
+        }
+
+        const { data } = await axios.get(`${URL}/activity/periodMonthlyUser`, {
+            params: {
+                fromYear,
+                fromMonth,
+                toYear,
+                toMonth
+            },
+            headers: {
+                authorization: token
             }
-            dailyCounts[date].uniqueUsers.add(stat.user_id);
         });
-
-        // 월별로 데이터 그룹화
-        const monthlyCounts = {};
-
-        Object.values(dailyCounts).forEach(dayData => {
-            const date = new Date(dayData.date);
-            const yearMonth = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-
-            if (!monthlyCounts[yearMonth]) {
-                monthlyCounts[yearMonth] = { month: yearMonth, uniqueUsers: new Set() };
-            }
-
-            dayData.uniqueUsers.forEach(user => {
-                monthlyCounts[yearMonth].uniqueUsers.add(user);
-            });
-        });
-
-        // 월별 데이터를 날짜순으로 정렬
-        return Object.values(monthlyCounts)
-            .map(item => ({
-                월: item.month,
-                이용자수: item.uniqueUsers.size
-            }))
-            .sort((a, b) => a.월.localeCompare(b.월));
-    }, [filteredStats]);
+        console.log(data.periodMAU);
+        setMonthlyData(data.periodMAU);
+    }
 
     return (
         <>
             <div className={"accessorStats-chartWrapper"}>
                 <h2 className={"accessorStats-title"}>월간 활성 이용자 수</h2>
                 <div className="itemStats-filterBox">
-                    <span>년도 선택
-                        <select className="itemStats-select" value={""}>
-                            <option value="">선택</option>
+                    <span>시작 년도 선택
+                        <select className="itemStats-select" value={fromYear} onChange={(e) => setFromYear(e.target.value)}>
+                            <option>2020</option>
+                            <option>2021</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option>2025</option>
                         </select>
                     </span>
-                    <span>기간 시작일
-                        <select className="itemStats-select" value={""}>
-                            <option value="">선택</option>
+                    <span>시작 월 선택
+                        <select className="itemStats-select" value={fromMonth} onChange={(e) => setFromMonth(e.target.value)}>
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
+                                <option key={month} value={month}>{month}</option>
+                            ))}
                         </select>
                     </span>
-                    <span>기간 종료일
-                        <select className="itemStats-select" value={""}>
-                            <option value="">선택</option>
+                    <span>종료 년도 선택
+                        <select className="itemStats-select" value={toYear} onChange={(e) => setToYear(e.target.value)}>
+                            <option>2020</option>
+                            <option>2021</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option>2025</option>
                         </select>
                     </span>
+                    <span>종료 월 선택
+                        <select className="itemStats-select" value={toMonth} onChange={(e) => setToMonth(e.target.value)}>
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
+                                <option key={month} value={month}>{month}</option>
+                            ))}
+                        </select>
+                    </span>
+                    <button onClick={monthlyAccessData}>조회</button>
                 </div>
 
                 <div className="stats-chart-container" style={{ height: '900px', marginTop: '20px' }}>
-                    {monthlyAccessData.length > 0 ? (
+                    {Array.isArray(monthlyData) && monthlyData.length > 0 ? (
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart
-                                data={monthlyAccessData}
+                                data={monthlyData}
                                 margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
                             >
                                 <defs>
@@ -80,7 +108,7 @@ export default function PeriodMonthlyStats({ access_stats }) {
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
-                                    dataKey="월"
+                                    dataKey="month"
                                     angle={-45}
                                     textAnchor="end"
                                     height={70}
@@ -95,7 +123,7 @@ export default function PeriodMonthlyStats({ access_stats }) {
                                 <Legend />
                                 <Area
                                     type="monotone"
-                                    dataKey="이용자수"
+                                    dataKey="MAU"
                                     stroke="#2196F3"
                                     strokeWidth={2}
                                     fill="url(#colorGradientMonthly)"
@@ -112,7 +140,7 @@ export default function PeriodMonthlyStats({ access_stats }) {
                             height: '100%',
                             color: '#fff'
                         }}>
-                            선택한 기간에 데이터가 없습니다.
+                            선택한 기간의 데이터가 존재하지 않습니다.
                         </div>
                     )}
                 </div>
