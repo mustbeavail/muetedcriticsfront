@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { FaClock, FaGlobe } from 'react-icons/fa';
 import { FiMoreVertical } from 'react-icons/fi';
 import "./user.css";
-import Link from 'next/link';
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
 import axios from 'axios';
