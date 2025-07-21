@@ -480,7 +480,8 @@
 
 .user-list-closeBtn,
 .user-list-saveBtn,
-.user-list-editBtn {
+.user-list-editBtn,
+.user-list-deleteBtn {
     padding: 10px 20px;
     border-radius: 12px;
     font-weight: 600;
@@ -489,6 +490,16 @@
     cursor: pointer;
     transition: all 0.22s ease;
     backdrop-filter: blur(4px);
+}
+
+.user-list-deleteBtn {
+    background: #ff4d4d;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(255, 77, 77, 0.3);
+}
+
+.user-list-deleteBtn:hover {
+    background: rgba(182, 0, 0, 0.8);
 }
 
 /* 닫기 버튼 */
@@ -515,23 +526,22 @@
 
 /* 저장 버튼 */
 .user-list-saveBtn {
-    background: #AECCEE;
-    /* 살짝 은은한 파란 포인트 */
-    color: #1e1e26;
+    background: #8d35f0;
+    color: white;
     font-weight: 700;
-    box-shadow: 0 4px 12px rgba(174, 204, 238, 0.3);
+    box-shadow: 0 4px 12px rgba(141, 53, 240, 0.3);
 }
 
 .user-list-saveBtn:hover {
-    background: #c0ddfb;
+    background: #7322d0;
 }
+
 
 /* 메모 textarea */
 .user-list-memoTextarea {
     width: 100%;
     height: 150px;
     background: rgba(44, 44, 44, 0.95);
-    /* 다크 */
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
     padding: 14px;
@@ -723,33 +733,6 @@
     margin-top: 16px;
 }
 
-.user-list-closeBtn,
-.user-list-saveBtn,
-.user-list-editBtn {
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.user-list-closeBtn {
-    background-color: #555;
-    color: #fff;
-}
-
-.user-list-editBtn {
-    background-color: #a678e2;
-    color: #fff;
-}
-
-.user-list-saveBtn {
-    background-color: #56c1ff;
-    color: #1e1d24;
-}
-
 .user-list-searchGroup {
     display: flex;
     align-items: center;
@@ -761,4 +744,14 @@
     flex-basis: 100%;
     height: 0;
     /* 높이는 없어야 공간을 차지하지 않음 */
+}
+
+.user-list-modalHeaderBtns {
+    display: flex;
+    gap: 10px;
+}
+
+.user-list-modalHeaderBtns button {
+    padding: 8px 16px;
+    border-radius: 10px;
 }
