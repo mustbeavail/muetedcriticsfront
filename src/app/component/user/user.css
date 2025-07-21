@@ -763,3 +763,10 @@ select.user-list-sortSelect option {
     padding: 8px 16px;
     border-radius: 10px;
 }
+
+.user-list-otherMemoItem.selected {
+    background-color: rgba(141, 53, 240, 0.2);
+    border: 1px solid #8d35f0;
+    border-radius: 8px;
+    padding: 5px;
+}

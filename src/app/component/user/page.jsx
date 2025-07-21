@@ -40,6 +40,10 @@ export default function User() {
   const [memoLoading, setMemoLoading] = useState(false);
   const [showWriteMemoModal, setShowWriteMemoModal] = useState(false);
   const [memoContent, setMemoContent] = useState('');
+  const [selectedMemo, setSelectedMemo] = useState(null);
+  const [showEditMemoModal, setShowEditMemoModal] = useState(false);
+  const [editMemoContent, setEditMemoContent] = useState('');
+
 
   const itemsPerPage = 10;
 
@@ -109,6 +113,7 @@ export default function User() {
   // 메모 모달 열기(메모 리스트 불러오기)
   const openMemoModal = async (user) => {
     setSelectedUser(user);
+    setSelectedMemo(null);
     setShowMemoModal(true);
     setMemoLoading(true);
     try {
@@ -129,14 +134,19 @@ export default function User() {
       const { data } = await axios.post(`${URL}/user/write/memo`, {
         memberId: sessionStorage.getItem('member_id'),
         userId: userId,
-        memoContent: memoContent
+        memo: memoContent
       },
         {
           headers: { Authorization: sessionStorage.getItem('token') }
         });
-      console.log("메모 작성 성공 : ", data);
+      alert(data.msg); // 메모 작성 완료 메시지 표시
     } catch (error) {
       console.log("메모 작성 실패 : ", error);
+      if (error.response.data.msg) {
+        alert(error.response.data.msg);
+      } else {
+        alert("메모 작성에 실패했습니다.");
+      }
     }
   };
 
@@ -169,48 +179,93 @@ export default function User() {
   };
 
 
+  // // 메모 수정폼 불러오기 (현재 구조에서는 사용할 필요 없음!!!)
+  // const updateMemoPage = async (memoIdx) => {
+  //   try {
+  //     const { data } = await axios.get(`${URL}/user/${memoIdx}/update-page`, {
+  //       memberId: sessionStorage.getItem('member_id')
+  //     }, {
+  //       headers: { Authorization: sessionStorage.getItem('token') }
+  //     });
+  //     console.log("메모 수정 페이지 열기 성공 : ", data);
+  //   } catch (error) {
+  //     console.log("메모 수정 페이지 열기 실패 : ", error);
+  //   }
+  // };
 
-  // 메모 수정페이지 열기
-  const updateMemoPage = async (memoIdx) => {
-    try {
-      const { data } = await axios.get(`${URL}/user/${memoIdx}/update-page`, {
-        memberId: sessionStorage.getItem('member_id')
-      }, {
-        headers: { Authorization: sessionStorage.getItem('token') }
-      });
-      console.log("메모 수정 페이지 열기 성공 : ", data);
-    } catch (error) {
-      console.log("메모 수정 페이지 열기 실패 : ", error);
+  // 메모 수정 모달 열기
+  const handleEditMemoClick = () => {
+    if (!selectedMemo) {
+      alert('수정할 메모를 선택하세요.');
+      return;
     }
+    setEditMemoContent(selectedMemo.memoContent);
+    setShowEditMemoModal(true);
   };
+
+  // 메모 수정 반영하기
+  const handleUpdateMemo = async () => {
+    if (!editMemoContent.trim()) {
+      alert("메모 내용을 입력하세요.");
+      return;
+    }
+    await updateMemo(selectedMemo.memoIdx, editMemoContent);
+    setShowEditMemoModal(false);
+    setEditMemoContent('');
+    // 메모 리스트 새로고침
+    openMemoModal(selectedUser);
+  };
+
 
   // 메모 수정하기
   const updateMemo = async (memoIdx, memoContent) => {
     try {
       const { data } = await axios.put(`${URL}/user/${memoIdx}/update`, {
         memberId: sessionStorage.getItem('member_id'),
-        memoContent: memoContent
+        memo: memoContent
       },
         {
           headers: { Authorization: sessionStorage.getItem('token') }
         });
-      console.log("메모 수정 성공 : ", data);
+      alert(data.msg); // 메모 수정 완료 메시지 표시
     } catch (error) {
       console.log("메모 수정 실패 : ", error);
+      if (error.response.data.msg) {
+        alert(error.response.data.msg);
+      } else {
+        alert("메모 수정에 실패했습니다.");
+      }
     }
   };
 
+  // 수정 모달 닫기
+  const closeEditMemoModal = () => {
+    setShowEditMemoModal(false);
+    setEditMemoContent('');
+  };
+
   // 메모 삭제하기
-  const deleteMemo = async (memoIdx) => {
+  const deleteMemo = async () => {
+    if (!selectedMemo) {
+      alert("삭제할 메모를 선택하세요.");
+      return;
+    }
     try {
-      const { data } = await axios.delete(`${URL}/user/${memoIdx}/delete`, {
-        memberId: sessionStorage.getItem('member_id')
-      }, {
-        headers: { Authorization: sessionStorage.getItem('token') }
+      await axios.delete(`${URL}/user/${selectedMemo.memoIdx}/delete`, {
+        headers: { Authorization: sessionStorage.getItem('token') },
+        data: { memberId: sessionStorage.getItem('member_id') }
       });
-      console.log("메모 삭제 성공 : ", data);
+      alert("메모가 삭제되었습니다.");
+      // 메모 리스트 새로고침
+      openMemoModal(selectedUser);
+      setSelectedMemo(null);
     } catch (error) {
       console.log("메모 삭제 실패 : ", error);
+      if (error.response.data.msg) {
+        alert(error.response.data.msg);
+      } else {
+        alert("메모 삭제에 실패했습니다.");
+      }
     }
   };
 
@@ -219,6 +274,7 @@ export default function User() {
     setShowMemoModal(false);
     setMemoList([]);
     setSelectedUser(null);
+    setSelectedMemo(null);
   };
 
   // 검색 타입 변경
@@ -280,9 +336,29 @@ export default function User() {
     setOpenMenuId(openMenuId === id ? null : id);
   };
 
+
+
+
+
+  // 유저 상세보기 불러오기
+  const getUserDetail = async (userId) => {
+    try {
+      const { data } = await axios.get(`${URL}/user/detail`, {
+        headers: { Authorization: sessionStorage.getItem('token') },
+        params: {
+          userId: userId
+        }
+      });
+      console.log("유저 상세보기 불러오기 성공 : ", data.userDetail[0]);
+      setSelectedUser(data.userDetail[0]);
+    } catch (error) {
+      console.log("유저 상세보기 불러오기 실패 : ", error);
+    }
+  };
+
   // 유저 상세보기 열기
   const openUserDetail = (user) => {
-    setSelectedUser(user);
+    getUserDetail(user.userId);
     setOpenMenuId(null);
   };
 
@@ -417,21 +493,24 @@ export default function User() {
         <div className="user-list-modalBackdrop">
           <div className="user-list-modal">
             <div className="user-list-modalHeader">
-              <div className="user-list-userName">{selectedUser.userNick}</div>
+              <div className="user-list-userName">{selectedUser.user_nick}</div>
               <div className="user-list-tags">
-                <span className={`user-list-tag user-list-tag_${selectedUser.userType}`}>
-                  {selectedUser.userType}{selectedUser.vipYn ? ' (VIP)' : ''}
+                <span className={`user-list-tag user-list-tag_${selectedUser.user_type}`}>
+                  {selectedUser.user_type}{selectedUser.vip_yn ? ' (VIP)' : ''}
                 </span>
               </div>
             </div>
             <hr className="user-list-divider" />
             <div className="user-list-modalContent">
               <ul>
-                <li><strong>아이디</strong> {selectedUser.userId}</li>
-                <li><strong>접속 지역</strong> {selectedUser.region}</li>
-                <li><strong>플레이 타임</strong> {selectedUser.totalPlayTime}시간</li>
-                <li><strong>총 과금액</strong> ₩ {selectedUser.totalSpent?.toLocaleString() || 0}</li>
-                <li><strong>분류</strong> {selectedUser.userType}{selectedUser.vipYn ? ' (VIP)' : ''}</li>
+                <li><strong>아이디</strong> : {selectedUser.user_id}</li>
+                <li><strong>성별</strong> : {selectedUser.user_gender}</li>
+                <li><strong>전화번호</strong> : {selectedUser.phone?.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') || '-'}</li>
+                <li><strong>접속 지역</strong> : {selectedUser.region}</li>
+                <li><strong>가입일</strong> : {selectedUser.join_date}</li>
+                <li><strong>휴면 전환일</strong> : {selectedUser.dormant_date || '-'}</li>
+                <li><strong>탈퇴일</strong> : {selectedUser.withdraw_date || '-'}</li>
+                <li><strong>분류</strong> : {selectedUser.user_type}{selectedUser.vip_yn ? ' (VIP)' : ''}</li>
               </ul>
             </div>
             <div className="user-list-modalFooter">
@@ -445,10 +524,10 @@ export default function User() {
         <div className="user-list-modalBackdrop">
           <div className="user-list-modal user-list-otherMemoModal">
             <div className="user-list-modalHeader">
-              <div className="user-list-userName">{selectedUser?.userNick}님의 메모</div>
+              <div className="user-list-userName">{selectedUser?.userNick}님에 대한 메모</div>
               <div className="user-list-modalHeaderBtns">
-                <button className="user-list-deleteBtn" onClick={closeMemoModal}>삭제</button>
-                <button className="user-list-editBtn" onClick={closeMemoModal}>수정</button>
+                <button className="user-list-deleteBtn" onClick={deleteMemo}>삭제</button>
+                <button className="user-list-editBtn" onClick={handleEditMemoClick}>수정</button>
                 <button className="user-list-closeBtn" onClick={closeMemoModal}>닫기</button>
               </div>
             </div>
@@ -462,7 +541,10 @@ export default function User() {
                 ) : (
                   <div className="user-list-otherMemoList">
                     {memoList.map((memo) => (
-                      <div key={memo.memoIdx} className="user-list-otherMemoItem" style={{ marginBottom: 20 }}>
+                      <div key={memo.memoIdx}
+                        className={`user-list-otherMemoItem ${selectedMemo?.memoIdx === memo.memoIdx ? 'selected' : ''}`}
+                        style={{ marginBottom: 20 }}
+                        onClick={() => setSelectedMemo(memo)}>
                         <div className="user-list-memoInfo">
                           <span><b>{memo.memberId}</b> 님</span>
                           <span>
@@ -489,7 +571,7 @@ export default function User() {
           <div className="user-list-modal user-list-writeMemoModal">
             <div className="user-list-modalHeader">
               <div className="user-list-userName">
-                <b>{selectedUser?.userNick}</b> 님에게 메모 작성
+                <b>{selectedUser?.userNick}</b> 님에 대한 메모 작성
               </div>
             </div>
             <hr className="user-list-divider" />
@@ -506,6 +588,32 @@ export default function User() {
             <div className="user-list-modalFooter">
               <button className="user-list-closeBtn" onClick={closeWriteMemoModal}>취소</button>
               <button className="user-list-saveBtn" onClick={handleSubmitMemo}>저장</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* 메모 수정 모달 */}
+      {showEditMemoModal && (
+        <div className="user-list-modalBackdrop">
+          <div className="user-list-modal user-list-editMemoModal">
+            <div className="user-list-modalHeader">
+              <div className="user-list-userName">
+                <b>{selectedUser?.userNick}</b> 님의 메모 수정
+              </div>
+            </div>
+            <hr className="user-list-divider" />
+            <div className="user-list-modalContent">
+              <textarea
+                className="user-list-memoTextarea"
+                value={editMemoContent}
+                onChange={e => setEditMemoContent(e.target.value)}
+                rows={6}
+                maxLength={500}
+              />
+            </div>
+            <div className="user-list-modalFooter">
+              <button className="user-list-closeBtn" onClick={closeEditMemoModal}>취소</button>
+              <button className="user-list-saveBtn" onClick={handleUpdateMemo}>수정하기</button>
             </div>
           </div>
         </div>
