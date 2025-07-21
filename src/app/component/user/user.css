@@ -638,6 +638,15 @@ select.user-list-sortSelect option {
     border: 1px solid rgba(141, 53, 240, 0.15);
 }
 
+.user-list-otherMemoList {
+    max-height: 360px;
+    /* 원하는 높이로 조절 */
+    overflow-y: auto;
+    padding-right: 6px;
+    /* 스크롤바 공간 */
+}
+
+
 .user-list-modalTitle {
     font-size: 1.15rem;
     font-weight: 700;

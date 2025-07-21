@@ -160,6 +160,7 @@ export default function User() {
     setMemoContent('');
     // 작성 후 바로 메모 리스트 새로고침 하려면 아래 추가
     // openMemoModal(selectedUser);
+    setSelectedUser(null);
   };
 
 
