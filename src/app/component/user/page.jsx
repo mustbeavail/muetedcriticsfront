@@ -12,8 +12,7 @@ import axios from 'axios';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
-const REGIONS = ['아시아', '북미', '유럽', '아프리카', '오세아니아'];
-const USER_TYPES = ['전체', '일반', '신규', '복귀', '휴면', '정지', '이탈 위험군'];
+const USER_TYPES = ['전체', '일반', '신규', '복귀', '휴면', '정지', '이탈 위험군', 'VIP'];
 
 export default function User() {
   const router = useRouter();
