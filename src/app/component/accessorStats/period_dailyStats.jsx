@@ -50,9 +50,9 @@ export default function PeriodDailyStats() {
                                 margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
                             >
                                 <defs>
-                                    <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#8884d8" stopOpacity={1}/>
-                                        <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                                    <linearGradient id="colorGradientDaily" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#FFEB50" stopOpacity={1}/>
+                                        <stop offset="95%" stopColor="#FFEB50" stopOpacity={0}/>
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -73,9 +73,9 @@ export default function PeriodDailyStats() {
                                 <Area 
                                     type="monotone"
                                     dataKey="DAU"
-                                    stroke="#8884d8" 
+                                    stroke="#FFEB50" 
                                     strokeWidth={2}
-                                    fill="url(#colorGradient)"
+                                    fill="url(#colorGradientDaily)"
                                     dot={{ r: 5 }}
                                     activeDot={{ r: 8 }}
                                 />

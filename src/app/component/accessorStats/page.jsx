@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import '../mail/mail.css';
+import './accessorStats.css';
 import Header from '../../../Header/page';
 import Menu from '../../../menu/Menu';
 import PeriodDailyStats from './period_dailyStats';
