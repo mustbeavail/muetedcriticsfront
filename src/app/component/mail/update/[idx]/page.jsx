@@ -52,6 +52,7 @@ export default function MailSend() {
           setIntervalDays("");
           setNextSendDate("");
           setIsLoading(true);
+          setIsFirstLoad(true);
       
           // 3) 수정할 메일 정보 불러오기
           try {
@@ -77,7 +78,7 @@ export default function MailSend() {
                 setMailContent(data.autoSend.mailContent);
                 setIntervalDays(data.autoSend.intervalDays ? data.autoSend.intervalDays : "");
                 setNextSendDate(data.autoSend.nextSendDate ? data.autoSend.nextSendDate : "");
-                setTemIdx(data.autoSend.temIdx === 0 ? "" : data.autoSend.temIdx);
+                setTemIdx(!data.autoSend.temIdx ? "7" : data.autoSend.temIdx);
                 if (data.autoSend.recipient.includes("@")) {
                     setRecipients(data.autoSend.recipient.split(","));
                     setUserType("개별");
@@ -99,10 +100,6 @@ export default function MailSend() {
     const handleTemplateChange = (e) => {
         const nextIdx = e.target.value;
         if (nextIdx === temIdx) return;
-        if (temIdx === "") {
-            setTemIdx(nextIdx);
-            return;
-        }
         const ok = window.confirm(
           "작성 중인 내용이 저장되지 않습니다.\n템플릿을 변경하시겠습니까?"
         );
@@ -113,13 +110,11 @@ export default function MailSend() {
 
     // 메일 템플릿 가져오기
     useEffect(() => {
-        if (!token || temIdx === "" || isFirstLoad) {
-            setIsFirstLoad(false);
-            setMailContent("");
+        if (!token) {
             return;
         }
-        getTemplate(temIdx, token);
-    }, [temIdx, token]);
+        getTemplate(Number(temIdx), token);
+    }, [temIdx]);
 
     // 메일 템플릿 가져오기
     const getTemplate = async (temIdx, token) => {
@@ -130,7 +125,10 @@ export default function MailSend() {
                 params: {temIdx: temIdx}
             }
         );
-        console.log(data);
+        if (isFirstLoad) {
+            setIsFirstLoad(false)
+            return;
+        }
         setMailContent(data.template.temBody);
         } catch (error) {
             window.removeEventListener("beforeunload", handleBeforeUnload);
@@ -145,8 +143,8 @@ export default function MailSend() {
     const unsaved = useMemo(
         () =>
         temIdx !== "" ||
-        mailSub.trim() !== "" ||
-        mailContent.trim() !== "" ||
+        mailSub !== "" ||
+        mailContent !== "" ||
         recipients.length > 0 ||
         intervalDays !== "" ||
         nextSendDate !== "",
@@ -345,14 +343,14 @@ export default function MailSend() {
                     value={mailSub}
                     />
                     <div className="mailSend-content-container">
-                        <div className={temIdx !== "" ? "mailSend-content-wrapper" : "mailSend-content-wrapper-only"}>
+                        <div className={temIdx !== "7" ? "mailSend-content-wrapper" : "mailSend-content-wrapper-only"}>
                             <span className="mailSend-span">메일 본문 수정</span>
-                            <textarea placeholder="메일의 본문을 입력해주세요." className="mailSend-textarea"
+                            <textarea className="mailSend-textarea"
                             onChange={(e) => setMailContent(e.target.value)}
                             value={mailContent}
                             />
                         </div>
-                            {mailContent && temIdx !== "" ? (
+                            {temIdx !== "7" ? (
                                 <>
                                     <div className="mailSend-preview-wrapper">
                                         <span className="mailSend-span">메일 미리보기</span>

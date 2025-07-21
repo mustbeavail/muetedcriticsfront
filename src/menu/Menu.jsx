@@ -9,6 +9,7 @@ import {
   FaRegQuestionCircle,
   FaEnvelope,
   FaComments,
+  FaInternetExplorer
 } from 'react-icons/fa';
 import { IoIosLogOut } from "react-icons/io";
 
@@ -66,6 +67,12 @@ const Menu = () => {
             >
               <FaEnvelope />
             </a>
+          </div>
+
+          <div className={styles.menu_navItem}>
+            <Link href="/component/forum" className={styles.menu_navIcon}>
+              <FaInternetExplorer />
+            </Link>
           </div>
 
           <div className={styles.menu_navItem}>

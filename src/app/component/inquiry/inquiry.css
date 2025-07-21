@@ -100,7 +100,7 @@
 }
 
 .inquiry-list-select {
-    width: 200px;
+    width: 180px;
     padding: 0.5rem 0.9rem;
     font-size: 0.875rem;
     border: none;
@@ -147,7 +147,7 @@
 
 .status-complete {
     background-color: #7f748c40;
-  }
+}
 
 @media (max-width: 768px) {
     .inquiry-list-table .row {

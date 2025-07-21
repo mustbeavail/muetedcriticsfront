@@ -287,7 +287,7 @@ const Member = () => {
                       <button onClick={() => chatWithMember(member)}>채팅하기</button>
                     </div>
                   )}
-                  {openMenuId === member.memberId && adminYn !== true && (
+                  {openMenuId === member.memberId && adminYn !== 'true' && (
                     <div className="memberList-dropdown">
                       <button onClick={() => chatWithMember(member)}>채팅하기</button>
                     </div>

@@ -6,6 +6,7 @@
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
+    scrollbar-width: none;
     height: calc(100vh - 56px);
     border-radius: 8px;
     background-color: transparent;
@@ -146,6 +147,10 @@
 
 .report-table .cell .report-detail-link:hover {
     text-decoration: underline;
+}
+
+.status-complete {
+    background-color: #7f748c40;
 }
 
 @media (max-width: 768px) {

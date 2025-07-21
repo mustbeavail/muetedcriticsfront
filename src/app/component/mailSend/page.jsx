@@ -18,11 +18,12 @@ export default function MailSend() {
     const [userId, setUserId] = useState("");
     const [recipients, setRecipients] = useState([]);
     const [recipient, setRecipient] = useState("");
-    const [temIdx, setTemIdx] = useState("");
+    const [temIdx, setTemIdx] = useState("7");
     const [mailSub, setMailSub] = useState("");
     const [mailContent, setMailContent] = useState("");
     const [intervalDays, setIntervalDays] = useState("");
     const [reservedDate, setReservedDate] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
 
     // 라우팅 시작할 때 모든 상태 초기화
     useEffect(() => {
@@ -31,11 +32,12 @@ export default function MailSend() {
         setUserId("");
         setRecipients([]);
         setRecipient("");
-        setTemIdx("");
+        setTemIdx("7");
         setMailSub("");
         setMailContent("");
         setIntervalDays("");
         setReservedDate("");
+        setIsLoading(true);
         };
         clearAll();
     }, [pathname]);
@@ -71,8 +73,8 @@ export default function MailSend() {
 
     // 메일 템플릿 가져오기
     useEffect(() => {
-        if (!token || temIdx === "") return;
-        getTemplate(temIdx, token);
+        if (!token) return;
+        getTemplate(Number(temIdx), token);
     }, [temIdx, token]);
 
     // 메일 템플릿 가져오기
@@ -84,7 +86,6 @@ export default function MailSend() {
                 params: {temIdx: temIdx}
             }
         );
-        console.log(data);
         setMailContent(data.template.temBody);
         } catch (error) {
             window.removeEventListener("beforeunload", handleBeforeUnload);
@@ -92,6 +93,8 @@ export default function MailSend() {
             sessionStorage.removeItem("member_id");
             sessionStorage.removeItem("token");
             location.href = '/';
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -99,8 +102,8 @@ export default function MailSend() {
     const unsaved = useMemo(
         () =>
         temIdx !== "" ||
-        mailSub.trim() !== "" ||
-        mailContent.trim() !== "" ||
+        mailSub !== "" ||
+        mailContent !== "" ||
         recipients.length > 0 ||
         intervalDays !== "" ||
         reservedDate !== "",
@@ -214,6 +217,10 @@ export default function MailSend() {
         }
     }
 
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <>
             <Header />
@@ -294,14 +301,14 @@ export default function MailSend() {
                     value={mailSub}
                     />
                     <div className="mailSend-content-container">
-                        <div className={temIdx !== "" ? "mailSend-content-wrapper" : "mailSend-content-wrapper-only"}>
+                        <div className={temIdx !== "7" ? "mailSend-content-wrapper" : "mailSend-content-wrapper-only"}>
                             <span className="mailSend-span">메일 본문 작성</span>
-                            <textarea placeholder="메일의 본문을 입력해주세요." className="mailSend-textarea"
+                            <textarea className="mailSend-textarea"
                             onChange={(e) => setMailContent(e.target.value)}
                             value={mailContent}
                             />
                         </div>
-                            {mailContent && temIdx !== "" ? (
+                            {mailContent !== "" && temIdx !== "7" ? (
                                 <>
                                     <div className="mailSend-preview-wrapper">
                                         <span className="mailSend-span">메일 미리보기</span>

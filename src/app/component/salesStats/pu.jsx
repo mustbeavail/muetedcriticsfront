@@ -1,37 +1,19 @@
-import { XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, AreaChart, Area, Brush } from 'recharts';
 
-// 기간별 구매 유저 수 (PU)
-const puData = [
-    { date: '6.16', value: 142 },
-    { date: '6.17', value: 198 },
-    { date: '6.18', value: 120 },
-    { date: '6.19', value: 170 },
-    { date: '6.20', value: 230 },
-    { date: '6.21', value: 145 },
-    { date: '6.22', value: 210 },
-    { date: '6.23', value: 135 },
-    { date: '6.24', value: 190 },
-    { date: '6.25', value: 160 },
-    { date: '6.26', value: 125 },
-    { date: '6.27', value: 220 },
-    { date: '6.28', value: 175 },
-    { date: '6.29', value: 240 },
-    { date: '6.30', value: 205 },
-    { date: '7.01', value: 130 },
-];
+export default function Pu({
+    token, puStartDate, puEndDate, setPuStartDate, setPuEndDate, getPu, pu}) {
 
-export default function Pu() {
     return (
         <>
             <div className={"salesStats-chartWrapper"}>
                 <h2 className={"salesStats-title"}>📈 기간별 구매 유저 수 (PU)</h2>
                 <div className={"salesStats-filterBox"}>
-                    기간 시작일 <input type="date" />
-                    기간 종료일 <input type="date" />
-                    <button>조회</button>
+                    기간 시작일 <input type="date" value={puStartDate} onChange={(e)=>{setPuStartDate(e.target.value)}}/>
+                    기간 종료일 <input type="date" value={puEndDate} onChange={(e)=>{setPuEndDate(e.target.value)}}/>
+                    <button onClick={()=>{getPu(token, puStartDate, puEndDate)}}>조회</button>
                 </div>
                 <ResponsiveContainer width="100%" height="85%">
-                    <AreaChart data={puData}>
+                    <AreaChart data={pu} margin={{ top: 20, right: 120, bottom: 20, left: 60 }}>
                         <defs>
                             <linearGradient id="puGradient" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="0%" stopColor="#a0d8f7" stopOpacity={1} />
@@ -39,7 +21,7 @@ export default function Pu() {
                             </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                        <XAxis dataKey="date" tick={{ fill: '#aaa' }} />
+                        <XAxis dataKey="stats_date" tick={{ fill: '#aaa' }} />
                         <YAxis tick={{ fill: '#aaa' }} />
                         <Tooltip
                             contentStyle={{ backgroundColor: '#2b2b35', border: 'none' }}
@@ -48,14 +30,23 @@ export default function Pu() {
                         />
                         <Area
                             type="monotone"
-                            dataKey="value"
+                            dataKey="daily_paying_users"
                             stroke="#4ca3dd"
                             fill="url(#puGradient)"
                             strokeWidth={2}
                             dot={{ r: 3, stroke: '#4ca3dd', strokeWidth: 2, fill: '#fff' }}
                         />
+                        <Brush 
+                            dataKey="stats_date" 
+                            height={30} 
+                            stroke="#8884d8"
+                            fill="#3e3e52"
+                            travellerWidth={10} 
+                            gap={4} 
+                        />
                     </AreaChart>
                 </ResponsiveContainer>
+                <span className="chart-tooltip">*드래그해 범위를 조절하세요</span>
             </div>
         </>
     );

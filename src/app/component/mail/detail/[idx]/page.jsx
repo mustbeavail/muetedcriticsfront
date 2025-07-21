@@ -13,6 +13,7 @@ export default function MailDetailPage() {
   const URL = process.env.NEXT_PUBLIC_API_URL;
   const { idx } = useParams();
   const [mailDetail, setMailDetail] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   // 메일 상세 정보 초기값
   const emptyDetail = {
@@ -52,12 +53,19 @@ export default function MailDetailPage() {
       } else {
         setMailDetail(prev => ({...emptyDetail, ...data.autoSend}));
       }
+
     } catch (error) {
       alert("메일 상세 정보 조회 중 오류가 발생했습니다. 다시 로그인 후 이용해주세요.");
       sessionStorage.removeItem("member_id");
       sessionStorage.removeItem("token");
       location.href = '/';
+    } finally {
+      setIsLoading(false);
     }
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   return (
