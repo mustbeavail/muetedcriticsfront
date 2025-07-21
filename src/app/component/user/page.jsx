@@ -209,6 +209,7 @@ export default function User() {
           />
           <button className="user-list-searchBtn" onClick={handleSearchBtn}></button>
         </div>
+
         {/* 지역 드롭다운 */}
         <select className="user-list-sortSelect" value={region} onChange={handleRegionChange}>
           <optgroup label='지역'>
@@ -233,6 +234,8 @@ export default function User() {
             </button>
           ))}
         </div>
+
+        <div className="flex-break"></div>
 
         {/* 정렬 */}
         <select className="user-list-sortSelect" value={sortKey} onChange={handleSortKeyChange}>
