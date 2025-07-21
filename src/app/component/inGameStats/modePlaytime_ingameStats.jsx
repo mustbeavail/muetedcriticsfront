@@ -13,8 +13,8 @@ export default function ModePlaytime_IngameStats() {
     // 모드별 플레이타임 데이터를 저장하는 state
     const [modePlaytimeData, setModePlaytimeData] = useState([]);
 
-    // 오늘 날짜를 'YYYY-MM-DD' 형식으로 저장
-    const today = format(new Date(), 'YYYY-MM-DD');
+    // 오늘 날짜를 'yyyy-MM-DD' 형식으로 저장
+    const today = format(new Date(), 'yyyy-MM-dd');
 
     // 컴포넌트가 마운트될 때 한 번만 실행
     useEffect(() => {

@@ -15,7 +15,7 @@ export default function HeroPOTG_IngameStats() {
 
     const itemsPerPage = 10; // 페이지 당 보여줄 영웅 수
 
-    const today = format(new Date(), 'YYYY-MM-DD');
+    const today = format(new Date(), 'yyyy-MM-dd');
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');

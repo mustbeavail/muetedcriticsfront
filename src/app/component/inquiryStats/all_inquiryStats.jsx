@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 export default function All_InquiryStats({ inquiryStatsAll }) {
-    const today = dayjs().format('YYYY.MM.DD');
+    const today = dayjs().format('yyyy.MM.DD');
 
     // 차트의 막대 색상으로 사용할 파스텔 톤 색상 배열을 정의합니다.
     const pastelColors = ["#f28b82", "#aecbfa", "#fff475"];
