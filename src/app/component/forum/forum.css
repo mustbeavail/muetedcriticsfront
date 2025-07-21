@@ -278,3 +278,113 @@
     font-weight: 700;
     box-shadow: 0 0 8px rgba(141, 53, 240, 0.4);
 }
+
+/* 포럼 상세보기 */
+.forum-chart-wrapper>span:nth-child(1) {
+    color: #aaa;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.forum-chart-wrapper>span:nth-child(2) {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.forum-chart-wrapper>span:nth-child(3) {
+    font-weight: 500;
+    color: #bbb;
+}
+
+.forum-detail-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.forum-detail-info>span {
+    display: block;
+    font-size: 14px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.forum-detail-content {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 16px;
+    border-left: 4px solid #b276f4;
+    margin-top: 20px;
+    margin-bottom: 32px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+.forum-comment-wrapper {
+    border-top: 1px solid #444;
+    padding-top: 24px;
+    margin-top: 24px;
+}
+
+.forum-comment-wrapper>span,
+.forum-comment-wrapper>h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.forum-comment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 20px;
+}
+
+.forum-comment-item {
+    background-color: #000;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.forum-comment-item span:nth-child(1) {
+    display: block;
+    font-weight: 600;
+    color: #9f74f8;
+    margin-bottom: 4px;
+}
+
+.forum-comment-item span:nth-child(2) {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.forum-comment-item span:nth-child(3) {
+    font-size: 15px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.forum-comment-list button {
+    align-self: flex-end;
+    background-color: #9f74f8;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.forum-comment-list button:hover {
+    background-color: #a05dee;
+}

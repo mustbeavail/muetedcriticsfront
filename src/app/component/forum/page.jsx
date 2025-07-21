@@ -126,6 +126,10 @@ const Forum = () => {
     }
   }
 
+  // const forumPost = async () => {
+  //   const {data} = await axios.get('http://localhost:8080/api/forum/post');
+  // }
+
   const [currentTab, setCurrentTab] = useState('general');
 
   const goToPage = (tab) => {

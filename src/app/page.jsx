@@ -169,11 +169,19 @@ const Login = () => {
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     const member_id = sessionStorage.getItem('member_id');
+    const dept_name = sessionStorage.getItem('dept_name');
+    const admin_yn = sessionStorage.getItem('admin_yn');
     if (member_id != null) {
       sessionStorage.removeItem('member_id');
     }
     if (token != null) {
       sessionStorage.removeItem('token');
+    }
+    if (dept_name != null) {
+      sessionStorage.removeItem('dept_name');
+    }
+    if (admin_yn != null) {
+      sessionStorage.removeItem('admin_yn');
     }
   }, []);
 
@@ -196,6 +204,7 @@ const Login = () => {
       sessionStorage.setItem('member_id', info.member_id);
       sessionStorage.setItem('token', data.token);
       sessionStorage.setItem('admin_yn', data.adminYn);
+      sessionStorage.setItem('dept_name', data.deptName);
     } else {
       setError('아이디 또는 비밀번호가 올바르지 않습니다.');
     }

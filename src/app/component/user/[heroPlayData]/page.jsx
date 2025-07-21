@@ -1,7 +1,7 @@
 'use client'
 import Header from "@/Header/page";
 import Menu from "@/menu/Menu";
-import "../user.css";
+import "./heroPlayData.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
