@@ -1,6 +1,5 @@
 "use client"
 import axios from 'axios';
-import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -12,22 +11,19 @@ export default function HeroWinningRate_IngameStats() {
     const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
 
     // 필터 상태들
-    const [startDate, setStartDate] = useState(''); // 기간 시작일
-    const [endDate, setEndDate] = useState(''); // 기간 종료일
+    const [seasonIdx, setSeasonIdx] = useState(4); // 시즌 선택
     const [tierName, setTierName] = useState(''); // 티어 선택
     const [sortOrder, setSortOrder] = useState('desc'); // 정렬 기준
 
     const itemsPerPage = 10; // 페이지당 아이템 수
-    const today = dayjs().format('YYYY-MM-DD');
 
     // 영웅별 승률 데이터 불러오기
-    const getHeroWinningRateData = async (token, startDate, endDate, tierName, sortOrder) => {
+    const getHeroWinningRateData = async (token, seasonIdx, tierName, sortOrder) => {
         try {
             const { data } = await axios.get(`${URL}/get/hero-winrate`, {
                 headers: { Authorization: token },
                 params: {
-                    startDate: startDate || '',
-                    endDate: endDate || '',
+                    seasonIdx: seasonIdx || '',
                     tierName: tierName || '',
                     sortOrder: sortOrder || ''
                 }
@@ -46,22 +42,18 @@ export default function HeroWinningRate_IngameStats() {
 
     // 조회 버튼 클릭시 불러오기
     const handleSearch = () => {
-        if (!startDate || !endDate) {
-            alert('기간을 설정해 주세요.');
-            return;
-        }
-        if (new Date(startDate) > new Date(endDate)) {
-            alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+        if (!seasonIdx) {
+            alert('시즌을 설정해 주세요.');
             return;
         }
         const token = sessionStorage.getItem('token');
-        getHeroWinningRateData(token, startDate, endDate, tierName, sortOrder);
+        getHeroWinningRateData(token, seasonIdx, tierName, sortOrder);
     };
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
-        if (startDate && endDate) {
-            getHeroWinningRateData(token, startDate, endDate, tierName, sortOrder);
+        if (seasonIdx) {
+            getHeroWinningRateData(token, seasonIdx, tierName, sortOrder);
         }
     }, [tierName, sortOrder]);
 
@@ -93,7 +85,6 @@ export default function HeroWinningRate_IngameStats() {
     };
 
 
-
     return (
         <div className={"ingameStats-chartWrapper-heroWinningRate"}>
             <div className="userStats-filterBox-wrapper">
@@ -113,21 +104,18 @@ export default function HeroWinningRate_IngameStats() {
                 </div>
             </div>
             <div className={"accessorStats-filterBox"}>
-                기간 시작일 <input type="date"
-                    value={startDate}
+                시즌 선택 <select className="itemStats-select"
+                    value={seasonIdx}
                     onChange={(e) => {
-                        setStartDate(e.target.value);
+                        setSeasonIdx(e.target.value);
                         setCurrentPage(1);
                     }}
-                />
-                기간 종료일 <input type="date"
-                    value={endDate}
-                    max={today}
-                    onChange={(e) => {
-                        setEndDate(e.target.value);
-                        setCurrentPage(1);
-                    }}
-                />
+                >
+                    <option value="1">시즌 1</option>
+                    <option value="2">시즌 2</option>
+                    <option value="3">시즌 3</option>
+                    <option value="4">시즌 4</option>
+                </select>
                 &nbsp;&nbsp;티어 선택 <select className="itemStats-select"
                     value={tierName}
                     onChange={(e) => {
@@ -154,7 +142,7 @@ export default function HeroWinningRate_IngameStats() {
                 <BarChart
                     data={pagedData}
                     layout="vertical"
-                    margin={{ top: 20, right: 30, left: 120, bottom: 20 }}
+                    margin={{ top: 20, right: 50, left: 50, bottom: 20 }}
                 >
                     <defs>
                         <linearGradient id="winRateGradient" x1="1" y1="0" x2="0" y2="0">

@@ -1,9 +1,9 @@
 'use client'
 import { IoSearch } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from "axios";
-import dayjs from "dayjs";
+import { format } from 'date-fns';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -27,7 +27,7 @@ export default function WinningRate_Playtime_UserStats() {
 
     const totalPages = Math.ceil(heroPlaytimeData.length / itemsPerPage); // 총 페이지 수
 
-    const today = dayjs().format('YYYY-MM-DD');
+    const today = format(new Date(), 'yyyy-MM-dd');
 
 
     // 조회 버튼 클릭시 실행

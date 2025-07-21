@@ -1,6 +1,6 @@
 "use client"
 import axios from 'axios';
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -15,7 +15,7 @@ export default function HeroPOTG_IngameStats() {
 
     const itemsPerPage = 10; // 페이지 당 보여줄 영웅 수
 
-    const today = dayjs().format('YYYY-MM-DD');
+    const today = format(new Date(), 'yyyy-MM-dd');
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
@@ -90,7 +90,7 @@ export default function HeroPOTG_IngameStats() {
                 <BarChart
                     data={pagedData}
                     layout="vertical"
-                    margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
+                    margin={{ top: 20, right: 50, left: 50, bottom: 20 }}
                 >
                     <defs>
                         <linearGradient id="potgGradient" x1="1" y1="0" x2="0" y2="0">

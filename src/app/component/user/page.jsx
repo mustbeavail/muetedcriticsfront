@@ -283,7 +283,7 @@ export default function User() {
                     <button onClick={() => router.push(`/component/userExpenditure?id=${user.userId}`)}>
                       유저 지출 상세내역
                     </button>
-                    <button onClick={() => router.push(`/component/userMemo?id=${user.id}`)}>
+                    <button onClick={() => router.push(`/component/userMemo?id=${user.userId}`)}>
                       메모 확인하기
                     </button>
                     <button onClick={() => openMemoModal(user)}>메모 작성하기</button>

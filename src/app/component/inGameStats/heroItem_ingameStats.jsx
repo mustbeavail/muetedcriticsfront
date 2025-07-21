@@ -74,7 +74,7 @@ export default function HeroItem_IngameStats() {
                 <BarChart
                     data={pagedData} // 차트에 표시할 데이터
                     layout="vertical" // 세로 막대 차트
-                    margin={{ top: 20, right: 30, left: 120, bottom: 20 }} // 차트 여백
+                    margin={{ top: 20, right: 50, left: 50, bottom: 20 }} // 차트 여백
                 >
                     <defs>
                         {/* 막대 그래프의 그라데이션 정의 */}
