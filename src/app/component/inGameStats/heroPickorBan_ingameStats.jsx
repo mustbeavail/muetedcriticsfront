@@ -95,24 +95,26 @@ export default function HeroPickorBan_IngameStats() {
                 <BarChart
                     data={pagedData}
                     layout="vertical"
-                    margin={{ top: 20, right: 30, left: 120, bottom: 20 }}
+                    margin={{ top: 20, right: 50, left: 50, bottom: 20 }}
                     barCategoryGap="20%"
                     barGap={5}
                     barSize={40}
                 >
-                    <CartesianGrid strokeDasharray="3 3" />
+                    {/* 그래프의 배경 그리드 선입니다. */}
+                    <CartesianGrid stroke='rgba(255, 255, 255, 0.1)' />
                     <XAxis type="number" />
                     <YAxis dataKey="heroName" type="category" />
                     <Tooltip
-                        formatter={(value) => `${value} 건`}
+                        formatter={(value) => `${value}`}
                         contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
                         cursor={{ fill: '#1c1b23' }}
                     />
                     <Legend />
                     <Bar dataKey="banCount" fill="#f28b82" name="밴 횟수" />
                     <Bar dataKey="pickCount" fill="#81c995" name="픽 횟수" />
-                    <Bar dataKey="totalGames" fill="#75b4f3" name="총 플레이 횟수" />
-                    <Bar dataKey="banRate" fill="#75b4f3" name="밴률" />
+                    {/* <Bar dataKey="totalGames" fill="#75b4f3" name="총 경기 수" /> */}
+                    <Bar dataKey="banRate" fill="#d4f268" name="밴률"
+                        label={{ position: 'right', formatter: (value) => `${value}%` }} />
                 </BarChart>
             </ResponsiveContainer>
             {/* 페이징 버튼 */}

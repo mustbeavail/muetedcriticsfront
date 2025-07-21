@@ -57,7 +57,6 @@ export default function User() {
     if (token) {
       getUserList(token);
     }
-    // eslint-disable-next-line
   }, [currentPage, searchType, keyword, region, userType, sortKey, sortOrder]);
 
   const getUserList = async (token) => {
