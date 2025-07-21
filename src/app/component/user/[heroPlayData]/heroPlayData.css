@@ -192,16 +192,6 @@
     padding: 8px 0;
 }
 
-
-.hero-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
-    margin-right: 12px;
-    flex-shrink: 0;
-}
-
-
 .bar-container {
     flex: 1;
     background-color: #333;
@@ -210,21 +200,62 @@
     overflow: hidden;
 }
 
+/*----------------------------------------------------1234567890추가----------------------------------------------------*/
+.hero-bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.hero-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hero-name-box-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 140px;
+    justify-content: flex-end;
+    border: 1px solid rgba(198, 176, 216, 0.2);
+}
+
+.hero-name-box {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.hero-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    margin-right: 0;
+}
+
+.bar-wrapper {
+    position: relative;
+    flex: 1;
+    height: 34px;
+    background: #1c1c1c;
+    border: 1px solid rgba(198, 176, 216, 0.2);
+    overflow: hidden;
+}
 
 .bar {
     height: 100%;
-    background: linear-gradient(to right, #1a1a1a, #7f32ff);
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 8px;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
+    background: linear-gradient(to right, #bc6aff, #8f33ff);
 }
 
-
 .bar-label {
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
 }
