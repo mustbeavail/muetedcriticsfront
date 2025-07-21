@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
 
-export default function General({ dummyData }) {
+const URL = process.env.NEXT_PUBLIC_API_URL;
+
+const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+
+export default function General({ forumPosts }) {
     const [openMenuId, setOpenMenuId] = useState(null);
 
     const toggleMenu = (id) => {
@@ -12,18 +17,18 @@ export default function General({ dummyData }) {
         <div>
             <div className="forum-table">
                 <div className="row header">
-                    <div className="cell">글 번호</div>
-                    <div className="cell">주제</div>
-                    <div className="cell">글쓴이</div>
-                    <div className="cell">작성 날짜</div>
-                    <div className="cell">조회수</div>
-                    <div className="cell">좋아요</div>
+                    <div className="idx-cell">글 번호</div>
+                    <div className="title-cell">주제</div>
+                    <div className="user-cell">글쓴이</div>
+                    <div className="date-cell">작성 날짜</div>
+                    <div className="hit-cell">조회수</div>
+                    <div className="likes-cell">좋아요</div>
                 </div>
-                {dummyData.forumPosts.content.map((post) => (
+                {forumPosts.map((post) => (
                     <div key={post.postIdx}>
                         <div className="row">
-                            <div className="cell">{post.postIdx}</div>
-                            <div className="cell">
+                            <div className="idx-cell">{post.postIdx}</div>
+                            <div className="title-cell">
                                 <Link href={`/component/forum/${post.postIdx}`}>
                                     {post.title}
                                 </Link>
@@ -37,7 +42,7 @@ export default function General({ dummyData }) {
                                         <button onClick={() => alert('유저 상세보기')}>
                                             유저 상세보기
                                         </button>
-                                        <button onClick={() => alert('유저 통계보기')}> 
+                                        <button onClick={() => alert('유저 통계보기')}>
                                             유저 통계보기
                                         </button>
                                         <button onClick={() => alert('유저 지출 상세내역')}>
@@ -52,9 +57,9 @@ export default function General({ dummyData }) {
                                     </div>
                                 )}
                             </div>
-                            <div className="cell">{post.createdAt.slice(0, 10)}</div>
-                            <div className="cell">{post.hit}</div>
-                            <div className="cell">{post.likes}</div>
+                            <div className="date-cell">{post.createdAt.slice(0, 10)}</div>
+                            <div className="hit-cell">{post.hit}</div>
+                            <div className="likes-cell">{post.likes}</div>
                         </div>
                     </div>
                 ))}
