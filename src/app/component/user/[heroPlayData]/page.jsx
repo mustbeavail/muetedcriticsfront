@@ -3,8 +3,7 @@ import Header from "@/Header/page";
 import Menu from "@/menu/Menu";
 import "./heroPlayData.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { use, useEffect, useState } from "react";
 
 import { FaCrown } from "react-icons/fa";
 import { MdMoreTime } from "react-icons/md";
@@ -13,11 +12,11 @@ import { MdDesktopAccessDisabled } from "react-icons/md";
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
-export default function HeroPlayDataPage() {
+export default function HeroPlayDataPage({ params }) {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
   const [playData, setPlayData] = useState(null);
-  const params = useParams();
-  const user_id = params.heroPlayData;
+  const resolvedParams = use(params);
+  const user_id = resolvedParams.heroPlayData;
 
   useEffect(() => {
     if (user_id) {
@@ -28,7 +27,7 @@ export default function HeroPlayDataPage() {
   const getHeroPlayData = async () => {
     const { data } = await axios.get(`${URL}/user/stats`, {
       params: {
-        user_id: user_id
+        userId: user_id
       },
       headers: {
         authorization: token
@@ -52,7 +51,7 @@ export default function HeroPlayDataPage() {
         <button className="user-list-backBtn" onClick={() => location.href = "/component/user"}>← 리스트로</button>
       </div>
       <div className={"user-list-heroPlayData"}>
-        <div style={{ fontSize: "20px" }}><span style={{ fontWeight: 600 }}>{playData.user_id}</span>의 통계 확인</div>
+        <div style={{ fontSize: "20px" }}><span style={{ fontWeight: 600 }}>{playData.user_id}</span> 의 통계 확인</div>
         <div className="user-list-heroPlayData-content">
           {/* 시즌별 데이터 및 전체 데이터 */}
           <div className="user-list-heroPlayData-allData">
