@@ -55,41 +55,45 @@ export default function PeriodMonthlyStats() {
         <>
             <div className={"accessorStats-chartWrapper"}>
                 <h2 className={"accessorStats-title"}>월간 활성 이용자 수</h2>
-                <div className="itemStats-filterBox">
-                    <span>시작 년도 선택
-                        <select className="itemStats-select" value={fromYear} onChange={(e) => setFromYear(e.target.value)}>
-                            <option>2020</option>
-                            <option>2021</option>
-                            <option>2022</option>
-                            <option>2023</option>
-                            <option>2024</option>
-                            <option>2025</option>
-                        </select>
-                    </span>
-                    <span>시작 월 선택
-                        <select className="itemStats-select" value={fromMonth} onChange={(e) => setFromMonth(e.target.value)}>
-                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
-                                <option key={month} value={month}>{month}</option>
-                            ))}
-                        </select>
-                    </span>
-                    <span>종료 년도 선택
-                        <select className="itemStats-select" value={toYear} onChange={(e) => setToYear(e.target.value)}>
-                            <option>2020</option>
-                            <option>2021</option>
-                            <option>2022</option>
-                            <option>2023</option>
-                            <option>2024</option>
-                            <option>2025</option>
-                        </select>
-                    </span>
-                    <span>종료 월 선택
-                        <select className="itemStats-select" value={toMonth} onChange={(e) => setToMonth(e.target.value)}>
-                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
-                                <option key={month} value={month}>{month}</option>
-                            ))}
-                        </select>
-                    </span>
+                <div className="accessorStats-filterBox">
+                    <div>
+                        <span>시작 년도 선택
+                            <select className="accessorStats-select" value={fromYear} onChange={(e) => setFromYear(e.target.value)}>
+                                <option>2020</option>
+                                <option>2021</option>
+                                <option>2022</option>
+                                <option>2023</option>
+                                <option>2024</option>
+                                <option>2025</option>
+                            </select>
+                        </span>
+                        <span>시작 월 선택
+                            <select className="accessorStats-select" value={fromMonth} onChange={(e) => setFromMonth(e.target.value)}>
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
+                                    <option key={month} value={month}>{month}</option>
+                                ))}
+                            </select>
+                        </span>
+                    </div>
+                    <div>
+                        <span>종료 년도 선택
+                            <select className="accessorStats-select" value={toYear} onChange={(e) => setToYear(e.target.value)}>
+                                <option>2020</option>
+                                <option>2021</option>
+                                <option>2022</option>
+                                <option>2023</option>
+                                <option>2024</option>
+                                <option>2025</option>
+                            </select>
+                        </span>
+                        <span>종료 월 선택
+                            <select className="accessorStats-select" value={toMonth} onChange={(e) => setToMonth(e.target.value)}>
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
+                                    <option key={month} value={month}>{month}</option>
+                                ))}
+                            </select>
+                        </span>
+                    </div>
                     <button onClick={monthlyAccessData}>조회</button>
                 </div>
 
@@ -102,8 +106,8 @@ export default function PeriodMonthlyStats() {
                             >
                                 <defs>
                                     <linearGradient id="colorGradientMonthly" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#2196F3" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="#2196F3" stopOpacity={0.1} />
+                                        <stop offset="5%" stopColor="#FF5353" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="#FF5353" stopOpacity={0.1} />
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -124,7 +128,7 @@ export default function PeriodMonthlyStats() {
                                 <Area
                                     type="monotone"
                                     dataKey="MAU"
-                                    stroke="#2196F3"
+                                    stroke="#FF5353"
                                     strokeWidth={2}
                                     fill="url(#colorGradientMonthly)"
                                     dot={{ r: 5 }}

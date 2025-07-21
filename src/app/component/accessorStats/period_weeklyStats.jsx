@@ -65,55 +65,59 @@ export default function PeriodWeeklyStats() {
         <>
             <div className={"accessorStats-chartWrapper"}>
                 <h2 className={"accessorStats-title"}>주간 활성 이용자 수</h2>
-                <div className="itemStats-filterBox">
-                    <span>시작 년도 선택
-                        <select className="itemStats-select" value={fromYear} onChange={(e) => setFromYear(e.target.value)}>
-                            <option>2020</option>
-                            <option>2021</option>
-                            <option>2022</option>
-                            <option>2023</option>
-                            <option>2024</option>
-                            <option>2025</option>
-                        </select>
-                    </span>
-                    <span>시작 월 선택
-                        <select className="itemStats-select" value={fromMonth} onChange={(e) => setFromMonth(e.target.value)}>
-                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
-                                <option key={month} value={month}>{month}</option>
-                            ))}
-                        </select>
-                    </span>
-                    <span>시작 주 선택
-                        <select className="itemStats-select" value={fromWeek} onChange={(e) => setFromWeek(e.target.value)}>
-                            {[1, 2, 3, 4, 5, 6].map(week => (
-                                <option key={week} value={week}>{week}</option>
-                            ))}
-                        </select>
-                    </span>
-                    <span>종료 년도 선택
-                        <select className="itemStats-select" value={toYear} onChange={(e) => setToYear(e.target.value)}>
-                            <option>2020</option>
-                            <option>2021</option>
-                            <option>2022</option>
-                            <option>2023</option>
-                            <option>2024</option>
-                            <option>2025</option>
-                        </select>
-                    </span>
-                    <span>종료 월 선택
-                        <select className="itemStats-select" value={toMonth} onChange={(e) => setToMonth(e.target.value)}>
-                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
-                                <option key={month} value={month}>{month}</option>
-                            ))}
-                        </select>
-                    </span>
-                    <span>종료 주 선택
-                        <select className="itemStats-select" value={toWeek} onChange={(e) => setToWeek(e.target.value)}>
-                            {[1, 2, 3, 4, 5, 6].map(week => (
-                                <option key={week} value={week}>{week}</option>
-                            ))}
-                        </select>
-                    </span>
+                <div className="accessorStats-filterBox">
+                    <div>
+                        <span>시작 년도 선택
+                            <select className="accessorStats-select" value={fromYear} onChange={(e) => setFromYear(e.target.value)}>
+                                <option>2020</option>
+                                <option>2021</option>
+                                <option>2022</option>
+                                <option>2023</option>
+                                <option>2024</option>
+                                <option>2025</option>
+                            </select>
+                        </span>
+                        <span>시작 월 선택
+                            <select className="accessorStats-select" value={fromMonth} onChange={(e) => setFromMonth(e.target.value)}>
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
+                                    <option key={month} value={month}>{month}</option>
+                                ))}
+                            </select>
+                        </span>
+                        <span>시작 주 선택
+                            <select className="accessorStats-select" value={fromWeek} onChange={(e) => setFromWeek(e.target.value)}>
+                                {[1, 2, 3, 4, 5, 6].map(week => (
+                                    <option key={week} value={week}>{week}</option>
+                                ))}
+                            </select>
+                        </span>
+                    </div>
+                    <div>
+                        <span>종료 년도 선택
+                            <select className="accessorStats-select" value={toYear} onChange={(e) => setToYear(e.target.value)}>
+                                <option>2020</option>
+                                <option>2021</option>
+                                <option>2022</option>
+                                <option>2023</option>
+                                <option>2024</option>
+                                <option>2025</option>
+                            </select>
+                        </span>
+                        <span>종료 월 선택
+                            <select className="accessorStats-select" value={toMonth} onChange={(e) => setToMonth(e.target.value)}>
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => (
+                                    <option key={month} value={month}>{month}</option>
+                                ))}
+                            </select>
+                        </span>
+                        <span>종료 주 선택
+                            <select className="accessorStats-select" value={toWeek} onChange={(e) => setToWeek(e.target.value)}>
+                                {[1, 2, 3, 4, 5, 6].map(week => (
+                                    <option key={week} value={week}>{week}</option>
+                                ))}
+                            </select>
+                        </span>
+                    </div>
                     <button onClick={weeklyAccessData}>조회</button>
                 </div>
 
@@ -122,9 +126,9 @@ export default function PeriodWeeklyStats() {
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={weeklyData} margin={{ top: 20, right: 30, left: 20, bottom: 50 }}>
                                 <defs>
-                                    <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#8884d8" stopOpacity={1} />
-                                        <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                                    <linearGradient id="colorGradientWeekly" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#63BBE0" stopOpacity={1} />
+                                        <stop offset="95%" stopColor="#63BBE0" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -145,9 +149,9 @@ export default function PeriodWeeklyStats() {
                                 <Area
                                     type="monotone"
                                     dataKey="WAU"
-                                    stroke="#8884d8"
+                                    stroke="#63BBE0"
                                     strokeWidth={2}
-                                    fill="url(#colorGradient)"
+                                    fill="url(#colorGradientWeekly)"
                                     dot={{ r: 5 }}
                                     activeDot={{ r: 8 }}
                                 />
