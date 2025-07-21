@@ -257,7 +257,7 @@ const Member = () => {
 
       <div className="memberList-list">
         {memberList.members.map((member) => (
-          <div className={`user-list-card ${member.acceptYn === false ? 'memberList-waitCard' : ''}`} key={member.memberId}>
+          <div className={`memberList-card ${member.acceptYn === false ? 'memberList-waitCard' : ''}`} key={member.memberId}>
             <div className="memberList-info">
               <div className="memberList-nameTagWrapper">
                 <div className="memberList-tagsAndName">

@@ -9,9 +9,9 @@ import {
   FaRegQuestionCircle,
   FaEnvelope,
   FaComments,
-  FaInternetExplorer
 } from 'react-icons/fa';
 import { IoIosLogOut } from "react-icons/io";
+import { RiUserCommunityFill } from "react-icons/ri";
 
 const Menu = () => {
   const [activeMenu, setActiveMenu] = useState(null);
@@ -71,7 +71,7 @@ const Menu = () => {
 
           <div className={styles.menu_navItem}>
             <Link href="/component/forum" className={styles.menu_navIcon}>
-              <FaInternetExplorer />
+              <RiUserCommunityFill />
             </Link>
           </div>
 
