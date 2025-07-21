@@ -1,6 +1,6 @@
 "use client"
 import axios from 'axios';
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -18,7 +18,7 @@ export default function HeroWinningRate_IngameStats() {
     const [sortOrder, setSortOrder] = useState('desc'); // 정렬 기준
 
     const itemsPerPage = 10; // 페이지당 아이템 수
-    const today = dayjs().format('YYYY-MM-DD');
+    const today = format(new Date(), 'YYYY-MM-DD');
 
     // 영웅별 승률 데이터 불러오기
     const getHeroWinningRateData = async (token, startDate, endDate, tierName, sortOrder) => {

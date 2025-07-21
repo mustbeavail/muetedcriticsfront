@@ -27,7 +27,7 @@ export default function WinningRate_Playtime_UserStats() {
 
     const totalPages = Math.ceil(heroPlaytimeData.length / itemsPerPage); // 총 페이지 수
 
-    const today = dayjs().format('YYYY-MM-DD');
+    const today = format(new Date(), 'YYYY-MM-DD');
 
 
     // 조회 버튼 클릭시 실행

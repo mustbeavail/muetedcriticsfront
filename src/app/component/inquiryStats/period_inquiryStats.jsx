@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 /**
@@ -22,7 +22,7 @@ export default function Period_InquiryStats({
     handlePeriodSearch
 }) {
     // 오늘 날짜를 YYYY-MM-DD 형식으로 가져옴 (종료일 최대값으로 사용)
-    const today = dayjs().format('YYYY-MM-DD');
+    const today = format(new Date(), 'YYYY-MM-DD');
 
     // 부모 컴포넌트로부터 받은 통계 데이터를 차트에 적합한 형식으로 변환하고 날짜순으로 정렬
     const chartData = inquiryStatsPeriod.map(item => ({

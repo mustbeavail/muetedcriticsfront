@@ -726,7 +726,7 @@
     font-size: 14px;
     border: none;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background-color 0.2s;
 }
 
 .user-list-closeBtn {

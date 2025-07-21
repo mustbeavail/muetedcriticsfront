@@ -1,6 +1,6 @@
 "use client"
 import axios from 'axios';
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -15,7 +15,7 @@ export default function HeroPOTG_IngameStats() {
 
     const itemsPerPage = 10; // 페이지 당 보여줄 영웅 수
 
-    const today = dayjs().format('YYYY-MM-DD');
+    const today = format(new Date(), 'YYYY-MM-DD');
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');

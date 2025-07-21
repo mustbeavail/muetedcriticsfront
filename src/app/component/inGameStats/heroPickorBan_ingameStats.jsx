@@ -1,6 +1,6 @@
 "use client"
 import axios from 'axios';
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 import React, { useState, useMemo, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -21,7 +21,7 @@ export default function HeroPickorBan_IngameStats() {
     const [endDate, setEndDate] = useState(''); // 기간 종료일
     const [sortOrder, setSortOrder] = useState('desc'); // 정렬 기준
 
-    const today = dayjs().format('YYYY-MM-DD');
+    const today = format(new Date(), 'YYYY-MM-DD');
 
     // 2. 영웅별 밴률 및 픽률 데이터 불러오기
     const getHeroPickOrBanData = async (token, startDate, endDate, sortOrder) => {
