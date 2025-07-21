@@ -5,47 +5,73 @@ import { useRouter } from 'next/navigation';
 import { FaClock, FaGlobe } from 'react-icons/fa';
 import { FiMoreVertical } from 'react-icons/fi';
 import "./user.css";
-import Link from 'next/link';
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
 import axios from 'axios';
 
+// API URL 환경변수
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
+// 유저 타입 목록 (필터링용)
 const USER_TYPES = ['전체', '일반', '신규', '복귀', '휴면', '정지', '이탈 위험군', 'VIP'];
+
+// 배지 매핑 (티어/유저 타입 → 이미지 파일명)
+const tierMap = {
+  // 시즌 티어 매핑
+  '골드': 'gold',
+  '그랜드마스터': 'grandmaster',
+  '마스터': 'master',
+  '브론즈': 'bronze',
+  '실버': 'silver',
+  '언랭크드': 'unranked',
+  '챌린저': 'challenger',
+  '다이아몬드': 'diamond',
+  '플래티넘': 'platinum',
+  // 유저 타입 뱃지 매핑
+  '일반': 'casual',
+  '신규': 'new',
+  '복귀': 'returning',
+  '휴면': 'dormant',
+  '정지': 'suspended',
+  '이탈 위험군': 'churn_risk',
+  'VIP': 'total_spend',
+};
 
 export default function User() {
   const router = useRouter();
 
-  // 리스트 state
-  const [users, setUsers] = useState([]);
-  const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  // 리스트 관련 상태
+  const [users, setUsers] = useState([]); // 유저 목록
+  const [totalPages, setTotalPages] = useState(1); // 총 페이지 수
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
 
-  // 검색/정렬 state
-  const [searchType, setSearchType] = useState('userNick');
-  const [keyword, setKeyword] = useState('');
-  const [region, setRegion] = useState('');
-  const [userType, setUserType] = useState('전체');
-  const [sortKey, setSortKey] = useState('');
-  const [sortOrder, setSortOrder] = useState('desc');
+  // 검색/정렬 관련 상태
+  const [searchType, setSearchType] = useState('userNick'); // 검색 타입 (닉네임/아이디)
+  const [keyword, setKeyword] = useState(''); // 검색 키워드
+  const [region, setRegion] = useState(''); // 지역 필터
+  const [userType, setUserType] = useState('전체'); // 유저 타입 필터
+  const [sortKey, setSortKey] = useState(''); // 정렬 기준
+  const [sortOrder, setSortOrder] = useState('desc'); // 정렬 순서
 
-  // 기타 state
-  const [openMenuId, setOpenMenuId] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
+  // UI 관련 상태
+  const [openMenuId, setOpenMenuId] = useState(null); // 현재 열린 드롭다운 메뉴 ID
+  const [selectedUser, setSelectedUser] = useState(null); // 선택된 유저 (상세 모달용)
 
-  // 메모 state
-  const [memoList, setMemoList] = useState([]);
-  const [showMemoModal, setShowMemoModal] = useState(false);
-  const [memoLoading, setMemoLoading] = useState(false);
-  const [showWriteMemoModal, setShowWriteMemoModal] = useState(false);
-  const [memoContent, setMemoContent] = useState('');
-  const [selectedMemo, setSelectedMemo] = useState(null);
-  const [showEditMemoModal, setShowEditMemoModal] = useState(false);
-  const [editMemoContent, setEditMemoContent] = useState('');
+  // 메모 관련 상태
+  const [memoList, setMemoList] = useState([]); // 메모 목록
+  const [showMemoModal, setShowMemoModal] = useState(false); // 메모 모달 표시 여부
+  const [memoLoading, setMemoLoading] = useState(false); // 메모 로딩 상태
+  const [showWriteMemoModal, setShowWriteMemoModal] = useState(false); // 메모 작성 모달 표시 여부
+  const [memoContent, setMemoContent] = useState(''); // 메모 작성 내용
+  const [selectedMemo, setSelectedMemo] = useState(null); // 선택된 메모
+  const [showEditMemoModal, setShowEditMemoModal] = useState(false); // 메모 수정 모달 표시 여부
+  const [editMemoContent, setEditMemoContent] = useState(''); // 메모 수정 내용
 
+  // 배지 관련 상태 (캐싱용)
+  const [userDetail, setUserDetail] = useState({}); // 유저 상세 정보 캐시
+  const [userTiers, setUserTiers] = useState({}); // 유저 시즌별 티어 정보 캐시
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 10; // 페이지당 유저 수
 
   // 로그인 체크 (최초 1회만)
   useEffect(() => {
@@ -56,6 +82,27 @@ export default function User() {
       window.location.href = "/";
     }
   }, []);
+
+  // 시즌별 티어 정보를 가져오는 함수 (캐싱 기능 포함)
+  const getUserTier = async (userId) => {
+    if (userTiers[userId]) return; // 이미 정보가 있으면 실행 안함
+    const token = sessionStorage.getItem('token');
+    try {
+      const tiers = [];
+      // 시즌 1~4까지의 티어 정보 가져오기
+      for (let season = 1; season <= 4; season++) {
+        const { data } = await axios.get(`${URL}/user/stats/season`, {
+          params: { userId, season },
+          headers: { authorization: token }
+        });
+        tiers.push(data.userStatsSeason);
+      }
+      // 캐시에 티어 정보 저장
+      setUserTiers(prev => ({ ...prev, [userId]: tiers }));
+    } catch (error) {
+      console.log("시즌별 티어 정보 불러오기 실패: ", error);
+    }
+  };
 
   // 유저 리스트는 state 변경될 때마다 불러옴
   useEffect(() => {
@@ -87,14 +134,14 @@ export default function User() {
         sortBy: sortKey || undefined,
         sortOrder,
       };
-      // 검색어 있을 때만
+      // 검색어 있을 때만 파라미터 추가
       if (keyword && searchType) {
         params.searchType = searchType;
         params.keyword = keyword;
       }
-      // 지역 드롭다운 값 있을 때만
+      // 지역 드롭다운 값 있을 때만 파라미터 추가
       if (region) params.region = region;
-      // 유저타입 있을 때만 (전체 제외)
+      // 유저타입 있을 때만 파라미터 추가 (전체 제외)
       if (userType && userType !== '전체') params.userType = userType;
 
       const { data } = await axios.get(`${URL}/user/list`, {
@@ -109,8 +156,7 @@ export default function User() {
     }
   };
 
-
-  // 메모 모달 열기(메모 리스트 불러오기)
+  // 메모 모달 열기 (메모 리스트 불러오기)
   const openMemoModal = async (user) => {
     setSelectedUser(user);
     setSelectedMemo(null);
@@ -128,7 +174,7 @@ export default function User() {
     }
   };
 
-  // 메모 작성하기
+  // 메모 작성하기 (API 호출)
   const writeMemo = async (userId, memoContent) => {
     try {
       const { data } = await axios.post(`${URL}/user/write/memo`, {
@@ -150,6 +196,7 @@ export default function User() {
     }
   };
 
+  // 메모 작성 제출 처리
   const handleSubmitMemo = async () => {
     if (!memoContent.trim()) {
       alert("메모 내용을 입력하세요.");
@@ -160,10 +207,10 @@ export default function User() {
     setMemoContent('');
     // 작성 후 바로 메모 리스트 새로고침 하려면 아래 추가
     // openMemoModal(selectedUser);
+    setSelectedUser(null);
   };
 
-
-  // 메모 작성 모달
+  // 메모 작성 모달 열기
   const openWriteMemoModal = (user) => {
     setSelectedUser(user); // 어느 유저의 메모인지 지정
     setMemoContent('');
@@ -177,21 +224,6 @@ export default function User() {
     setMemoContent('');
     setSelectedUser(null);
   };
-
-
-  // // 메모 수정폼 불러오기 (현재 구조에서는 사용할 필요 없음!!!)
-  // const updateMemoPage = async (memoIdx) => {
-  //   try {
-  //     const { data } = await axios.get(`${URL}/user/${memoIdx}/update-page`, {
-  //       memberId: sessionStorage.getItem('member_id')
-  //     }, {
-  //       headers: { Authorization: sessionStorage.getItem('token') }
-  //     });
-  //     console.log("메모 수정 페이지 열기 성공 : ", data);
-  //   } catch (error) {
-  //     console.log("메모 수정 페이지 열기 실패 : ", error);
-  //   }
-  // };
 
   // 메모 수정 모달 열기
   const handleEditMemoClick = () => {
@@ -216,8 +248,7 @@ export default function User() {
     openMemoModal(selectedUser);
   };
 
-
-  // 메모 수정하기
+  // 메모 수정하기 (API 호출)
   const updateMemo = async (memoIdx, memoContent) => {
     try {
       const { data } = await axios.put(`${URL}/user/${memoIdx}/update`, {
@@ -269,7 +300,7 @@ export default function User() {
     }
   };
 
-  // 모달 닫기
+  // 메모 모달 닫기
   const closeMemoModal = () => {
     setShowMemoModal(false);
     setMemoList([]);
@@ -313,11 +344,13 @@ export default function User() {
     setCurrentPage(1);
   };
 
-  // 정렬 기준/순서
+  // 정렬 기준 변경
   const handleSortKeyChange = (e) => {
     setSortKey(e.target.value);
     setCurrentPage(1);
   };
+
+  // 정렬 순서 변경
   const handleSortOrderChange = (e) => {
     setSortOrder(e.target.value);
     setCurrentPage(1);
@@ -336,35 +369,82 @@ export default function User() {
     setOpenMenuId(openMenuId === id ? null : id);
   };
 
-
-
-
-
-  // 유저 상세보기 불러오기
+  // 유저 상세 정보 가져오기 (캐싱 기능 포함)
   const getUserDetail = async (userId) => {
+    if (userDetail[userId]) {
+      setSelectedUser(userDetail[userId]);
+      return;
+    }
     try {
       const { data } = await axios.get(`${URL}/user/detail`, {
         headers: { Authorization: sessionStorage.getItem('token') },
-        params: {
-          userId: userId
-        }
+        params: { userId: userId }
       });
-      console.log("유저 상세보기 불러오기 성공 : ", data.userDetail[0]);
-      setSelectedUser(data.userDetail[0]);
+      const detailedInfo = data.userDetail[0];
+      setSelectedUser(detailedInfo);
+      // 가져온 정보를 캐싱을 위해 state에 저장
+      setUserDetail(prev => ({ ...prev, [userId]: detailedInfo }));
     } catch (error) {
       console.log("유저 상세보기 불러오기 실패 : ", error);
     }
   };
 
-  // 유저 상세보기 열기
+  // 유저 상세보기 모달 열기
   const openUserDetail = (user) => {
     getUserDetail(user.userId);
+    getUserTier(user.userId); // 뱃지 정보 호출 추가
     setOpenMenuId(null);
   };
 
   // 상세 모달 닫기
   const closeModal = () => {
     setSelectedUser(null);
+  };
+
+  // 뱃지 디스플레이 컴포넌트
+  const BadgeDisplay = ({ userId }) => {
+    const tiers = userTiers[userId];
+    const detail = userDetail[userId];
+
+    if (!tiers || !detail) {
+      return <div style={{ padding: '10px 0', textAlign: 'center' }}>뱃지 정보 로딩 중...</div>;
+    }
+
+    // 유저 타입에 따른 뱃지 이미지
+    const type = detail?.user_type?.trim();
+    const typeBadgeName = tierMap[type];
+
+    return (
+      <div className="badge-container" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '10px', padding: '0 24px', justifyContent: 'center' }}>
+        {/* 유저 타입 뱃지 */}
+        {typeBadgeName && (
+          <img
+            style={{ width: '50px', height: '56px' }}
+            src={`/badge/${typeBadgeName}.png`}
+            alt="유저 타입 뱃지"
+            title={type}
+          />
+        )}
+        {/* 시즌별 티어 뱃지들 */}
+        {tiers.map((seasonInfo) => {
+          if (!seasonInfo || !seasonInfo.tier_season) {
+            return <img key={`none-${seasonInfo?.season || Math.random()}`} style={{ width: '50px', height: '56px' }} src="/badge/none.png" alt="기록 없음" title={`시즌 ${seasonInfo?.season}: 기록 없음`} />;
+          }
+          const tierBadgeName = tierMap[seasonInfo.tier_season];
+          const imageName = `${seasonInfo.season}${tierBadgeName}.png`;
+          return (
+            <div key={seasonInfo.season}>
+              <img
+                style={{ width: '50px', height: '56px' }}
+                src={`/badge/${imageName}`}
+                alt={`시즌 ${seasonInfo.season} 뱃지`}
+                title={`시즌 ${seasonInfo.season}: ${seasonInfo.tier_season}`}
+              />
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   return (
@@ -456,6 +536,7 @@ export default function User() {
                 <button className="user-list-moreBtn" onClick={() => toggleMenu(user.userId || idx)}>
                   <FiMoreVertical />
                 </button>
+                {/* 드롭다운 메뉴 */}
                 {openMenuId === (user.userId || idx) && (
                   <div className="user-list-dropdown">
                     <button onClick={() => openUserDetail(user)}>유저 상세보기</button>
@@ -500,6 +581,10 @@ export default function User() {
                 </span>
               </div>
             </div>
+
+            {/* 뱃지 디스플레이 컴포넌트 */}
+            <BadgeDisplay userId={selectedUser.user_id} />
+
             <hr className="user-list-divider" />
             <div className="user-list-modalContent">
               <ul>
@@ -519,6 +604,7 @@ export default function User() {
           </div>
         </div>
       )}
+
       {/* 메모 모달 */}
       {showMemoModal && (
         <div className="user-list-modalBackdrop">
@@ -565,6 +651,7 @@ export default function User() {
           </div>
         </div>
       )}
+
       {/* 메모 작성 모달 */}
       {showWriteMemoModal && (
         <div className="user-list-modalBackdrop">
@@ -592,6 +679,7 @@ export default function User() {
           </div>
         </div>
       )}
+
       {/* 메모 수정 모달 */}
       {showEditMemoModal && (
         <div className="user-list-modalBackdrop">
@@ -620,4 +708,4 @@ export default function User() {
       )}
     </div>
   );
-}
+};
