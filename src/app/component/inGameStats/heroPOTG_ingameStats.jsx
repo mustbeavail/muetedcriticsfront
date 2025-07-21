@@ -90,7 +90,7 @@ export default function HeroPOTG_IngameStats() {
                 <BarChart
                     data={pagedData}
                     layout="vertical"
-                    margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
+                    margin={{ top: 20, right: 50, left: 50, bottom: 20 }}
                 >
                     <defs>
                         <linearGradient id="potgGradient" x1="1" y1="0" x2="0" y2="0">

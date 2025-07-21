@@ -142,7 +142,7 @@ export default function HeroWinningRate_IngameStats() {
                 <BarChart
                     data={pagedData}
                     layout="vertical"
-                    margin={{ top: 20, right: 30, left: 120, bottom: 20 }}
+                    margin={{ top: 20, right: 50, left: 50, bottom: 20 }}
                 >
                     <defs>
                         <linearGradient id="winRateGradient" x1="1" y1="0" x2="0" y2="0">

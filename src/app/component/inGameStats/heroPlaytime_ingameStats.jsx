@@ -86,7 +86,7 @@ export default function HeroPlaytime_IngameStats() {
                     <BarChart
                         data={pagedData} // 현재 페이지에 해당하는 데이터를 사용합니다.
                         layout="vertical" // 세로 막대 차트로 설정합니다.
-                        margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
+                        margin={{ top: 20, right: 50, left: 50, bottom: 20 }}
                     >
                         {/* 차트 바의 그라데이션을 정의합니다. */}
                         <defs>
