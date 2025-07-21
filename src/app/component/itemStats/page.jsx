@@ -187,8 +187,8 @@ const ItemStats = () => {
           align
         }
       });
-      console.log("첫번째 이벤트 리스트", data.eventCompare);
-      setFirstEventList(data.eventCompare);
+      console.log("첫번째 이벤트 리스트", data.eventItemList);
+      setFirstEventList(data.eventItemList);
     } catch (error) {
       alert("첫번째 이벤트 조회중 오류 발생 다시 로그인 후 시도해주세요.");
       location.href = "/";
@@ -205,8 +205,8 @@ const ItemStats = () => {
           align
         }
       });
-      console.log("두번째 이벤트 리스트", data.eventCompare);
-      setSecondEventList(data.eventCompare);
+      console.log("두번째 이벤트 리스트", data.eventItemList);
+      setSecondEventList(data.eventItemList);
     } catch (error) {
       alert("두번째 이벤트 조회중 오류 발생 다시 로그인 후 시도해주세요.");
       location.href = "/";
@@ -223,8 +223,8 @@ const ItemStats = () => {
           align
         }
       });
-      console.log("세번째 이벤트 리스트", data.eventCompare);
-      setThirdEventList(data.eventCompare);
+      console.log("세번째 이벤트 리스트", data.eventItemList);
+      setThirdEventList(data.eventItemList);
     } catch (error) {
       alert("세번째 이벤트 조회중 오류 발생 다시 로그인 후 시도해주세요.");
       location.href = "/";

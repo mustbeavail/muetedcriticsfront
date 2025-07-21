@@ -22,62 +22,87 @@ export default function EventTop3ItemStats({
 
     // 이벤트 선택할때마다 데이터조회
     useEffect(() => {
-        getFirstEventList(token, firstEventName, "periodRevenueDESC");
+        if ((firstEventName === secondEventName || firstEventName === thirdEventName) && firstEventName !== "") {
+            alert("이미 표시된 이벤트 입니다.");
+            setFirstEventName("");
+            return;
+        }
+        if (firstEventName !== "") {
+            getFirstEventList(token, firstEventName, "periodRevenueDESC");
+        } else if (firstEventName === "") {
+            setFirstEventList([]);
+        }
     }, [firstEventName]);
     useEffect(() => {
-        getSecondEventList(token, secondEventName, "periodRevenueDESC");
+        if ((secondEventName === firstEventName || secondEventName === thirdEventName) && secondEventName !== "") {
+            alert("이미 표시된 이벤트 입니다.");
+            setSecondEventName("");
+            return;
+        }
+        if (secondEventName !== "") {
+            getSecondEventList(token, secondEventName, "periodRevenueDESC");
+        } else if (secondEventName === "") {
+            setSecondEventList([]);
+        }
     }, [secondEventName]);
     useEffect(() => {
-        getThirdEventList(token, thirdEventName, "periodRevenueDESC");
+        if ((thirdEventName === firstEventName || thirdEventName === secondEventName) && thirdEventName !== "") {
+            alert("이미 표시된 이벤트 입니다.");
+            setThirdEventName("");
+            return;
+        }
+        if (thirdEventName !== "") {
+            getThirdEventList(token, thirdEventName, "periodRevenueDESC");
+        } else if (thirdEventName === "") {
+            setThirdEventList([]);
+        }
     }, [thirdEventName]);
+
+    // 아직 판매 아이템이 3개 이하일경우 빈 아이템 추가
+    const padItems = (items, targetLength = 3) => {
+        const result = [...items];
+        while (result.length < targetLength) {
+            result.push({
+                item_name: "판매 아이템 없음",
+                period_revenue: 0
+            });
+        }
+        return result;
+    };
 
     // 선택된 이벤트 최신 데이터 병합
     const finalData = useMemo(() => {
         const finalData = [];
         
-        if (firstEventList.length > 0) {
-            const total =
-            format3digits(
-                firstEventList.reduce((sum, item) => sum + item.period_revenue, 0).split(".")[0]);
+        if (firstEventList.length > 0 && firstEventList.some(item => item.period_revenue !== undefined)) {
+            const total = firstEventList.reduce((sum, item) => sum + (item.period_revenue || 0), 0);
             finalData.push({
                 eventNo: "first", eventName: firstEventName,
-                totalPrice: total, most3Items: firstEventList.slice(0, 3)});
+                totalPrice: total, totalPriceFormat: format3digits(total).split(".")[0],
+                most3Items: padItems(
+                    firstEventList.filter(item => (item.period_revenue || 0) > 0).slice(0, 3)
+                )});
         }
-        if (secondEventList.length > 0) {
-            const total =
-            format3digits(
-                secondEventList.reduce((sum, item) => sum + item.period_revenue, 0).split(".")[0]);
+        if (secondEventList.length > 0 && secondEventList.some(item => item.period_revenue !== undefined)) {
+            const total = secondEventList.reduce((sum, item) => sum + (item.period_revenue || 0), 0);
             finalData.push({
                 eventNo: "second", eventName: secondEventName,
-                totalPrice: total, most3Items: secondEventList.slice(0, 3)});
+                totalPrice: total, totalPriceFormat: format3digits(total).split(".")[0],
+                most3Items: padItems(
+                    secondEventList.filter(item => (item.period_revenue || 0) > 0).slice(0, 3)
+                )});
         }
-        if (thirdEventList.length > 0) {
-            const total =
-            format3digits(
-                thirdEventList.reduce((sum, item) => sum + item.period_revenue, 0).split(".")[0]);
+        if (thirdEventList.length > 0 && thirdEventList.some(item => item.period_revenue !== undefined)) {
+            const total = thirdEventList.reduce((sum, item) => sum + (item.period_revenue || 0), 0);
             finalData.push({
                 eventNo: "third", eventName: thirdEventName,
-                totalPrice: total, most3Items: thirdEventList.slice(0, 3)});
+                totalPrice: total, totalPriceFormat: format3digits(total).split(".")[0],
+                most3Items: padItems(
+                    thirdEventList.filter(item => (item.period_revenue || 0) > 0).slice(0, 3)
+                )});
         }
-        
         return finalData;
     }, [firstEventList, secondEventList, thirdEventList]);
-
-    // 보라색 그라데이션 정의
-    const purpleGradient = (
-        <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#6a0dad" stopOpacity={0.8} />
-        </linearGradient>
-    );
-
-    // 아이템 차트용 보라색 그라데이션 정의
-    const itemPurpleGradient = (
-        <linearGradient id="itemPurpleGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#a569bd" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#7d3c98" stopOpacity={0.8} />
-        </linearGradient>
-    );
 
     return (
         <>
@@ -124,8 +149,8 @@ export default function EventTop3ItemStats({
                         <div>
                             {firstEventList.length > 0 ? (
                             <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
-                                <b style={{ fontWeight: 600 }}>{firstEventList[0].sell_type}</b>
-                                진행 기간 {firstEventList[0].sell_start_date} ~ {firstEventList[0].sell_end_date}
+                                <b style={{ fontWeight: 600, fontSize: 22 }}>{firstEventList[0].sell_type}</b>
+                                <b style={{ fontSize: 15 }}>&nbsp;&nbsp;&nbsp;진행 기간 {firstEventList[0].sell_start_date} ~ {firstEventList[0].sell_end_date}</b>
                             </span>
                             ) : (
                                 <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
@@ -136,8 +161,8 @@ export default function EventTop3ItemStats({
                         <div>
                             {secondEventList.length > 0 ? (
                             <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
-                                <b style={{ fontWeight: 600 }}>{secondEventList[0].sell_type}</b>
-                                진행 기간 {secondEventList[0].sell_start_date} ~ {secondEventList[0].sell_end_date}
+                                <b style={{ fontWeight: 600, fontSize: 22 }}>{secondEventList[0].sell_type}</b>
+                                <b style={{ fontSize: 15 }}>&nbsp;&nbsp;&nbsp;진행 기간 {secondEventList[0].sell_start_date} ~ {secondEventList[0].sell_end_date}</b>
                             </span>
                             ) : (
                                 <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
@@ -148,8 +173,8 @@ export default function EventTop3ItemStats({
                         <div>
                             {thirdEventList.length > 0 ? (
                             <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
-                                <b style={{ fontWeight: 600 }}>{thirdEventList[0].sell_type}</b>
-                                진행 기간 {thirdEventList[0].sell_start_date} ~ {thirdEventList[0].sell_end_date}
+                                <b style={{ fontWeight: 600, fontSize: 22 }}>{thirdEventList[0].sell_type}</b>
+                                <b style={{ fontSize: 15 }}>&nbsp;&nbsp;&nbsp;진행 기간 {thirdEventList[0].sell_start_date} ~ {thirdEventList[0].sell_end_date}</b>
                             </span>
                             ) : (
                                 <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
@@ -164,8 +189,7 @@ export default function EventTop3ItemStats({
                     <BarChart
                         data={finalData} // 데이터 삽입
                         layout="vertical"
-                        margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
-                    >
+                        margin={{ top: 20, right: 30, left: 100, bottom: 20 }}>
                         <defs>
                             <linearGradient id="eventGradient" x1="1" y1="0" x2="0" y2="0">
                                 <stop offset="0%" stopColor="#9C27B0" stopOpacity={1} />
@@ -174,7 +198,7 @@ export default function EventTop3ItemStats({
                         </defs>
                         <XAxis type="number" />
                         <YAxis type="category" dataKey="eventName" />
-                        <Tooltip formatter={(finalData) => `${finalData.totalPrice} 원`}
+                        <Tooltip formatter={(value, name, props) => `${props.payload?.totalPriceFormat || value} 원`}
                             contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
                             cursor={{ fill: '#1c1b23' }}
                         />
@@ -185,21 +209,20 @@ export default function EventTop3ItemStats({
 
                 <h2 className={"itemStats-title"}>이벤트별 아이템 상위 3개 판매액</h2>
                 <div className="itemStats-chartWrapper-top3">
-                    {finalData.map((eventName, idx) => {
-                        const top3Items = getTop3ItemsByEvent(eventName);
+                    {finalData.map((eventData, idx) => {
 
                         return (
                             <div key={idx} className="itemStats-chartWrapper-top3-item">
                                 <span className="itemStats-chartWrapper-top3-item-title">
-                                    <b style={{ fontWeight: 600 }}>{eventName}</b>
+                                    <b style={{ fontWeight: 600 }}>{eventData.eventName}</b>
                                 </span>
 
                                 <div className="itemStats-chartWrapper-top3-item-chart has-data">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart
-                                            data={top3Items} // 데이터 삽입
+                                            data={eventData.most3Items} // 데이터 삽입
                                             layout="vertical"
-                                            margin={{ top: 5, right: 5, left: 50, bottom: 5 }}
+                                            margin={{ top: 5, right: 60, left: 60, bottom: 5 }}
                                         >
                                             <defs>
                                                 <linearGradient id="itemGradient" x1="1" y1="0" x2="0" y2="0">
@@ -210,18 +233,18 @@ export default function EventTop3ItemStats({
                                             <XAxis type="number" domain={[0, 'dataMax']} />
                                             <YAxis
                                                 type="category"
-                                                dataKey="name"
+                                                dataKey="item_name"
                                                 tick={{ fontSize: 10 }}
                                                 width={50}
                                             />
                                             <Tooltip
-                                                formatter={(value) => `${value} 원`}
-                                                labelFormatter={(label) => `${label}`}
+                                                formatter={(value) => `${format3digits(value).split(".")[0]} 원`}
+                                                labelFormatter={(label) => `아이템: ${label}`}
                                                 contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
                                                 cursor={{ fill: '#1c1b23' }}
                                             />
                                             <Bar
-                                                dataKey="price"
+                                                dataKey="period_revenue"
                                                 name="판매가"
                                                 fill="url(#itemGradient)"
                                                 barSize={20}
