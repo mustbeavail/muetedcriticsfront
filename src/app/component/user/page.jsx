@@ -319,14 +319,12 @@ export default function User() {
 
         {/* 지역 드롭다운 */}
         <select className="user-list-sortSelect" value={region} onChange={handleRegionChange}>
-          <optgroup label='지역'>
-            <option value="">전체</option>
-            <option value="아시아">아시아</option>
-            <option value="북미">북미</option>
-            <option value="유럽">유럽</option>
-            <option value="아프리카">아프리카</option>
-            <option value="오세아니아">오세아니아</option>
-          </optgroup>
+          <option value="">지역 전체</option>
+          <option value="아시아">아시아</option>
+          <option value="북미">북미</option>
+          <option value="유럽">유럽</option>
+          <option value="아프리카">아프리카</option>
+          <option value="오세아니아">오세아니아</option>
         </select>
 
         {/* 유저 타입(분류) 태그 필터 */}
@@ -346,7 +344,6 @@ export default function User() {
 
         {/* 정렬 */}
         <select className="user-list-sortSelect" value={sortKey} onChange={handleSortKeyChange}>
-          <option value="">정렬 기준 선택</option>
           <option value="totalSpent">총 과금액</option>
           <option value="totalPlayTime">플레이 타임</option>
         </select>

@@ -118,17 +118,25 @@
 }
 
 .user-list-sortSelect {
-    min-width: 120px;
-    padding: 8px 14px;
+    width: 120px;
+    padding: 8px;
     font-size: 17px;
     border-radius: 10px;
     background-color: rgba(40, 40, 40, 0.6);
+    background: url('/dropdown-arrow.svg') no-repeat right 10px center;
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #ccc;
     cursor: pointer;
     appearance: none;
     transition: background-color 0.2s ease;
 }
+
+select.user-list-sortSelect option {
+    color: #fff;
+    background: #1e1e1e;
+    font-size: 16px;
+}
+
 
 .user-list-sortSelect:focus {
     background-color: rgba(60, 60, 60, 0.7);
