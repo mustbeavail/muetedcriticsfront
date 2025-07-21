@@ -184,8 +184,16 @@
     font-weight: bold;
 }
 
-.forum-table .cell {
-    flex: 1;
+.forum-table .idx-cell {
+    flex: 0.5;
+    padding: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.forum-table .title-cell {
+    flex: 2;
     padding: 16px;
     white-space: nowrap;
     overflow: hidden;
@@ -193,7 +201,7 @@
 }
 
 .forum-table .user-cell {
-    flex: 1;
+    flex: 1.5;
     padding: 16px;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -201,7 +209,31 @@
     display: block;
 }
 
-.forum-table .cell a:hover,
+.forum-table .date-cell {
+    flex: 1;
+    padding: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.forum-table .hit-cell {
+    flex: 0.5;
+    padding: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.forum-table .likes-cell {
+    flex: 0.5;
+    padding: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.forum-table .title-cell a:hover,
 .forum-table .user-cell button:hover {
     text-decoration: underline;
 }

@@ -1,140 +1,84 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
 import './forum.css';
 import { IoSearch } from 'react-icons/io5';
+import axios from 'axios';
 
 import General from './general';
 import Competition from './competition';
 
+const URL = process.env.NEXT_PUBLIC_API_URL;
+
 const Forum = () => {
-  const dummyData = {
-    "forumPosts": {
-      "content": [
-        {
-          "postIdx": 109,
-          "content": "요즘 널코어 경쟁전 돌리면 루시우 픽률이 눈에 띄게 올랐습니다. 플래티넘 구간에서 직접 테스트한 결과입니다.",
-          "createdAt": "2025-12-31T22:23:27",
-          "hit": 229,
-          "likes": 24,
-          "title": "널코어 루시우 밸패 후기 #7",
-          "topic": "일반",
-          "updatedAt": "2025-12-31T23:59:00",
-          "userId": "lonna.bosco@emard.com"
-        },
-        {
-          "postIdx": 110,
-          "content": "요즘 널코어 경쟁전 돌리면 루시우 픽률이 눈에 띄게 올랐습니다. 플래티넘 구간에서 직접 테스트한 결과입니다.",
-          "createdAt": "2025-12-31T22:23:27",
-          "hit": 229,
-          "likes": 24,
-          "title": "널코어 루시우 밸패 후기 #7",
-          "topic": "일반",
-          "updatedAt": "2025-12-31T23:59:00",
-          "userId": "lonna.bosco@emard.com"
-        },
-        {
-          "postIdx": 111,
-          "content": "요즘 널코어 경쟁전 돌리면 루시우 픽률이 눈에 띄게 올랐습니다. 플래티넘 구간에서 직접 테스트한 결과입니다.",
-          "createdAt": "2025-12-31T22:23:27",
-          "hit": 229,
-          "likes": 24,
-          "title": "널코어 루시우 밸패 후기 #7",
-          "topic": "일반",
-          "updatedAt": "2025-12-31T23:59:00",
-          "userId": "lonna.bosco@emard.com"
-        },
-        {
-          "postIdx": 112,
-          "content": "요즘 널코어 경쟁전 돌리면 루시우 픽률이 눈에 띄게 올랐습니다. 플래티넘 구간에서 직접 테스트한 결과입니다.",
-          "createdAt": "2025-12-31T22:23:27",
-          "hit": 229,
-          "likes": 24,
-          "title": "널코어 루시우 밸패 후기 #7",
-          "topic": "일반",
-          "updatedAt": "2025-12-31T23:59:00",
-          "userId": "lonna.bosco@emard.com"
-        },
-        {
-          "postIdx": 113,
-          "content": "요즘 널코어 경쟁전 돌리면 루시우 픽률이 눈에 띄게 올랐습니다. 플래티넘 구간에서 직접 테스트한 결과입니다.",
-          "createdAt": "2025-12-31T22:23:27",
-          "hit": 229,
-          "likes": 24,
-          "title": "널코어 루시우 밸패 후기 #7",
-          "topic": "일반",
-          "updatedAt": "2025-12-31T23:59:00",
-          "userId": "lonna.bosco@emard.com"
-        },
-        {
-          "postIdx": 114,
-          "content": "요즘 널코어 경쟁전 돌리면 루시우 픽률이 눈에 띄게 올랐습니다. 플래티넘 구간에서 직접 테스트한 결과입니다.",
-          "createdAt": "2025-12-31T22:23:27",
-          "hit": 229,
-          "likes": 24,
-          "title": "널코어 루시우 밸패 후기 #7",
-          "topic": "일반",
-          "updatedAt": "2025-12-31T23:59:00",
-          "userId": "lonna.bosco@emard.com"
-        },
-        {
-          "postIdx": 115,
-          "content": "요즘 널코어 경쟁전 돌리면 루시우 픽률이 눈에 띄게 올랐습니다. 플래티넘 구간에서 직접 테스트한 결과입니다.",
-          "createdAt": "2025-12-31T22:23:27",
-          "hit": 229,
-          "likes": 24,
-          "title": "널코어 루시우 밸패 후기 #7",
-          "topic": "일반",
-          "updatedAt": "2025-12-31T23:59:00",
-          "userId": "lonna.bosco@emard.com"
-        },
-        {
-          "postIdx": 116,
-          "content": "요즘 널코어 경쟁전 돌리면 루시우 픽률이 눈에 띄게 올랐습니다. 플래티넘 구간에서 직접 테스트한 결과입니다.",
-          "createdAt": "2025-12-31T22:23:27",
-          "hit": 229,
-          "likes": 24,
-          "title": "널코어 루시우 밸패 후기 #7",
-          "topic": "일반",
-          "updatedAt": "2025-12-31T23:59:00",
-          "userId": "lonna.bosco@emard.com"
-        },
-        {
-          "postIdx": 117,
-          "content": "요즘 널코어 경쟁전 돌리면 루시우 픽률이 눈에 띄게 올랐습니다. 플래티넘 구간에서 직접 테스트한 결과입니다.",
-          "createdAt": "2025-12-31T22:23:27",
-          "hit": 229,
-          "likes": 24,
-          "title": "널코어 루시우 밸패 후기 #7",
-          "topic": "일반",
-          "updatedAt": "2025-12-31T23:59:00",
-          "userId": "lonna.bosco@emard.com"
-        },
-        {
-          "postIdx": 118,
-          "content": "요즘 널코어 경쟁전 돌리면 루시우 픽률이 눈에 띄게 올랐습니다. 플래티넘 구간에서 직접 테스트한 결과입니다.",
-          "createdAt": "2025-12-31T22:23:27",
-          "hit": 229,
-          "likes": 24,
-          "title": "널코어 루시우 밸패 후기 #7",
-          "topic": "일반",
-          "updatedAt": "2025-12-31T23:59:00",
-          "userId": "lonna.bosco@emard.com"
-        },
-      ]
-    }
+  const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+
+  const [forumPosts, setForumPosts] = useState([]);
+  const [totalFilteredPages, setTotalFilteredPages] = useState(1);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentTab, setCurrentTab] = useState('general'); // topic
+  const [sortKey, setSortKey] = useState('dateDesc'); // align
+
+
+  // 포럼 리스트 불러오기
+  const getForumList = async () => {
+    const { data } = await axios.get(`${URL}/forum/list`, {
+      params: {
+        page: currentPage,
+        topic: currentTab === 'general' ? '일반' : '경쟁전',
+        align: sortKey
+      },
+      headers: {
+        authorization: token
+      }
+    });
+    setForumPosts(data.forumPosts.content);
+    setTotalFilteredPages(data.forumPosts.totalPages);
   }
 
-  // const forumPost = async () => {
-  //   const {data} = await axios.get('http://localhost:8080/api/forum/post');
-  // }
+  useEffect(() => {
+    const topic = currentTab === 'general' ? '일반' : '경쟁전';
+    if (isSearching) {
+      forumSearch();
+    } else {
+      getForumList(currentPage, topic, sortKey);
+    }
+  }, [currentPage, currentTab, sortKey]);
 
-  const [currentTab, setCurrentTab] = useState('general');
 
+  // 페이지 변경
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // 탭 변경
   const goToPage = (tab) => {
     setCurrentTab(tab);
   };
+
+  // 포럼 게시글 검색
+  const [search, setSearch] = useState('');
+  const [searchType, setSearchType] = useState('title');
+  const [isSearching, setIsSearching] = useState(false); // 검색 중인지 여부
+  const forumSearch = async () => {
+    setIsSearching(true);
+    const { data } = await axios.get(`${URL}/forum/search`, {
+      params: {
+        search: search, // 검색어
+        searchType: searchType, // title, content, userId
+        page: currentPage,
+        topic: currentTab === 'general' ? '일반' : '경쟁전',
+      },
+      headers: {
+        authorization: token
+      }
+    });
+    setForumPosts(data.forumPosts.content);
+    setTotalFilteredPages(data.forumPosts.totalPages);
+    setIsSearching(false);
+  }
 
   return (
     <>
@@ -145,28 +89,26 @@ const Forum = () => {
         <div className={"forum-chartWrapper"}>
           <div className={"forum-filterBox-wrapper"}>
             <div className="forum-filter-left">
-              <select className={"forum-select-category"}>
-                <option>제목</option>
-                <option>내용</option>
-                <option>글쓴이</option>
+              <select className={"forum-select-category"} onChange={(e) => setSearchType(e.target.value)}>
+                <option value="title">제목</option>
+                <option value="content">내용</option>
+                <option value="userId">글쓴이</option>
               </select>
               <div className={"forum-search"}>
                 <div className={"forum-input-wrapper"}>
-                  <input type="text" placeholder="포럼 검색" />
-                  <button className={"forum-search-btn"}><IoSearch /></button>
+                  <input type="text" placeholder="포럼 검색" onChange={(e) => setSearch(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && forumSearch()} />
+                  <button className={"forum-search-btn"} onClick={forumSearch} onKeyUp={(e) => e.key === 'Enter' && forumSearch()}><IoSearch /></button>
                 </div>
               </div>
             </div>
             <div className="forum-filter-right">
-              <select className={"forum-select"}>
-                <option>전체</option>
-                <option>작성 날짜</option>
-                <option>조회수</option>
-                <option>좋아요</option>
-              </select>
-              <select className={"forum-select"}>
-                <option>최신순 (높은순)</option>
-                <option>오래된순 (낮은순)</option>
+              <select className={"forum-select"} onChange={(e) => setSortKey(e.target.value)}>
+                <option value="dateDesc">작성 날짜 최신순</option>
+                <option value="dateAsc">작성 날짜 오래된순</option>
+                <option value="hitDesc">조회수 높은순</option>
+                <option value="hitAsc">조회수 낮은순</option>
+                <option value="likesDesc">좋아요 높은순</option>
+                <option value="likesAsc">좋아요 낮은순</option>
               </select>
             </div>
           </div>
@@ -177,30 +119,30 @@ const Forum = () => {
             <div className={`forum-tab ${currentTab === 'competition' ? 'active' : ''}`} onClick={() => goToPage('competition')}>경쟁전 토론장</div>
           </div>
 
-          {currentTab === 'general' && <General dummyData={dummyData} />}
-          {currentTab === 'competition' && <Competition dummyData={dummyData} />}
+          {currentTab === 'general' && <General forumPosts={forumPosts} />}
+          {currentTab === 'competition' && <Competition forumPosts={forumPosts} />}
 
           {/* 페이지네이션 */}
           <div className="forum-pagination">
             <button
-            // disabled={currentPage === 1} 
-            // onClick={() => goToPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
             >
               이전
             </button>
 
-            {Array.from({ length: 10 }, (_, i) => i + 1).map((page) => (
+            {Array.from({ length: totalFilteredPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
-                className={page === 1 ? 'active' : ''}
-              // onClick={() => goToPage(page)}
+                className={page === currentPage ? 'active' : ''}
+                onClick={() => handlePageChange(page)}
               >
                 {page}
               </button>
             ))}
             <button
-            // disabled={currentPage === totalFilteredPages} 
-            // onClick={() => goToPage(currentPage + 1)}
+              disabled={currentPage === totalFilteredPages}
+              onClick={() => handlePageChange(currentPage + 1)}
             >
               다음
             </button>

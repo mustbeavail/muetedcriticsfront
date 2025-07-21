@@ -132,6 +132,16 @@ export default function ForumDetailPage() {
   const params = useParams();
   const forumDetail = params?.forumDetail;
 
+  // 포럼 상세 정보 불러오기
+  // const getForumDetail = async () => {
+  //   const { data } = await axios.get(`${URL}/forum/detail/${forumDetail}`, {
+  //     headers: {
+  //       authorization: token
+  //     }
+  //   });
+  //   console.log(data);
+  // }
+
   // 날짜를 한국 형식으로 포맷팅하는 함수
   const formatDate = (dateString) => {
     if (!dateString) return '-'; // 날짜 문자열이 없으면 '-' 반환
