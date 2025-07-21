@@ -204,10 +204,25 @@
 }
 
 .itemStats-item-name {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 6px;
     color: #e0e0e0;
+}
+
+.itemStats-item-price,
+.itemStats-item-period-revenue,
+.itemStats-item-period-sales-count {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.itemStats-item-price {
+    margin-top: 5px;
+}
+
+.itemStats-item-period-sales-count {
+    margin-bottom: 5px;
 }
 
 .itemStats-item-dates {
@@ -328,4 +343,30 @@
 
 .refundStats-page-btn.active {
     background-color: #a259ff;
+}
+
+.itemStats-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+    gap: 8px;
+}
+
+.itemStats-pagination button {
+    background-color: #2e2e3a;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.itemStats-pagination button:hover {
+    background-color: #44445a;
+}
+
+.itemStats-pagination button.active {
+    background-color: #9C27B0;
+    font-weight: bold;
 }

@@ -124,7 +124,7 @@ export default function RevenueChart() {
         // 항상 소수점 아래 둘째 자리까지 표시
         const [intPart, decPart] = Number(num).toFixed(2).split('.');
         
-        // 정수 부분만 4자리마다 콤마 삽입
+        // 정수 부분만 3자리마다 콤마 삽입
         const withCommas = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         
         return `${withCommas}.${decPart}`;

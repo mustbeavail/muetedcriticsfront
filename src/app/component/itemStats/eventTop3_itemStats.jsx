@@ -1,32 +1,67 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-export default function EventTop3ItemStats({ itemList, uniqueSellTypes }) {
+export default function EventTop3ItemStats({
+    token, eventList,
+    firstEventList, secondEventList, thirdEventList,
+    setFirstEventList, setSecondEventList, setThirdEventList,
+    firstEventName, secondEventName, thirdEventName,
+    setFirstEventName, setSecondEventName, setThirdEventName,
+    getFirstEventList, getSecondEventList, getThirdEventList,
+    format3digits }) {
 
-    // 더미 이벤트 데이터 (고정값)
-    const dummyEvents = ["여름 이벤트", "할로윈 이벤트", "크리스마스 이벤트"];
+    const [eventNameList, setEventNameList] = useState([]);
 
-    // 차트용 더미 데이터 생성
-    const chartData = dummyEvents.map(eventName => {
-        return { eventName, totalPrice: Math.floor(Math.random() * 1000000) + 500000 };
-    });
+    // 이벤트 리스트 조회
+    useEffect(() => {
+        if (eventList.length > 0 && eventNameList.length === 0) {
+            setEventNameList([...new Set(eventList.map(item => item.sell_type))]);
+        }
+    }, [eventList]);
 
-    // 이벤트별 상위 3개 아이템 더미 데이터 생성
-    const getTop3ItemsByEvent = (eventName) => {
-        return [
-            { name: `${eventName} 아이템 1`, price: Math.floor(Math.random() * 100000) + 50000, category: "의상" },
-            { name: `${eventName} 아이템 2`, price: Math.floor(Math.random() * 80000) + 40000, category: "무기" },
-            { name: `${eventName} 아이템 3`, price: Math.floor(Math.random() * 60000) + 30000, category: "장식" }
-        ];
-    };
+    // 이벤트 선택할때마다 데이터조회
+    useEffect(() => {
+        getFirstEventList(token, firstEventName, "periodRevenueDESC");
+    }, [firstEventName]);
+    useEffect(() => {
+        getSecondEventList(token, secondEventName, "periodRevenueDESC");
+    }, [secondEventName]);
+    useEffect(() => {
+        getThirdEventList(token, thirdEventName, "periodRevenueDESC");
+    }, [thirdEventName]);
 
-    // 빈 데이터 생성 (그래프 뼈대 표시용)
-    const emptyData = [
-        { name: "아이템 1", price: 0 },
-        { name: "아이템 2", price: 0 },
-        { name: "아이템 3", price: 0 }
-    ];
+    // 선택된 이벤트 최신 데이터 병합
+    const finalData = useMemo(() => {
+        const finalData = [];
+        
+        if (firstEventList.length > 0) {
+            const total =
+            format3digits(
+                firstEventList.reduce((sum, item) => sum + item.period_revenue, 0).split(".")[0]);
+            finalData.push({
+                eventNo: "first", eventName: firstEventName,
+                totalPrice: total, most3Items: firstEventList.slice(0, 3)});
+        }
+        if (secondEventList.length > 0) {
+            const total =
+            format3digits(
+                secondEventList.reduce((sum, item) => sum + item.period_revenue, 0).split(".")[0]);
+            finalData.push({
+                eventNo: "second", eventName: secondEventName,
+                totalPrice: total, most3Items: secondEventList.slice(0, 3)});
+        }
+        if (thirdEventList.length > 0) {
+            const total =
+            format3digits(
+                thirdEventList.reduce((sum, item) => sum + item.period_revenue, 0).split(".")[0]);
+            finalData.push({
+                eventNo: "third", eventName: thirdEventName,
+                totalPrice: total, most3Items: thirdEventList.slice(0, 3)});
+        }
+        
+        return finalData;
+    }, [firstEventList, secondEventList, thirdEventList]);
 
     // 보라색 그라데이션 정의
     const purpleGradient = (
@@ -50,37 +85,84 @@ export default function EventTop3ItemStats({ itemList, uniqueSellTypes }) {
                 <h2 className={"itemStats-title"}>이벤트별 아이템 정보</h2>
                 <div className="itemStats-filterBox">
                     <span>이벤트 선택 1
-                        <select className="itemStats-select" value={""}>
+                        <select
+                        className="itemStats-select"
+                        value={firstEventName}
+                        onChange={(e) => setFirstEventName(e.target.value)}>
                             <option value="">선택</option>
+                            {eventNameList.map((eventName) => (
+                                <option key={eventName} value={eventName}>{eventName}</option>
+                            ))}
                         </select>
                     </span>
                     <span>이벤트 선택 2
-                        <select className="itemStats-select" value={""}>
+                        <select
+                        className="itemStats-select"
+                        value={secondEventName}
+                        onChange={(e) => setSecondEventName(e.target.value)}>
                             <option value="">선택</option>
+                            {eventNameList.map((eventName) => (
+                                <option key={eventName} value={eventName}>{eventName}</option>
+                            ))}
                         </select>
                     </span>
                     <span>이벤트 선택 3
-                        <select className="itemStats-select" value={""}>
+                        <select
+                        className="itemStats-select"
+                        value={thirdEventName}
+                        onChange={(e) => setThirdEventName(e.target.value)}>
                             <option value="">선택</option>
+                            {eventNameList.map((eventName) => (
+                                <option key={eventName} value={eventName}>{eventName}</option>
+                            ))}
                         </select>
                     </span>
                 </div>
 
                 <div style={{ height: '100px' }}>
                     <div>
-                        {dummyEvents.map((eventName, idx) => (
-                            <div key={idx}>
+                        <div>
+                            {firstEventList.length > 0 ? (
+                            <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
+                                <b style={{ fontWeight: 600 }}>{firstEventList[0].sell_type}</b>
+                                진행 기간 {firstEventList[0].sell_start_date} ~ {firstEventList[0].sell_end_date}
+                            </span>
+                            ) : (
                                 <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
-                                    <b style={{ fontWeight: 600 }}>{eventName}</b> 진행 기간 2023-01-{idx + 1} ~ 2023-01-{idx + 15}
+                                    <b style={{ fontWeight: 600 }}>첫번째 이벤트를 선택해 주세요.</b>
                                 </span>
-                            </div>
-                        ))}
+                            )}
+                        </div>
+                        <div>
+                            {secondEventList.length > 0 ? (
+                            <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
+                                <b style={{ fontWeight: 600 }}>{secondEventList[0].sell_type}</b>
+                                진행 기간 {secondEventList[0].sell_start_date} ~ {secondEventList[0].sell_end_date}
+                            </span>
+                            ) : (
+                                <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
+                                    <b style={{ fontWeight: 600 }}>두번째 이벤트를 선택해 주세요.</b>
+                                </span>
+                            )}
+                        </div>
+                        <div>
+                            {thirdEventList.length > 0 ? (
+                            <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
+                                <b style={{ fontWeight: 600 }}>{thirdEventList[0].sell_type}</b>
+                                진행 기간 {thirdEventList[0].sell_start_date} ~ {thirdEventList[0].sell_end_date}
+                            </span>
+                            ) : (
+                                <span style={{ marginRight: 10, marginBottom: 5, display: 'block' }}>
+                                    <b style={{ fontWeight: 600 }}>세번째 이벤트를 선택해 주세요.</b>
+                                </span>
+                            )}
+                        </div>
                     </div>
                 </div>
 
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart
-                        data={chartData} // 데이터 삽입
+                        data={finalData} // 데이터 삽입
                         layout="vertical"
                         margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
                     >
@@ -92,7 +174,7 @@ export default function EventTop3ItemStats({ itemList, uniqueSellTypes }) {
                         </defs>
                         <XAxis type="number" />
                         <YAxis type="category" dataKey="eventName" />
-                        <Tooltip formatter={(value) => `${value} 원`}
+                        <Tooltip formatter={(finalData) => `${finalData.totalPrice} 원`}
                             contentStyle={{ fontSize: 15, background: '#1c1b23', color: '#fff' }}
                             cursor={{ fill: '#1c1b23' }}
                         />
@@ -103,7 +185,7 @@ export default function EventTop3ItemStats({ itemList, uniqueSellTypes }) {
 
                 <h2 className={"itemStats-title"}>이벤트별 아이템 상위 3개 판매액</h2>
                 <div className="itemStats-chartWrapper-top3">
-                    {dummyEvents.map((eventName, idx) => {
+                    {finalData.map((eventName, idx) => {
                         const top3Items = getTop3ItemsByEvent(eventName);
 
                         return (
