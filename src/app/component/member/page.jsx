@@ -63,6 +63,8 @@ const Member = () => {
 
   useEffect(() => {
     getMemberList(page, activeDept, activePosition, sortField, sortDirection, search, state);
+    setSelectedMember(null);
+    // setMemberInfoEditModal(false);
   }, [page, activeDept, activePosition, sortField, sortDirection, search, state]);
 
   const toggleMenu = (id) => {
@@ -272,26 +274,26 @@ const Member = () => {
                 </div>
 
                 {member.acceptYn === true && (
-                <div className="memberList-menu">
-                  <button className="memberList-moreBtn" onClick={() => {
-                    setSelectedMember(member);
-                    toggleMenu(member.memberId);
-                  }}>
-                    <FiMoreVertical />
-                  </button>
-                  {openMenuId === member.memberId && adminYn === 'true' && (
-                    <div className="memberList-dropdown">
-                      <button onClick={memberInfoEdit}>회원 정보 수정</button>
-                      {member.adminYn && <button onClick={adminRevoke}>관리자 권한 박탈</button>}
-                      {!member.adminYn && <button onClick={adminGrant}>관리자 권한 부여</button>}
-                      <button onClick={() => chatWithMember(member)}>채팅하기</button>
-                    </div>
-                  )}
-                  {openMenuId === member.memberId && adminYn !== 'true' && (
-                    <div className="memberList-dropdown">
-                      <button onClick={() => chatWithMember(member)}>채팅하기</button>
-                    </div>
-                  )}
+                  <div className="memberList-menu">
+                    <button className="memberList-moreBtn" onClick={() => {
+                      setSelectedMember(member);
+                      toggleMenu(member.memberId);
+                    }}>
+                      <FiMoreVertical />
+                    </button>
+                    {openMenuId === member.memberId && adminYn === 'true' && (
+                      <div className="memberList-dropdown">
+                        <button onClick={memberInfoEdit}>회원 정보 수정</button>
+                        {member.adminYn && <button onClick={adminRevoke}>관리자 권한 박탈</button>}
+                        {!member.adminYn && <button onClick={adminGrant}>관리자 권한 부여</button>}
+                        <button onClick={() => chatWithMember(member)}>채팅하기</button>
+                      </div>
+                    )}
+                    {openMenuId === member.memberId && adminYn !== 'true' && (
+                      <div className="memberList-dropdown">
+                        <button onClick={() => chatWithMember(member)}>채팅하기</button>
+                      </div>
+                    )}
                   </div>
                 )}
                 {member.acceptYn === false && (
@@ -308,9 +310,15 @@ const Member = () => {
                 <span className="value">{member.memberId}</span>
               </div>
 
-              <div className="memberList-email">
-                <span className="label">이메일 </span>
-                <span className="value">{member.email || '-'}</span>
+              <div className="memberList-meta">
+                <div className="memberList-email">
+                  <span className="label">이메일 </span>
+                  <span className="value">{member.email || '-'}</span>
+                </div>
+                <div className="memberList-email">
+                  <span className="label">성별 </span>
+                  <span className="value">{member.memberGender || '-'}</span>
+                </div>
               </div>
 
               <div className="memberList-meta">

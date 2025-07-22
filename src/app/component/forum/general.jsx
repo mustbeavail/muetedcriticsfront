@@ -462,7 +462,7 @@ export default function General({ forumPosts }) {
 
             {/* 메모 작성 모달 */}
             {showWriteMemoModal && (
-                <div className="forum-modalBackdrop">
+                <div>
                     <div className="forum-modal">
                         <div className="forum-modalHeader">
                             <div className="forum-userName">
@@ -490,7 +490,7 @@ export default function General({ forumPosts }) {
 
             {/* 메모 수정 모달 */}
             {showEditMemoModal && (
-                <div className="forum-modalBackdrop">
+                <div>
                     <div className="forum-modal forum-editMemoModal">
                         <div className="forum-modalHeader">
                             <div className="forum-userName">

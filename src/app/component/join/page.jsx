@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import { FaCheck, FaEye, FaEyeSlash } from 'react-icons/fa';
 import Link from 'next/link';
 import axios from 'axios';
+import './join.css';
 
 const JoinPage = () => {
   const URL = process.env.NEXT_PUBLIC_API_URL;
 
-  // 이메일, 성별 빠짐
   const [formData, setFormData] = useState({
     memberId: '',
     memberPw: '',
@@ -19,14 +19,15 @@ const JoinPage = () => {
     deptName: '',
     position: '',
     receiveConsent: false,
-    // email: '',
-    // memberGender: '',
+    email: '',
+    memberGender: '',
   });
 
   const [idCheckResult, setIdCheckResult] = useState(null);
   const [checking, setChecking] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [gender, setGender] = useState('');
 
   const [showModal, setShowModal] = useState(false);
   const [tempDepartment, setTempDepartment] = useState(formData.department);
@@ -98,11 +99,11 @@ const JoinPage = () => {
     formData.confirmPw.length > 0 &&
     formData.memberPw === formData.confirmPw;
 
-  const handleSubmit = (e) => {
+  const join = async (e) => {
     e.preventDefault();
 
     if (!formData.memberId.trim()) {
-      setErrorMsg('아이디를 입력해주십시오.');
+      setErrorMsg('아이디를 입력해주세요.');
       return;
     }
     if (idCheckResult !== 'available') {
@@ -118,7 +119,23 @@ const JoinPage = () => {
       return;
     }
     if (!formData.memberName.trim()) {
-      setErrorMsg('이름을 입력해주십시오.');
+      setErrorMsg('이름을 입력해주세요.');
+      return;
+    }
+    if (!formData.memberGender) {
+      setErrorMsg('성별을 선택해주세요.');
+      return;
+    }
+    if (!formData.email.trim()) {
+      setErrorMsg('이메일을 입력해주세요.');
+      return;
+    }
+    if (!formData.officePhone.trim()) {
+      setErrorMsg('사내 연락처를 입력해주세요.');
+      return;
+    }
+    if (!formData.mobilePhone.trim()) {
+      setErrorMsg('개인 연락처를 입력해주세요.');
       return;
     }
     if (!formData.deptName || !formData.position) {
@@ -132,9 +149,7 @@ const JoinPage = () => {
 
     setErrorMsg('');
     console.log('가입 데이터:', formData);
-  };
 
-  const join = async () => {
     const { data } = await axios.post(`${URL}/member/join`, formData);
     console.log(data);
 
@@ -146,11 +161,12 @@ const JoinPage = () => {
     }
   };
 
+
   return (
     <div className="join-wrapper">
       <div className="join-container">
         <h2 className="join-title">회원가입</h2>
-        <form onSubmit={handleSubmit} className="join-form">
+        <form onSubmit={join} className="join-form">
           {errorMsg && <p className="join-errorMsg">{errorMsg}</p>}
 
           <div className="join-inputWithButton">
@@ -167,7 +183,7 @@ const JoinPage = () => {
               type="button"
               onClick={handleIdCheck}
               disabled={checking || idCheckResult === 'available'}
-              className={`join-button ${idCheckResult === 'available' ? 'join-available' : ''}`}
+              className={`join-overlay-button ${idCheckResult === 'available' ? 'join-available' : ''}`}
             >
               {idCheckResult === 'available' ? (
                 <FaCheck size={18} />
@@ -178,8 +194,12 @@ const JoinPage = () => {
               )}
             </button>
           </div>
-          {idCheckResult === 'taken' && (
-            <p className="join-errorMsg">이미 사용 중인 아이디입니다.</p>
+          {formData.memberId && idCheckResult && (
+            <p className={idCheckResult === 'available' ? 'join-matchMsg' : 'join-notMatchMsg'}>
+              {idCheckResult === 'available'
+                ? '사용 가능한 아이디입니다.'
+                : '이미 사용 중인 아이디입니다.'}
+            </p>
           )}
 
           <div className="join-inputWithIcon">
@@ -201,7 +221,7 @@ const JoinPage = () => {
               tabIndex={-1}
               aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             >
-              {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+              {/* {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />} */}
             </button>
           </div>
 
@@ -230,6 +250,36 @@ const JoinPage = () => {
             placeholder="이름"
             className="join-input"
           />
+
+          <div className="join-gender-wrapper">
+            <div className="join-gender-buttons">
+              {['남성', '여성'].map((gender) => (
+                <button
+                  key={gender}
+                  type="button"
+                  className={`join-gender-btn ${formData.memberGender === gender ? 'active' : ''}`}
+                  onClick={() =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      memberGender: gender,
+                    }))
+                  }
+                >
+                  {gender}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="이메일"
+            className="join-input"
+          />
+
           <input
             type="tel"
             name="officePhone"
@@ -269,7 +319,7 @@ const JoinPage = () => {
                   setShowConsentModal(true);
                 }}
                 readOnly
-                className="join-checkboxInput"
+                className="join-consentCheckbox"
               />
               <span />
               <label
@@ -420,9 +470,9 @@ const ConsentModal = ({ onAgree, onCancel }) => (
         }}
       >
         {`저는 muted critics가 제공하는 서비스 이용과 관련하여, 서비스 안내, 이벤트 및 프로모션 등 유익한 정보를 이메일, 문자, 앱 푸시 알림 등으로 받아보는 것에 동의합니다.
-          또한, 제 개인정보가 회원관리, 서비스 제공, 고객 상담, 맞춤형 서비스 제공 등의 목적을 위해 수집·이용되는 것을 충분히 이해하며 이에 동의합니다. 
-          동의하지 않으면 회원가입이 불가능하며, 언제든지 수신 동의를 철회할 수 있습니다.
-          개인정보 관리 책임자는 김보연이며, 관련 문의는 kxxn0214@naver.com으로 연락 주시면 신속히 안내해 드립니다.`}
+또한, 제 개인정보가 회원관리, 서비스 제공, 고객 상담, 맞춤형 서비스 제공 등의 목적을 위해 수집·이용되는 것을 충분히 이해하며 이에 동의합니다. 
+동의하지 않으면 회원가입이 불가능하며, 언제든지 수신 동의를 철회할 수 있습니다.
+개인정보 관리 책임자는 김보연이며, 관련 문의는 kxxn0214@naver.com으로 연락 주시면 신속히 안내해 드립니다.`}
       </div>
       <div className="join-modalActionButtons">
         <button type="button" className="join-modalConfirmButton" onClick={onAgree}>
