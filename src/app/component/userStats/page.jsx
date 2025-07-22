@@ -7,16 +7,18 @@ import WinningRate_Playtime_UserStats from './winningRate_playtime_userStats';
 import Usertype_Tier_UserStats from './usertype_tier_userStats';
 import UserType_UserStats from './userType_userStats';
 import SeasonTier_UserStats from './seasonTier_userStats';
+import { useRouter } from 'next/navigation';
 
 const UserStats = () => {
+
+  const router = useRouter();
 
   // 로그인 체크 (최초 1회만)
   useEffect(() => {
     const id = sessionStorage.getItem('member_id');
     const token = sessionStorage.getItem('token');
-    const admin = sessionStorage.getItem('admin_yn');
     const dept = sessionStorage.getItem('dept_name');
-    if (!id || !token || !admin || !dept) {
+    if (!id || !token || !dept) {
       alert('로그인 후 접근 가능합니다.');
       router.push("/");
     }
@@ -33,7 +35,7 @@ const UserStats = () => {
 
   return (
     <>
-      <Header token={token}/>
+      <Header token={token} />
       <Menu />
       <div className="stats_container">
         <span className={"userStats-mainTitle"}>유저 통계</span>

@@ -73,6 +73,23 @@ export default function User() {
 
   const itemsPerPage = 10; // 페이지당 유저 수
 
+  // 날짜를 한국 형식으로 포맷팅하는 함수
+  const formatDate = (dateString) => {
+    if (!dateString) return '-'; // 날짜 문자열이 없으면 '-' 반환
+
+    const date = new Date(dateString); // 날짜 객체 생성
+    // 날짜 부분을 한국어 형식으로 변환하고 공백 제거
+    const datePart = date.toLocaleDateString('ko-KR').replace(/ /g, '');
+    // 시간 부분을 24시간 형식으로 변환
+    const timePart = date.toLocaleTimeString('ko-KR', {
+      hour: '2-digit', // 시간: 두 자리 숫자
+      minute: '2-digit', // 분: 두 자리 숫자
+      hour12: false // 24시간 형식 사용
+    });
+
+    return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
+  };
+
   // 로그인 체크 (최초 1회만)
   useEffect(() => {
     const id = sessionStorage.getItem('member_id');
@@ -413,7 +430,6 @@ export default function User() {
     setSelectedUser(null);
   };
 
-  // 뱃지 디스플레이 컴포넌트
   const BadgeDisplay = ({ userId }) => {
     const tiers = userTiers[userId];
     const detail = userDetail[userId];
@@ -422,27 +438,37 @@ export default function User() {
       return <div style={{ padding: '10px 0', textAlign: 'center' }}>뱃지 정보 로딩 중...</div>;
     }
 
-    // 유저 타입에 따른 뱃지 이미지
+    // 유저 타입에 따른 뱃지 이미지 (없으면 none.png)
     const type = detail?.user_type?.trim();
-    const typeBadgeName = tierMap[type];
+    const typeBadgeName = tierMap[type] || 'none';
 
     return (
-      <div className="badge-container" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '10px', padding: '0 24px', justifyContent: 'center' }}>
+      <div className="badge-container"
+        style={{
+          display: 'flex', gap: '8px', flexWrap: 'wrap',
+          marginTop: '10px', padding: '0 24px', justifyContent: 'center'
+        }}>
         {/* 유저 타입 뱃지 */}
-        {typeBadgeName && (
-          <img
-            style={{ width: '50px', height: '56px' }}
-            src={`/badge/${typeBadgeName}.png`}
-            alt="유저 타입 뱃지"
-            title={type}
-          />
-        )}
+        <img
+          style={{ width: '50px', height: '56px' }}
+          src={`/badge/${typeBadgeName}.png`}
+          alt={type ? `${type} 뱃지` : '뱃지 없음'}
+          title={type || '뱃지 없음'}
+        />
         {/* 시즌별 티어 뱃지들 */}
         {tiers.map((seasonInfo) => {
           if (!seasonInfo || !seasonInfo.tier_season) {
-            return <img key={`none-${seasonInfo?.season || Math.random()}`} style={{ width: '50px', height: '56px' }} src="/badge/none.png" alt="기록 없음" title={`시즌 ${seasonInfo?.season}: 기록 없음`} />;
+            return (
+              <img
+                key={`none-${seasonInfo?.season || Math.random()}`}
+                style={{ width: '50px', height: '56px' }}
+                src="/badge/none.png"
+                alt="기록 없음"
+                title={`시즌 ${seasonInfo?.season}: 기록 없음`}
+              />
+            );
           }
-          const tierBadgeName = tierMap[seasonInfo.tier_season];
+          const tierBadgeName = tierMap[seasonInfo.tier_season] || 'none';
           const imageName = `${seasonInfo.season}${tierBadgeName}.png`;
           return (
             <div key={seasonInfo.season}>
@@ -459,9 +485,10 @@ export default function User() {
     );
   };
 
+
   return (
     <div className="user-list-container">
-      <Header token={token}/>
+      <Header token={token} />
       <Menu />
       <h2 className="title">유저 리스트</h2>
 
@@ -646,7 +673,9 @@ export default function User() {
                         <div className="user-list-memoInfo">
                           <span><b>{memo.memberId}</b> 님</span>
                           <span>
-                            {memo.updatedAt?.slice(0, 10) || memo.createdAt?.slice(0, 10)}
+                            작성일 : {formatDate(memo.createdAt)}
+                            <br />
+                            수정일 : {formatDate(memo.updatedAt)}
                           </span>
                         </div>
                         <textarea
