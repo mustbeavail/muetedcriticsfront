@@ -223,7 +223,7 @@ export default function MailSend() {
 
     return (
         <>
-            <Header token={token}/>
+            <Header/>
             <Menu />
             <div className="stats_container">
                 <h1 className="mailSend-title">메일 발송</h1>

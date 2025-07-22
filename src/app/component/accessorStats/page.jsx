@@ -11,7 +11,7 @@ const AccessorStats = () => {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
   return (
     <>
-      <Header token={token}/>
+      <Header/>
       <Menu />
       <div className="stats_container">
         <span className={"accessorStats-mainTitle"}>접속자 수 통계</span>

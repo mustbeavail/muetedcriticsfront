@@ -7,13 +7,15 @@ import { IoIosNotificationsOutline, IoIosNotifications } from 'react-icons/io';
 import { FiArrowRightCircle, FiTrash2 } from 'react-icons/fi';
 import axios from 'axios';
 
-const Header = ({token}) => {
+const Header = () => {
 
   const router = useRouter();
   const URL = process.env.NEXT_PUBLIC_API_URL;
 
   const [notiList, setNotiList] = useState([]);
-
+  const [token, setToken] = useState('');
+  const [memberId, setMemberId] = useState('');
+  const [notiCheckCnt, setNotiCheckCnt] = useState(0);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [notifications, setNotifications] = useState(0);
 
@@ -22,26 +24,46 @@ const Header = ({token}) => {
   const toggleNotificationModal = () => setShowNotificationModal(prev => !prev);
 
   const goToChatRoom = (idx) => {
-    deleteNotificationByIdx(idx);
+    setNotiCheck(token, idx);
     router.push(`/chat/${idx}`);
   };
 
   useEffect(() => {
-    if (!token) return;
-    getNotiList(token);
-  }, [token]);
+    const tokenRaw = sessionStorage.getItem('token');
+    const memberIdRaw = sessionStorage.getItem('member_id');
+    setToken(tokenRaw);
+    setMemberId(memberIdRaw);
+    getNotiList(tokenRaw, memberIdRaw);
+  }, []);
 
-  const getNotiList = async (token) => {
+  useEffect(() => {
+    if (notiCheckCnt === 0) return;
+    getNotiList(token, memberId);
+  }, [notiCheckCnt]);
+
+  const getNotiList = async (token, memberId) => {
     try {
     const { data } = await axios.get(`${URL}/notice/chat/list`, {
       headers: { Authorization: token },
       params: {
-        memberId: sessionStorage.getItem('memberId'),
+        memberId : memberId
       }
       });
       setNotiList(data.notiList);
     } catch (error) {
       alert("알림 목록을 불러오는데 실패했습니다.");
+    }
+  };
+
+  const setNotiCheck = async (token, notiIdx) => {
+    try {
+      const { data } = await axios.put(`${URL}/notice/read`, 
+        { notiIdx: notiIdx }, 
+        { headers: { Authorization: token } }
+      );
+      setNotiCheckCnt(prev => prev + 1);
+    } catch (error) {
+      alert("알림 읽음 처리를 실패했습니다.");
     }
   };
 
@@ -90,40 +112,25 @@ const Header = ({token}) => {
       {showNotificationModal && (
         <div className={styles.header_notificationModal}>
           <div className={styles.header_modalContent}>
-
-            {notiList.length > 0 && (
-              <div className={styles.header_deleteAllWrapper}>
-                <button
-                  className={styles.header_deleteAllBtn}
-                  onClick={deleteAllNotifications}
-                  aria-label="전체 알림 삭제"
-                  type="button"
-                >
-                  <FiTrash2 style={{ marginRight: 6, fontSize: 18 }} />
-                  전체 삭제
-                </button>
-              </div>
-            )}
-
             {notiList.length > 0 ? (
               <ul className={styles.header_notificationList}>
                 {notiList.map((notif) => (
                   <li
-                    key={notif.idx}
+                    key={notif.notiIdx}
                     className={styles.header_notificationItem}
-                    onClick={() => deleteNotificationByIdx(notif.idx)}
+                    onClick={() => setNotiCheck(token, notif.notiIdx)}
                   >
                     <div className={styles.header_notifHeader}>
-                      <strong className={styles.header_notifSender}>{notif.sender}</strong>
-                      <span className={styles.header_notifDate}>{notif.date}</span>
+                      <strong className={styles.header_notifSender}>{notif.memberName}</strong>
+                      <span className={styles.header_notifDate}>{notif.createdAt.split('T')[0]}</span>
                     </div>
                     <div className={styles.header_notifContent}>
-                      <span className={styles.header_notifMessage}>{notif.message}</span>
+                      <span className={styles.header_notifMessage}>{notif.contentPre}</span>
                       <FiArrowRightCircle
                         className={styles.header_goChatIcon}
                         onClick={(e) => {
                           e.stopPropagation();
-                          goToChatRoom(notif.idx);
+                          goToChatRoom(notif.notiIdx);
                         }}
                       />
                     </div>

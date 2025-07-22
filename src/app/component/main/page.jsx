@@ -173,7 +173,7 @@ const Main = () => {
 
   return (
     <div>
-      <Header token={token}/>
+      <Header/>
       <Menu/>
       <div className = "stats-container">
         <img src = "/MutedCriticsFullLogo.png" alt = "Muted Critics" className = "dashboard-title"/>

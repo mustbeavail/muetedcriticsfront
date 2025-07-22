@@ -83,7 +83,7 @@ const Forum = () => {
 
   return (
     <>
-      <Header token={token}/>
+      <Header/>
       <Menu />
       <div className="forum-container">
         <span className={"forum-mainTitle"}>유저 포럼 분석</span>

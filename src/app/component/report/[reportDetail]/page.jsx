@@ -101,7 +101,7 @@ export default function ReportDetail({ params }) {
 
     return (
         <>
-            <Header token={token}/>
+            <Header/>
             <Menu />
             <div className="report-container">
                 <span className="report-mainTitle">신고 상세보기</span>
