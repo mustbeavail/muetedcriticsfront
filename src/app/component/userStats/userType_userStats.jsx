@@ -99,7 +99,7 @@ export default function UserType_UserStats() {
     const handleBarClick = (entry) => {
         setSelectedCategory(entry.raw);  // 선택된 카테고리 설정
         setCurrentPage(1);              // 클릭할 때마다 1페이지로 이동
-        setUserTotalCount(0);
+        // setUserTotalCount(0);
     }
 
     // === 렌더링 ===
@@ -122,7 +122,8 @@ export default function UserType_UserStats() {
                         </linearGradient>
                     </defs>
 
-                    <CartesianGrid strokeDasharray="3 3" />
+                    {/* 차트 그리드 선 (투명도 조절) */}
+                    <CartesianGrid stroke='rgba(255, 255, 255, 0.1)' />
                     <XAxis type="number" />
                     <YAxis dataKey="label" type="category" />
                     <Tooltip

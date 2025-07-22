@@ -15,6 +15,15 @@
     margin-bottom: 20px;
 }
 
+.user-list-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: hsl(0, 0%, 100%);
+    letter-spacing: 0.06em;
+    user-select: none;
+    text-shadow: none;
+}
 
 .user-list-backBtn {
     width: 120px;
@@ -116,8 +125,7 @@
 
 
 .user-list-heroPlayData-characterPlaytime-chart {
-    /* height: calc(100vh - 200px); */
-    overflow-y: auto;
+    margin-top: 0px;
 }
 
 
@@ -140,19 +148,29 @@
 .data-card {
     flex: 1 1 30%;
     min-width: 200px;
-    background-color: #1c1c1c;
+    background-color: transparent;
+    border: 1px solid #333;
     padding: 20px;
-    border-radius: 12px;
     text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
 }
 
 
 .data-icon {
-    font-size: 36px;
+    height: 100px;
+    font-size: 45px;
     margin-bottom: 10px;
     color: #fff;
+}
+
+.data-icon-tier {
+    width: 150px;
+    height: 113px;
 }
 
 
@@ -221,6 +239,7 @@
     width: 140px;
     justify-content: flex-end;
     border: 1px solid rgba(198, 176, 216, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .hero-name-box {
@@ -240,7 +259,7 @@
     position: relative;
     flex: 1;
     height: 34px;
-    background: #1c1c1c;
+    background: #1c1c1c50;
     border: 1px solid rgba(198, 176, 216, 0.2);
     overflow: hidden;
 }

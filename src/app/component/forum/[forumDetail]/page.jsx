@@ -277,10 +277,10 @@ export default function ForumDetailPage({ params }) {
                 <button onClick={() => openUserDetailModal(forumDetailData?.userId)}>
                   유저 상세보기
                 </button>
-                <button onClick={() => alert('유저 통계보기')}>
+                <button onClick={() => router.push(`/component/user/${forumDetailData?.userId}`)}>
                   유저 통계보기
                 </button>
-                <button onClick={() => alert('유저 지출 상세내역')}>
+                <button onClick={() => router.push(`/component/userExpenditure?id=${forumDetailData?.userId}`)}>
                   유저 지출 상세내역
                 </button>
                 <button onClick={() => openMemoModal(userDetail[forumDetailData?.userId] || { userId: forumDetailData?.userId })}>
