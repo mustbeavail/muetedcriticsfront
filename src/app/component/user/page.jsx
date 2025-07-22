@@ -73,6 +73,23 @@ export default function User() {
 
   const itemsPerPage = 10; // 페이지당 유저 수
 
+  // 날짜를 한국 형식으로 포맷팅하는 함수
+  const formatDate = (dateString) => {
+    if (!dateString) return '-'; // 날짜 문자열이 없으면 '-' 반환
+
+    const date = new Date(dateString); // 날짜 객체 생성
+    // 날짜 부분을 한국어 형식으로 변환하고 공백 제거
+    const datePart = date.toLocaleDateString('ko-KR').replace(/ /g, '');
+    // 시간 부분을 24시간 형식으로 변환
+    const timePart = date.toLocaleTimeString('ko-KR', {
+      hour: '2-digit', // 시간: 두 자리 숫자
+      minute: '2-digit', // 분: 두 자리 숫자
+      hour12: false // 24시간 형식 사용
+    });
+
+    return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
+  };
+
   // 로그인 체크 (최초 1회만)
   useEffect(() => {
     const id = sessionStorage.getItem('member_id');
@@ -471,7 +488,7 @@ export default function User() {
 
   return (
     <div className="user-list-container">
-      <Header token={token}/>
+      <Header token={token} />
       <Menu />
       <h2 className="title">유저 리스트</h2>
 
@@ -656,7 +673,9 @@ export default function User() {
                         <div className="user-list-memoInfo">
                           <span><b>{memo.memberId}</b> 님</span>
                           <span>
-                            {memo.updatedAt?.slice(0, 10) || memo.createdAt?.slice(0, 10)}
+                            작성일 : {formatDate(memo.createdAt)}
+                            <br />
+                            수정일 : {formatDate(memo.updatedAt)}
                           </span>
                         </div>
                         <textarea
