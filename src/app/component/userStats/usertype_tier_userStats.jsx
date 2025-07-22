@@ -23,7 +23,7 @@ export default function Usertype_Tier_UserStats() {
     const [seasonIdx, setSeasonIdx] = useState(4); // 기본값 4(현재 시즌)
     const [selectedGender, setSelectedGender] = useState(null); // 성별
     const [selectedRegion, setSelectedRegion] = useState(null); // 지역
-    const [selectedVip, setSelectedVip] = useState(null); // VIP
+    const [selectedVip, setSelectedVip] = useState(''); // VIP
     const [selectedHero, setSelectedHero] = useState(null); // 영웅
     const [selectedTier, setSelectedTier] = useState(null); // Pie 에서 클릭한 티어
 
