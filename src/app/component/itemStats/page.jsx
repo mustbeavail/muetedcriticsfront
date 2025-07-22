@@ -58,9 +58,9 @@ const ItemStats = () => {
     const memberId = sessionStorage.getItem("member_id");
     const tokenRaw = sessionStorage.getItem("token");
     const adminRaw = sessionStorage.getItem("admin_yn");
-    const deptRaw  = sessionStorage.getItem("dept");
+    const deptRaw = sessionStorage.getItem("dept_name");
 
-    if (!memberId || !tokenRaw || !adminRaw /* || !deptRaw */) {
+    if (!memberId || !tokenRaw || !adminRaw || !deptRaw) {
       alert("로그인 후 이용해주세요.");
       return void (location.href = "/");
     }
@@ -293,45 +293,45 @@ const ItemStats = () => {
           itemListAlign={itemListAlign} itemListPage={itemListPage} itemListSearch={itemListSearch}
           setItemListAlign={setItemListAlign} setItemListPage={setItemListPage} setItemListSearch={setItemListSearch}
           getItemList={getItemList} itemList={itemList}
-          format3digits={format3digits}/>
+          format3digits={format3digits} />
 
         {/* 이벤트별 아이템 정보 */}
         <EventItemStats
-        token={token}
-        eventList={eventList}
-        eventName={eventName} eventAlign={eventAlign}
-        setEventName={setEventName} setEventAlign={setEventAlign}
-        getEventList={getEventList}
-        format3digits={format3digits}
+          token={token}
+          eventList={eventList}
+          eventName={eventName} eventAlign={eventAlign}
+          setEventName={setEventName} setEventAlign={setEventAlign}
+          getEventList={getEventList}
+          format3digits={format3digits}
         />
 
         {/* 이벤트별 총 판매액(상위 3개), 이벤트별 아이템 상위 3개 판매액 */}
         <EventTop3ItemStats
-        token={token}
-        eventList={eventList}
-        firstEventList={firstEventList} secondEventList={secondEventList} thirdEventList={thirdEventList}
-        setFirstEventList={setFirstEventList} setSecondEventList={setSecondEventList} setThirdEventList={setThirdEventList}
-        firstEventName={firstEventName}
-        secondEventName={secondEventName}
-        thirdEventName={thirdEventName}
-        setFirstEventName={setFirstEventName}
-        setSecondEventName={setSecondEventName}
-        setThirdEventName={setThirdEventName}
-        getFirstEventList={getFirstEventList}
-        getSecondEventList={getSecondEventList}
-        getThirdEventList={getThirdEventList}
-        format3digits={format3digits}
+          token={token}
+          eventList={eventList}
+          firstEventList={firstEventList} secondEventList={secondEventList} thirdEventList={thirdEventList}
+          setFirstEventList={setFirstEventList} setSecondEventList={setSecondEventList} setThirdEventList={setThirdEventList}
+          firstEventName={firstEventName}
+          secondEventName={secondEventName}
+          thirdEventName={thirdEventName}
+          setFirstEventName={setFirstEventName}
+          setSecondEventName={setSecondEventName}
+          setThirdEventName={setThirdEventName}
+          getFirstEventList={getFirstEventList}
+          getSecondEventList={getSecondEventList}
+          getThirdEventList={getThirdEventList}
+          format3digits={format3digits}
         />
 
         {/* 아이템별 환불 내역 */}
         <RefundItemStats
-        token={token} refundList={refundList} refundSummary={refundSummary}
-        refundListStartDate={refundListStartDate} refundListEndDate={refundListEndDate}
-        refundListAlign={refundListAlign} refundListPage={refundListPage} refundListSearch={refundListSearch}
-        setRefundListStartDate={setRefundListStartDate} setRefundListEndDate={setRefundListEndDate}
-        setRefundListAlign={setRefundListAlign} setRefundListPage={setRefundListPage} setRefundListSearch={setRefundListSearch}
-        getRefundList={getRefundList} getRefundSummary={getRefundSummary}
-        format3digits={format3digits}/>
+          token={token} refundList={refundList} refundSummary={refundSummary}
+          refundListStartDate={refundListStartDate} refundListEndDate={refundListEndDate}
+          refundListAlign={refundListAlign} refundListPage={refundListPage} refundListSearch={refundListSearch}
+          setRefundListStartDate={setRefundListStartDate} setRefundListEndDate={setRefundListEndDate}
+          setRefundListAlign={setRefundListAlign} setRefundListPage={setRefundListPage} setRefundListSearch={setRefundListSearch}
+          getRefundList={getRefundList} getRefundSummary={getRefundSummary}
+          format3digits={format3digits} />
       </div>
     </>
   );
