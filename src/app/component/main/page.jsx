@@ -45,32 +45,32 @@ const Main = () => {
   const [inquiryStatsEndDate, setInquiryStatsEndDate] = useState("");
 
   // 페이지 입장시 로그인체크, 대쉬보드 데이터 가져오기
-    // 페이지 입장시 로그인체크, 통계 데이터 가져오기
-    useEffect(() => {
-      const memberId = sessionStorage.getItem("member_id");
-      const tokenRaw    = sessionStorage.getItem("token");
-      const adminRaw = sessionStorage.getItem("admin_yn");
-      const deptRaw  = sessionStorage.getItem("dept_name");
-    
-      if (!memberId || !tokenRaw || !adminRaw || !deptRaw) {
-        alert("로그인 후 이용해주세요.");
-        return void (location.href = "/");
-      }
-    
-      // state에 세팅
-      setMemberId(memberId);
-      setToken(tokenRaw);
-      setAdminYn(adminRaw === "true");
-      setDept(deptRaw);
+  // 페이지 입장시 로그인체크, 통계 데이터 가져오기
+  useEffect(() => {
+    const memberId = sessionStorage.getItem("member_id");
+    const tokenRaw = sessionStorage.getItem("token");
+    const adminRaw = sessionStorage.getItem("admin_yn");
+    const deptRaw = sessionStorage.getItem("dept_name");
 
-      setPeriodStartDate(oneMonthAgo);
-      setPeriodEndDate(today);
+    if (!memberId || !tokenRaw || !adminRaw || !deptRaw) {
+      alert("로그인 후 이용해주세요.");
+      return void (location.href = "/");
+    }
 
-      setInquiryStatsStartDate(oneMonthAgo);
-      setInquiryStatsEndDate(today);
+    // state에 세팅
+    setMemberId(memberId);
+    setToken(tokenRaw);
+    setAdminYn(adminRaw === "true");
+    setDept(deptRaw);
 
-      setInitialized(true);
-    }, []);
+    setPeriodStartDate(oneMonthAgo);
+    setPeriodEndDate(today);
+
+    setInquiryStatsStartDate(oneMonthAgo);
+    setInquiryStatsEndDate(today);
+
+    setInitialized(true);
+  }, []);
 
   // 초기화 되면 대쉬보드 데이터 조회
   useEffect(() => {
@@ -86,47 +86,47 @@ const Main = () => {
 
   // 대쉬보드 데이터를 불러오는 함수
   const getDashData = async (token, oneMonthAgo) => {
-    try{
-      wrap(()=>getNotiList(token));
-      wrap(()=>getSalesByPeriod(token, oneMonthAgo, today));
-      wrap(()=>getInquiryStatsPeriod(token, oneMonthAgo, today));
+    try {
+      wrap(() => getNotiList(token));
+      wrap(() => getSalesByPeriod(token, oneMonthAgo, today));
+      wrap(() => getInquiryStatsPeriod(token, oneMonthAgo, today));
       setIsLoading(false);
-    } catch(error) {
+    } catch (error) {
       alert('대쉬보드 조회중 오류 발생, 다시 로그인 후 시도해주세요.');
       location.href = '/';
     }
   };
   // 통계 알림 조회
   const getNotiList = async (token) => {
-    try{
-    const {data} = await axios.get(`${URL}/notice/stat/list`, {
-      headers: {
-        'Authorization': token
-      }
+    try {
+      const { data } = await axios.get(`${URL}/notice/stat/list`, {
+        headers: {
+          'Authorization': token
+        }
       });
       setNotiList(data.notiList);
-    } catch(error) {
+    } catch (error) {
       alert('통계 알림 조회중 오류 발생, 다시 로그인 후 시도해주세요.');
       location.href = '/';
     }
   };
   // 기간별 판매액
   const getSalesByPeriod = async (token, startDate, endDate) => {
-    try{
-        const {data} = await axios.get(`${URL}/revenue/period`, {
-            headers : {
-                Authorization: token
-            },
-            params : {
-                startDate : startDate,
-                endDate : endDate
-            }
-        });
-        console.log("기간별 판매액",data);
-        setSalesByPeriod(data.list);
-    } catch(error) {
-        alert("기간별 판매액 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
-        location.href = "/";
+    try {
+      const { data } = await axios.get(`${URL}/revenue/period`, {
+        headers: {
+          Authorization: token
+        },
+        params: {
+          startDate: startDate,
+          endDate: endDate
+        }
+      });
+      console.log("기간별 판매액", data);
+      setSalesByPeriod(data.list);
+    } catch (error) {
+      alert("기간별 판매액 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
+      location.href = "/";
     }
   };
   // 신고/문의 기간별 불러오기
@@ -165,7 +165,7 @@ const Main = () => {
     const token = sessionStorage.getItem('token');
     getInquiryStatsPeriod(token, inquiryStatsStartDate, inquiryStatsEndDate);
   }
-  
+
 
   if (isLoading && loadingCnt > 0) {
     return <div>Loading...</div>;
@@ -173,37 +173,37 @@ const Main = () => {
 
   return (
     <div>
-      <Header/>
-      <Menu/>
-      <div className = "stats-container">
-        <img src = "/MutedCriticsFullLogo.png" alt = "Muted Critics" className = "dashboard-title"/>
+      <Header />
+      <Menu />
+      <div className="stats-container">
+        <h1 className="dashboard-title">Dashboard</h1>
         <StatsNoti
-        notiList={notiList}
+          notiList={notiList}
         />
-        <div className = {dept === "마케팅팀" || dept === "개발팀" || adminYn === true ? "stats-marketing-dev-wrapper" : "hidden"}>
+        <div className={dept === "마케팅팀" || dept === "개발팀" || adminYn === true ? "stats-marketing-dev-wrapper" : "hidden"}>
           <SalesByPeriod
-          token={token}
-          periodStartDate={periodStartDate}
-          setPeriodStartDate={setPeriodStartDate}
-          periodEndDate={periodEndDate}
-          setPeriodEndDate={setPeriodEndDate}
-          salesByPeriod={salesByPeriod}
-          getSalesByPeriod={getSalesByPeriod}
+            token={token}
+            periodStartDate={periodStartDate}
+            setPeriodStartDate={setPeriodStartDate}
+            periodEndDate={periodEndDate}
+            setPeriodEndDate={setPeriodEndDate}
+            salesByPeriod={salesByPeriod}
+            getSalesByPeriod={getSalesByPeriod}
           />
-          <UserType_UserStats/>
-          <Period_dailyStats/>
-          <Period_weeklyStats/>
-          <Period_monthlyStats/>
-          <HeroWinningRate_IngameStats/>
+          <UserType_UserStats />
+          <Period_dailyStats />
+          <Period_weeklyStats />
+          <Period_monthlyStats />
+          <HeroWinningRate_IngameStats />
         </div>
-        <div className = {dept === "CS팀" || adminYn === true ? "stats-CS-wrapper" : "hidden"}>
+        <div className={dept === "CS팀" || adminYn === true ? "stats-CS-wrapper" : "hidden"}>
           <Period_InquiryStats
-          inquiryStatsPeriod={inquiryStatsPeriod}
-          inquiryStatsStartDate={inquiryStatsStartDate}
-          inquiryStatsEndDate={inquiryStatsEndDate}
-          setInquiryStatsStartDate={setInquiryStatsStartDate}
-          setInquiryStatsEndDate={setInquiryStatsEndDate}
-          handlePeriodSearch={handlePeriodSearch}
+            inquiryStatsPeriod={inquiryStatsPeriod}
+            inquiryStatsStartDate={inquiryStatsStartDate}
+            inquiryStatsEndDate={inquiryStatsEndDate}
+            setInquiryStatsStartDate={setInquiryStatsStartDate}
+            setInquiryStatsEndDate={setInquiryStatsEndDate}
+            handlePeriodSearch={handlePeriodSearch}
           />
         </div>
       </div>
