@@ -1,6 +1,6 @@
 "use client"
 import axios from 'axios';
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import React, { useState, useMemo, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -16,12 +16,14 @@ export default function HeroPickorBan_IngameStats() {
 
     const itemsPerPage = 10; // 페이지 당 보여줄 아이템 수
 
-    // 1. 초기 상태를 빈 값으로 설정
-    const [startDate, setStartDate] = useState(''); // 기간 시작일
-    const [endDate, setEndDate] = useState(''); // 기간 종료일
-    const [sortOrder, setSortOrder] = useState('desc'); // 정렬 기준
+    // 기본 날짜
+    const today = format(new Date(), 'yyyy-MM-dd'); // 오늘 날짜(종료일 기본값)
+    const weekAgo = format(subDays(new Date(), 7), 'yyyy-MM-dd'); // 일주일 전 날짜(시작일 기본값)
 
-    const today = format(new Date(), 'yyyy-MM-dd');
+    // 1. 초기 상태를 빈 값으로 설정
+    const [startDate, setStartDate] = useState(weekAgo); // 기간 시작일
+    const [endDate, setEndDate] = useState(today); // 기간 종료일
+    const [sortOrder, setSortOrder] = useState('desc'); // 정렬 기준
 
     // 2. 영웅별 밴률 및 픽률 데이터 불러오기
     const getHeroPickOrBanData = async (token, startDate, endDate, sortOrder) => {
@@ -79,8 +81,8 @@ export default function HeroPickorBan_IngameStats() {
         <div className={"ingameStats-chartWrapper-heroPickorBan"}>
             <h2 className={"userStats-title"}>영웅별 밴률 및 픽률</h2>
             <div className={"accessorStats-filterBox"}>
-                기간 시작일 <input type="date" onChange={(e) => setStartDate(e.target.value)} />
-                기간 종료일 <input type="date" max={today} onChange={(e) => setEndDate(e.target.value)} />
+                기간 시작일 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                기간 종료일 <input type="date" value={endDate} max={today} onChange={(e) => setEndDate(e.target.value)} />
                 <button onClick={handleSearch}>조회</button>
                 <select className='itemStats-select' onChange={(e) => {
                     setSortOrder(e.target.value);

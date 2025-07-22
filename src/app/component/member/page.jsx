@@ -193,7 +193,28 @@ const Member = () => {
     const confirmWithdraw = window.confirm(
       `${member.memberName}님의 회원 탈퇴를 처리하시겠습니까?`
     );
-  }
+
+    if (!confirmWithdraw) return;
+
+    try {
+      const { data } = await axios.post(`${URL}/memberInfo/withdraw`, {
+        memberId: member.memberId,
+        requesterId: sessionStorage.getItem('member_id')
+      }, {
+        headers: { Authorization: token }
+      });
+      if (data.success) {
+        alert('탈퇴 처리가 완료되었습니다.');
+        window.location.reload();
+      }
+    } catch (error) {
+      if (error.response.data.msg) {
+        alert(error.response.data.msg);
+      } else {
+        alert('탈퇴 처리에 실패했습니다.');
+      }
+    }
+  };
 
   return (
     <div className="memberList-container">
@@ -359,7 +380,7 @@ const Member = () => {
               </div>
 
               <div className="memberList-withdrawDate">
-                <span className="label">탈퇴 여부 </span>
+                <span className="label">탈퇴일 </span>
                 <span className="value">{member.withdrawDate || '-'}</span>
               </div>
 

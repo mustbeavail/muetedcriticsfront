@@ -7,15 +7,21 @@ import All_InquiryStats from './all_inquiryStats';
 import Period_InquiryStats from './period_inquiryStats';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { format, subDays } from 'date-fns';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const InquiryStats = () => {
   const router = useRouter();
+
+  // 기본 날짜
+  const today = format(new Date(), 'yyyy-MM-dd'); // 오늘 날짜(종료일 기본값)
+  const weekAgo = format(subDays(new Date(), 7), 'yyyy-MM-dd'); // 일주일 전 날짜(시작일 기본값)
+
   const [inquiryStatsAll, setInquiryStatsAll] = useState([]);
   const [inquiryStatsPeriod, setInquiryStatsPeriod] = useState([]);
-  const [inquiryStatsStartDate, setInquiryStatsStartDate] = useState('');
-  const [inquiryStatsEndDate, setInquiryStatsEndDate] = useState('');
+  const [inquiryStatsStartDate, setInquiryStatsStartDate] = useState(weekAgo);
+  const [inquiryStatsEndDate, setInquiryStatsEndDate] = useState(today);
 
   // 로그인 체크 (최초 1회만)
   useEffect(() => {
@@ -37,6 +43,7 @@ const InquiryStats = () => {
       router.push("/component/main");
     }
     getInquiryStatsAll(token); // 신고/문의 전체 불러오기
+    getInquiryStatsPeriod(token, weekAgo, today); // 신고/문의 기간별 불러오기
   }, []);
 
   // 신고/문의 전체 불러오기

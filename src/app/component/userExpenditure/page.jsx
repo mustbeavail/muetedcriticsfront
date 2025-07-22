@@ -25,13 +25,36 @@ function UserExpenditureContent() {
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const itemsPerPage = 10; // 페이지당 아이템 수
 
+
+    // 로그인 체크 (최초 1회만)
+    useEffect(() => {
+        const id = sessionStorage.getItem('member_id');
+        const token = sessionStorage.getItem('token');
+        const dept = sessionStorage.getItem('dept_name');
+        if (!id || !token || !dept) {
+            alert('로그인 후 접근 가능합니다.');
+            router.push("/");
+        }
+
+        // 접근 허용 부서
+        const allowedDepts = ['CS팀', '마케팅팀', '개발팀', '총괄'];
+
+        // 접근 허용 부서 체크
+        if (!allowedDepts.includes(dept)) {
+            alert('접근 권한이 없습니다.');
+            router.push("/component/main");
+        }
+    }, []);
+
+
     // 컴포넌트 마운트 시 사용자 지출 데이터 가져오기
     useEffect(() => {
         const token = sessionStorage.getItem('token');
 
         // 토큰이나 사용자 ID가 없으면 로그인 페이지로 리다이렉트
         if (!userId || !token) {
-            window.location.href = "/";
+            alert('로그인 후 접근 가능합니다.');
+            router.push("/");
             return;
         }
 
@@ -108,7 +131,7 @@ function UserExpenditureContent() {
 
     return (
         <div className="user-expenditure-container">
-            <Header token={token} />
+            <Header />
             <Menu />
 
             {/* 헤더 영역 */}
