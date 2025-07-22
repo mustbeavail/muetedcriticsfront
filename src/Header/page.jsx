@@ -5,24 +5,21 @@ import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import { IoIosNotificationsOutline, IoIosNotifications } from 'react-icons/io';
 import { FiArrowRightCircle, FiTrash2 } from 'react-icons/fi';
+import axios from 'axios';
 
-const Header = () => {
+const Header = ({token, memberId}) => {
+
   const router = useRouter();
+  const URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const [user] = useState('김지훈');
-  const [depa] = useState('개발팀');
-  const [position] = useState('팀장');
-
-  const [profile] = useState({
-    name: user,
-    department: depa,
-    position: position,
-  });
+  const [name, setName] = useState("");
+  const [dept, setDept] = useState("");
+  const [position, setPosition] = useState('');
 
   const [showNotificationModal, setShowNotificationModal] = useState(false);
 
   const [notificationsList, setNotificationsList] = useState([
-    { sender: '이효진', message: '새 메시지가 있습니다', date: '2025-07-03', idx: 1 },
+    { sender: '', message: '', date: '', idx: 0 },
   ]);
 
   const notifications = notificationsList.length;
@@ -41,6 +38,20 @@ const Header = () => {
   const goToChatRoom = (idx) => {
     deleteNotificationByIdx(idx);
     router.push(`/chat/${idx}`);
+  };
+
+  const getNotiList = async () => {
+    const { data } = await axios.get(`${URL}/notice/chat/list`, {
+      headers: { Authorization: token },
+      params: {
+        memberId: memberId,
+      }
+    });
+    if (data.success) {
+      setName(data.data.name);
+      setDept(data.data.dept);
+      setPosition(data.data.position);
+    }
   };
 
   useEffect(() => {
@@ -80,7 +91,7 @@ const Header = () => {
 
         <div className={styles.header_userInfoWrapper}>
           <div className={styles.header_userInfo}>
-            {profile.department} {profile.position} {profile.name} 님
+            {dept} {position} {name} 님
           </div>
         </div>
       </div>

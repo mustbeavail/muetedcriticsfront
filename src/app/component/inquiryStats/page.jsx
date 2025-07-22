@@ -14,8 +14,8 @@ const InquiryStats = () => {
   const router = useRouter();
   const [inquiryStatsAll, setInquiryStatsAll] = useState([]);
   const [inquiryStatsPeriod, setInquiryStatsPeriod] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [inquiryStatsStartDate, setInquiryStatsStartDate] = useState('');
+  const [inquiryStatsEndDate, setInquiryStatsEndDate] = useState('');
 
   // 로그인 체크 (최초 1회만)
   useEffect(() => {
@@ -81,22 +81,22 @@ const InquiryStats = () => {
   // Period_InquiryStats 에서 조회 버튼이 클릭되면 실행
   const handlePeriodSearch = () => {
     // 조회 버튼 클릭 시 날짜 선택 여부 확인
-    if (!startDate || !endDate) {
+    if (!inquiryStatsStartDate || !inquiryStatsEndDate) {
       alert('기간을 설정해 주세요.');
       return;
     }
-    if (new Date(startDate) > new Date(endDate)) {
+    if (new Date(inquiryStatsStartDate) > new Date(inquiryStatsEndDate)) {
       alert('시작일은 종료일보다 이전 날짜여야 합니다.');
       return;
     }
 
     const token = sessionStorage.getItem('token');
-    getInquiryStatsPeriod(token, startDate, endDate);
+    getInquiryStatsPeriod(token, inquiryStatsStartDate, inquiryStatsEndDate);
   }
 
   return (
     <>
-      <Header />
+      <Header token={token} memberId={memberId}/>
       <Menu />
       <div className="stats_container">
         <span className={"userStats-mainTitle"}>신고/문의 통계</span>
@@ -105,10 +105,10 @@ const InquiryStats = () => {
 
         <Period_InquiryStats
           inquiryStatsPeriod={inquiryStatsPeriod}
-          startDate={startDate}
-          endDate={endDate}
-          setStartDate={setStartDate}
-          setEndDate={setEndDate}
+          inquiryStatsStartDate={inquiryStatsStartDate}
+          inquiryStatsEndDate={inquiryStatsEndDate}
+          setInquiryStatsStartDate={setInquiryStatsStartDate}
+          setInquiryStatsEndDate={setInquiryStatsEndDate}
           handlePeriodSearch={handlePeriodSearch}
         />
       </div>
