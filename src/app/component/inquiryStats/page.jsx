@@ -6,22 +6,35 @@ import Menu from '../../../menu/Menu';
 import All_InquiryStats from './all_inquiryStats';
 import Period_InquiryStats from './period_inquiryStats';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const InquiryStats = () => {
+  const router = useRouter();
   const [inquiryStatsAll, setInquiryStatsAll] = useState([]);
   const [inquiryStatsPeriod, setInquiryStatsPeriod] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
+  // 로그인 체크 (최초 1회만)
   useEffect(() => {
     const id = sessionStorage.getItem('member_id');
     const token = sessionStorage.getItem('token');
-    if (!id || !token) {
+    const admin = sessionStorage.getItem('admin_yn');
+    const dept = sessionStorage.getItem('dept_name');
+    if (!id || !token || !admin || !dept) {
       alert('로그인 후 접근 가능합니다.');
-      window.location.href = "/";
-      return;
+      router.push("/");
+    }
+
+    // 접근 허용 부서
+    const allowedDepts = ['CS팀', '총괄'];
+
+    // 접근 허용 부서 체크
+    if (!allowedDepts.includes(dept)) {
+      alert('접근 권한이 없습니다.');
+      router.push("/");
     }
     getInquiryStatsAll(token); // 신고/문의 전체 불러오기
   }, []);

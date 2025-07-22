@@ -77,11 +77,23 @@ export default function User() {
   useEffect(() => {
     const id = sessionStorage.getItem('member_id');
     const token = sessionStorage.getItem('token');
-    if (!id || !token) {
+    const dept = sessionStorage.getItem('dept_name');
+    if (!id || !token || !dept) {
       alert('로그인 후 접근 가능합니다.');
-      window.location.href = "/";
+      router.push("/");
     }
+
+    // 접근 허용 부서
+    const allowedDepts = ['CS팀', '마케팅팀', '개발팀', '총괄'];
+
+    // 접근 허용 부서 체크
+    if (!allowedDepts.includes(dept)) {
+      alert('접근 권한이 없습니다.');
+      router.push("/");
+    }
+
   }, []);
+
 
   // 시즌별 티어 정보를 가져오는 함수 (캐싱 기능 포함)
   const getUserTier = async (userId) => {

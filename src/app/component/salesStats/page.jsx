@@ -59,9 +59,9 @@ export default function RevenueChart() {
         const memberId = sessionStorage.getItem("member_id");
         const tokenRaw = sessionStorage.getItem("token");
         const adminRaw = sessionStorage.getItem("admin_yn");
-        /* const deptRaw  = sessionStorage.getItem("dept"); */
+        const deptRaw  = sessionStorage.getItem("dept_name");
       
-        if (!memberId || !tokenRaw || !adminRaw /* || !deptRaw */) {
+        if (!memberId || !tokenRaw || !adminRaw || !deptRaw) {
           alert("로그인 후 이용해주세요.");
           return void (location.href = "/");
         }
@@ -70,7 +70,7 @@ export default function RevenueChart() {
         setMemberId(memberId);
         setToken(tokenRaw);
         setAdminYn(adminRaw === "true");
-/*         setDept(deptRaw); */
+        setDept(deptRaw);
 
         const sixMonthsAgo = subMonths(today, 6).toISOString().split('T')[0];
         const oneMonthAgo = subMonths(today, 1).toISOString().split('T')[0];
@@ -102,7 +102,7 @@ export default function RevenueChart() {
     // 날짜 초기화되면 함수 실행
     useEffect (()=>{
         if (!initialized) return;
-        if (adminYn /* || dept === "마케팅팀" || dept === "개발팀" */) {
+        if (adminYn || dept === "마케팅팀" || dept === "개발팀") {
 
             wrap(()=>getLtv(token, ltvStartDate, ltvEndDate));
             wrap(()=>getSalesByPeriod(token, periodStartDate, periodEndDate));

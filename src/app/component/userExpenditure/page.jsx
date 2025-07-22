@@ -20,7 +20,6 @@ function UserExpenditureContent() {
     const [mergedList, setMergedList] = useState([]); // 아이템과 번들 데이터를 합친 리스트
     const [search, setSearch] = useState(''); // 검색어
     const [sortOrder, setSortOrder] = useState('latest'); // 정렬 순서 (latest/oldest)
-    const [userExpenditure, setUserExpenditure] = useState({}); // 사용자 지출 데이터 (사용하지 않음)
 
     // 페이지네이션 관련 상태
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
