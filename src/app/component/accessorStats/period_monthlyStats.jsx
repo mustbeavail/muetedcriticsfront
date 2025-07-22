@@ -64,7 +64,6 @@ export default function PeriodMonthlyStats() {
                 authorization: token
             }
         });
-        console.log(data.periodMAU);
         setMonthlyData(data.periodMAU);
     }
 

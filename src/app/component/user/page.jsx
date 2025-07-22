@@ -444,40 +444,26 @@ export default function User() {
     const typeBadgeName = tierMap[type] || 'none';
 
     return (
-      <div className="badge-container"
-        style={{
-          display: 'flex', gap: '8px', flexWrap: 'wrap',
-          marginTop: '10px', padding: '0 24px', justifyContent: 'center'
-        }}>
-        {/* 유저 타입 뱃지 */}
+      <div className="badge-container">
         <img
           style={{ width: '50px', height: '56px' }}
           src={`/badge/${typeBadgeName}.png`}
-          alt={type ? `${type} 뱃지` : '뱃지 없음'}
-          title={type || '뱃지 없음'}
+          alt="유저 타입 뱃지 이미지"
+          className="season-image"
         />
-        {/* 시즌별 티어 뱃지들 */}
         {tiers.map((seasonInfo) => {
-          if (!seasonInfo || !seasonInfo.tier_season) {
-            return (
-              <img
-                key={`none-${seasonInfo?.season || Math.random()}`}
-                style={{ width: '50px', height: '56px' }}
-                src="/badge/none.png"
-                alt="기록 없음"
-                title={`시즌 ${seasonInfo?.season}: 기록 없음`}
-              />
-            );
-          }
-          const tierBadgeName = tierMap[seasonInfo.tier_season] || 'none';
-          const imageName = `${seasonInfo.season}${tierBadgeName}.png`;
+          // 만약 tier_season이 없으면 none.png 이미지 출력
+          const imageCode = tierMap[seasonInfo.tier_season];
+          const imageName = imageCode
+            ? `${seasonInfo.season}${imageCode}.png`
+            : 'none.png';
           return (
             <div key={seasonInfo.season}>
               <img
                 style={{ width: '50px', height: '56px' }}
                 src={`/badge/${imageName}`}
-                alt={`시즌 ${seasonInfo.season} 뱃지`}
-                title={`시즌 ${seasonInfo.season}: ${seasonInfo.tier_season}`}
+                alt="시즌 뱃지 이미지"
+                className="season-image"
               />
             </div>
           );

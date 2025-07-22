@@ -51,7 +51,6 @@ export default function PeriodDailyStats() {
 
     // 통계 저장
     useEffect(() => {
-        console.log('시작일:', startDate, '종료일:', endDate);
         if (!startDate || !endDate) return;
         const sendHistoricalStats = async () => {
             const { data } = await axios.post(`${URL}/activity/historical`, null, {

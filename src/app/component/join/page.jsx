@@ -27,7 +27,6 @@ const JoinPage = () => {
   const [checking, setChecking] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [gender, setGender] = useState('');
 
   const [showModal, setShowModal] = useState(false);
   const [tempDepartment, setTempDepartment] = useState(formData.department);
@@ -144,6 +143,16 @@ const JoinPage = () => {
     }
     if (!formData.receiveConsent) {
       setErrorMsg('마케팅 정보 수신에 동의해 주세요.');
+      return;
+    }
+    // 사내 연락처 - 010-1234-5678 형식 체크
+    if (!/^\d{3}-\d{4}-\d{4}$/.test(formData.officePhone)) {
+      setErrorMsg('사내 연락처는 000-0000-0000 형식으로 입력해주세요.');
+      return;
+    }
+    // 개인 연락처 - 010-1234-5678 형식 체크
+    if (!/^\d{3}-\d{4}-\d{4}$/.test(formData.mobilePhone)) {
+      setErrorMsg('개인 연락처는 000-0000-0000 형식으로 입력해주세요.');
       return;
     }
 
