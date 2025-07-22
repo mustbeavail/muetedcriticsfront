@@ -106,7 +106,7 @@ export default function User() {
     // 접근 허용 부서 체크
     if (!allowedDepts.includes(dept)) {
       alert('접근 권한이 없습니다.');
-      router.push("/");
+      router.push("/component/main");
     }
 
   }, []);
@@ -177,6 +177,7 @@ export default function User() {
         headers: { Authorization: token },
         params,
       });
+      console.log(data);
       setUsers(data.content);
       setTotalPages(data.totalPages);
       setCurrentPage(data.currentPage);

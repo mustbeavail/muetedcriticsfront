@@ -188,6 +188,13 @@ const Member = () => {
     // 해당 회원과의 채팅방으로 이동
   }
 
+  // 탈퇴 처리
+  const memberWithdraw = async (member) => {
+    const confirmWithdraw = window.confirm(
+      `${member.memberName}님의 회원 탈퇴를 처리하시겠습니까?`
+    );
+  }
+
   return (
     <div className="memberList-container">
       <Header />
@@ -297,6 +304,7 @@ const Member = () => {
                         <button onClick={memberInfoEdit}>회원 정보 수정</button>
                         {member.adminYn && <button onClick={adminRevoke}>관리자 권한 박탈</button>}
                         {!member.adminYn && <button onClick={adminGrant}>관리자 권한 부여</button>}
+                        <button onClick={() => memberWithdraw(member)}>탈퇴 처리</button>
                         <button onClick={() => chatWithMember(member)}>채팅하기</button>
                       </div>
                     )}
