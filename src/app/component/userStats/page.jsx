@@ -35,7 +35,7 @@ const UserStats = () => {
 
   return (
     <>
-      <Header token={token} />
+      <Header/>
       <Menu />
       <div className="stats_container">
         <span className={"userStats-mainTitle"}>유저 통계</span>
