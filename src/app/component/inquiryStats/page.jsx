@@ -34,7 +34,7 @@ const InquiryStats = () => {
     // 접근 허용 부서 체크
     if (!allowedDepts.includes(dept)) {
       alert('접근 권한이 없습니다.');
-      router.push("/");
+      router.push("/component/main");
     }
     getInquiryStatsAll(token); // 신고/문의 전체 불러오기
   }, []);
@@ -96,7 +96,7 @@ const InquiryStats = () => {
 
   return (
     <>
-      <Header/>
+      <Header />
       <Menu />
       <div className="stats_container">
         <span className={"userStats-mainTitle"}>신고/문의 통계</span>
