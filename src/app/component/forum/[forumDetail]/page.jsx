@@ -262,7 +262,7 @@ export default function ForumDetailPage({ params }) {
 
   return (
     <>
-      <Header />
+      <Header token={token}/>
       <Menu />
       <div className="forum-container">
         <div className="forum-chart-wrapper">

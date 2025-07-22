@@ -15,10 +15,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
  */
 export default function Period_InquiryStats({
     inquiryStatsPeriod,
-    startDate,
-    endDate,
-    setStartDate,
-    setEndDate,
+    inquiryStatsStartDate,
+    inquiryStatsEndDate,
+    setInquiryStatsStartDate,
+    setInquiryStatsEndDate,
     handlePeriodSearch
 }) {
     // 오늘 날짜를 yyyy-MM-DD 형식으로 가져옴 (종료일 최대값으로 사용)
@@ -38,8 +38,8 @@ export default function Period_InquiryStats({
             <div className={"inquiryStats-filterBox-wrapper"}>
                 {/* 기간 선택 및 조회 UI */}
                 <div className={"inquiryStats-filterBox"}>
-                    기간 시작일 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                    기간 종료일 <input type="date" value={endDate} max={today} onChange={(e) => setEndDate(e.target.value)} />
+                    기간 시작일 <input type="date" value={inquiryStatsStartDate} onChange={(e) => setInquiryStatsStartDate(e.target.value)} />
+                    기간 종료일 <input type="date" value={inquiryStatsEndDate} max={today} onChange={(e) => setInquiryStatsEndDate(e.target.value)} />
                     <button onClick={handlePeriodSearch}>조회</button>
                 </div>
                 <div>

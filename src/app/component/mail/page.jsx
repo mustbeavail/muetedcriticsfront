@@ -114,7 +114,7 @@ export default function MailList() {
 
     return (
         <>
-            <Header />
+            <Header token={token}/>
             <Menu />
             <div className="stats_container">
                 <h1 className={"mailList-title"}>발신 메일 리스트</h1>

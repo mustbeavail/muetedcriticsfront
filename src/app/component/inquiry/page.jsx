@@ -75,7 +75,7 @@ const Inquiry = () => {
 
   return (
     <>
-      <Header />
+      <Header token={token}/>
       <Menu />
       <div className="inquiry-list-container">
         <span className={"inquiry-list-mainTitle"}>유저 문의 내역</span>

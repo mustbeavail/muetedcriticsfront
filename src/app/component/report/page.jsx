@@ -70,7 +70,7 @@ const Report = () => {
 
   return (
     <>
-      <Header />
+      <Header token={token}/>
       <Menu />
       <div className="report-container">
         <span className={"report-mainTitle"}>유저 신고 내역</span>

@@ -249,7 +249,7 @@ const ChatPage = () => {
 
   return (
     <>
-      <Header/>
+      <Header token={token}/>
       <Menu/>
       <div className="chat_container">
         <div className="chat_wrapper">

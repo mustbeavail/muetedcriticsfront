@@ -5,38 +5,21 @@ import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import { IoIosNotificationsOutline, IoIosNotifications } from 'react-icons/io';
 import { FiArrowRightCircle, FiTrash2 } from 'react-icons/fi';
+import axios from 'axios';
 
-const Header = () => {
+const Header = ({token}) => {
+
   const router = useRouter();
+  const URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const [user] = useState('김지훈');
-  const [depa] = useState('개발팀');
-  const [position] = useState('팀장');
-
-  const [profile] = useState({
-    name: user,
-    department: depa,
-    position: position,
-  });
+  const [notiList, setNotiList] = useState([]);
 
   const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const [notifications, setNotifications] = useState(0);
 
-  const [notificationsList, setNotificationsList] = useState([
-    { sender: '이효진', message: '새 메시지가 있습니다', date: '2025-07-03', idx: 1 },
-  ]);
-
-  const notifications = notificationsList.length;
   const hideTimer = useRef(null);
 
   const toggleNotificationModal = () => setShowNotificationModal(prev => !prev);
-
-  const deleteNotificationByIdx = (idx) => {
-    setNotificationsList(prev => prev.filter(item => item.idx !== idx));
-  };
-
-  const deleteAllNotifications = () => {
-    setNotificationsList([]);
-  };
 
   const goToChatRoom = (idx) => {
     deleteNotificationByIdx(idx);
@@ -44,14 +27,34 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (showNotificationModal && notificationsList.length === 0) {
+    if (!token) return;
+    getNotiList(token);
+  }, [token]);
+
+  const getNotiList = async (token) => {
+    try {
+    const { data } = await axios.get(`${URL}/notice/chat/list`, {
+      headers: { Authorization: token },
+      params: {
+        memberId: sessionStorage.getItem('memberId'),
+      }
+      });
+      setNotiList(data.notiList);
+    } catch (error) {
+      alert("알림 목록을 불러오는데 실패했습니다.");
+    }
+  };
+
+  useEffect(() => {
+    setNotifications(notiList.length);
+    if (showNotificationModal && notiList.length === 0) {
       clearTimeout(hideTimer.current);
       hideTimer.current = setTimeout(() => {
         setShowNotificationModal(false);
       }, 5000);
     }
     return () => clearTimeout(hideTimer.current);
-  }, [showNotificationModal, notificationsList]);
+  }, [showNotificationModal, notiList]);
 
   return (
     <header className={styles.header}>
@@ -80,7 +83,6 @@ const Header = () => {
 
         <div className={styles.header_userInfoWrapper}>
           <div className={styles.header_userInfo}>
-            {profile.department} {profile.position} {profile.name} 님
           </div>
         </div>
       </div>
@@ -89,7 +91,7 @@ const Header = () => {
         <div className={styles.header_notificationModal}>
           <div className={styles.header_modalContent}>
 
-            {notificationsList.length > 0 && (
+            {notiList.length > 0 && (
               <div className={styles.header_deleteAllWrapper}>
                 <button
                   className={styles.header_deleteAllBtn}
@@ -103,9 +105,9 @@ const Header = () => {
               </div>
             )}
 
-            {notificationsList.length > 0 ? (
+            {notiList.length > 0 ? (
               <ul className={styles.header_notificationList}>
-                {notificationsList.map((notif) => (
+                {notiList.map((notif) => (
                   <li
                     key={notif.idx}
                     className={styles.header_notificationItem}
