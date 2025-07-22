@@ -15,8 +15,8 @@ const Header = ({token}) => {
   const [notiList, setNotiList] = useState([]);
 
   const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const [notifications, setNotifications] = useState(0);
 
-  const notifications = notiList.length;
   const hideTimer = useRef(null);
 
   const toggleNotificationModal = () => setShowNotificationModal(prev => !prev);
@@ -26,17 +26,27 @@ const Header = ({token}) => {
     router.push(`/chat/${idx}`);
   };
 
-  const getNotiList = async () => {
+  useEffect(() => {
+    if (!token) return;
+    getNotiList(token);
+  }, [token]);
+
+  const getNotiList = async (token) => {
+    try {
     const { data } = await axios.get(`${URL}/notice/chat/list`, {
       headers: { Authorization: token },
       params: {
-        memberId: memberId,
+        memberId: sessionStorage.getItem('memberId'),
       }
-    });
-    setNotiList(data.notiList);
+      });
+      setNotiList(data.notiList);
+    } catch (error) {
+      alert("알림 목록을 불러오는데 실패했습니다.");
+    }
   };
 
   useEffect(() => {
+    setNotifications(notiList.length);
     if (showNotificationModal && notiList.length === 0) {
       clearTimeout(hideTimer.current);
       hideTimer.current = setTimeout(() => {
@@ -73,7 +83,6 @@ const Header = ({token}) => {
 
         <div className={styles.header_userInfoWrapper}>
           <div className={styles.header_userInfo}>
-            {dept} {position} {name} 님
           </div>
         </div>
       </div>
@@ -82,7 +91,7 @@ const Header = ({token}) => {
         <div className={styles.header_notificationModal}>
           <div className={styles.header_modalContent}>
 
-            {notificationsList.length > 0 && (
+            {notiList.length > 0 && (
               <div className={styles.header_deleteAllWrapper}>
                 <button
                   className={styles.header_deleteAllBtn}
@@ -96,9 +105,9 @@ const Header = ({token}) => {
               </div>
             )}
 
-            {notificationsList.length > 0 ? (
+            {notiList.length > 0 ? (
               <ul className={styles.header_notificationList}>
-                {notificationsList.map((notif) => (
+                {notiList.map((notif) => (
                   <li
                     key={notif.idx}
                     className={styles.header_notificationItem}
