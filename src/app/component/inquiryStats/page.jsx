@@ -96,7 +96,7 @@ const InquiryStats = () => {
 
   return (
     <>
-      <Header token={token} memberId={memberId}/>
+      <Header token={token}/>
       <Menu />
       <div className="stats_container">
         <span className={"userStats-mainTitle"}>신고/문의 통계</span>

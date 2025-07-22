@@ -33,7 +33,7 @@ const UserStats = () => {
 
   return (
     <>
-      <Header token={token} memberId={memberId}/>
+      <Header token={token}/>
       <Menu />
       <div className="stats_container">
         <span className={"userStats-mainTitle"}>유저 통계</span>

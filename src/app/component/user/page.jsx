@@ -461,7 +461,7 @@ export default function User() {
 
   return (
     <div className="user-list-container">
-      <Header token={token} memberId={memberId}/>
+      <Header token={token}/>
       <Menu />
       <h2 className="title">유저 리스트</h2>
 

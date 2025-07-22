@@ -7,33 +7,19 @@ import { IoIosNotificationsOutline, IoIosNotifications } from 'react-icons/io';
 import { FiArrowRightCircle, FiTrash2 } from 'react-icons/fi';
 import axios from 'axios';
 
-const Header = ({token, memberId}) => {
+const Header = ({token}) => {
 
   const router = useRouter();
   const URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const [name, setName] = useState("");
-  const [dept, setDept] = useState("");
-  const [position, setPosition] = useState('');
+  const [notiList, setNotiList] = useState([]);
 
   const [showNotificationModal, setShowNotificationModal] = useState(false);
 
-  const [notificationsList, setNotificationsList] = useState([
-    { sender: '', message: '', date: '', idx: 0 },
-  ]);
-
-  const notifications = notificationsList.length;
+  const notifications = notiList.length;
   const hideTimer = useRef(null);
 
   const toggleNotificationModal = () => setShowNotificationModal(prev => !prev);
-
-  const deleteNotificationByIdx = (idx) => {
-    setNotificationsList(prev => prev.filter(item => item.idx !== idx));
-  };
-
-  const deleteAllNotifications = () => {
-    setNotificationsList([]);
-  };
 
   const goToChatRoom = (idx) => {
     deleteNotificationByIdx(idx);
@@ -47,22 +33,18 @@ const Header = ({token, memberId}) => {
         memberId: memberId,
       }
     });
-    if (data.success) {
-      setName(data.data.name);
-      setDept(data.data.dept);
-      setPosition(data.data.position);
-    }
+    setNotiList(data.notiList);
   };
 
   useEffect(() => {
-    if (showNotificationModal && notificationsList.length === 0) {
+    if (showNotificationModal && notiList.length === 0) {
       clearTimeout(hideTimer.current);
       hideTimer.current = setTimeout(() => {
         setShowNotificationModal(false);
       }, 5000);
     }
     return () => clearTimeout(hideTimer.current);
-  }, [showNotificationModal, notificationsList]);
+  }, [showNotificationModal, notiList]);
 
   return (
     <header className={styles.header}>

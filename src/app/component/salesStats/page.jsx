@@ -279,7 +279,7 @@ export default function RevenueChart() {
 
     return (
         <>
-            <Header token={token} memberId={memberId}/>
+            <Header token={token}/>
             <Menu />
             <div className="stats_container">
                 <span className={"salesStats-mainTitle"}>매출 통계</span>
