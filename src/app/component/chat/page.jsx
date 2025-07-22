@@ -7,252 +7,19 @@ import { FaSearch, FaPlus, FaThumbtack } from 'react-icons/fa';
 import { FiSend, FiMoreVertical } from 'react-icons/fi';
 import { FaCheck, FaTimes, FaEdit } from 'react-icons/fa';
 
-const initialRooms = [
-  { id: 1, name: '유수정', date: '25.07.02', preview: '새로운 메시지가 있습니다' },
-  { id: 2, name: '홍민수', date: '25.06.12', preview: '새로운 메시지가 있습니다' },
-  { id: 3, name: '박진수', date: '25.04.15', preview: '새로운 메시지가 있습니다' },
-];
-
-const initialRoomMessages = {
-  1: [{ id: 1, sender: 'other', text: '이거 어때요?', time: '9:42' }],
-  2: [{ id: 2, sender: 'me', text: '의견 주시면 반영할게요!', time: '10:02' }],
-  3: [{ id: 3, sender: 'other', text: '광고 캠페인 결과 공유 부탁드려요.', time: '8:20' }],
-};
-
-const allMembers = [
-  { name: '유수정', team: '마케팅팀', position: '팀장' },
-  { name: '홍민수', team: '개발팀', position: '사원' },
-  { name: '박진수', team: '기획팀', position: '대리' },
-  { name: '김민지', team: '마케팅팀', position: '사원' },
-  { name: '최준영', team: '개발팀', position: '팀장' },
-  { name: '이소영', team: '총괄', position: '대표' },
-  { name: '정하늘', team: 'CS팀', position: '사원' },
-  { name: '박해민', team: 'CS팀', position: '대리' },
-];
-
-const memberDetails = {
-  '유수정': { team: '마케팅팀', position: '팀장', leaveDate: '9999-99-99' },
-  '홍민수': { team: '개발팀', position: '사원', leaveDate: '9999-99-99' },
-  '박진수': { team: '기획팀', position: '대리', leaveDate: '2025-06-30' },
-  '김민지': { team: '마케팅팀', position: '사원', leaveDate: '9999-99-99' },
-  '최준영': { team: '개발팀', position: '팀장', leaveDate: '9999-99-99' },
-  '이소영': { team: '총괄', position: '대표', leaveDate: '9999-99-99' },
-  '정하늘': { team: 'CS팀', position: '사원', leaveDate: '9999-99-99' },
-  '박해민': { team: 'CS팀', position: '대리', leaveDate: '9999-99-99' },
-};
-
-const teamOptions = ['전체', 'CS팀', '마케팅팀', '개발팀', '총괄'];
-
 const ChatPage = () => {
-  const [chatRooms, setChatRooms] = useState(initialRooms);
-  const [roomMessages, setRoomMessages] = useState(initialRoomMessages);
-  const [currentRoom, setCurrentRoom] = useState(initialRooms[0]);
-  const [messages, setMessages] = useState(initialRoomMessages[initialRooms[0].id]);
-  const [input, setInput] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [messageSearchTerm, setMessageSearchTerm] = useState('');
-  const [showAddMenu, setShowAddMenu] = useState(false);
-  const [isCheckboxMode, setIsCheckboxMode] = useState(false);
-  const [selectedRoomsToLeave, setSelectedRoomsToLeave] = useState([]);
-
-  
-  const [lastReadMessageIds, setLastReadMessageIds] = useState(() => {
-    const init = {};
-    for (const room of initialRooms) {
-      init[room.id] = 0;
-    }
-    return init;
-  });
-  
-  const [showMemberModal, setShowMemberModal] = useState(false);
-  const [sortBy, setSortBy] = useState('date');
-  const [pinnedRooms, setPinnedRooms] = useState([]);
-  const [selectedTeamFilter, setSelectedTeamFilter] = useState('전체');
-
-  const [isSending, setIsSending] = useState(false);
-
-  const getToday = () => {
-    const today = new Date();
-    return `${today.getFullYear() % 100}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
-  };
-
-  const getNextRoomId = () => {
-    if (chatRooms.length === 0) return 1;
-    return Math.max(...chatRooms.map(r => r.id)) + 1;
-  };
-
-  const handleRoomClick = (room) => {
-    if (isCheckboxMode) return;
-
-    const msgs = roomMessages[room.id] || [];
-    setCurrentRoom(room);
-    setMessages(msgs);
-    setInput('');
-    setShowAddMenu(false);
-
-    if (msgs.length > 0) {
-      const lastMsgId = msgs[msgs.length - 1].id;
-      setLastReadMessageIds(prev => ({ ...prev, [room.id]: lastMsgId }));
-    }
-  };
-
-  // handleSend가 항상 최신 input 값을 받도록 수정
-  const handleSend = (inputValue) => {
-    if (isSending) return; // 중복 방지
-    if (!inputValue || inputValue.trim() === '') return;
-    setIsSending(true);
-    const now = new Date();
-
-    const currentMemberDetail = currentRoom ? memberDetails[currentRoom.name] : null;
-    const isLeftMember = currentMemberDetail && currentMemberDetail.leaveDate !== '9999-99-99';
-    if (isLeftMember) {
-      setIsSending(false);
-      return;
-    }
-
-    setInput('');
-
-    setMessages(prevMessages => {
-      const newMessage = {
-        id: prevMessages.length > 0 ? prevMessages[prevMessages.length - 1].id + 1 : 1,
-        sender: 'me',
-        text: inputValue,
-        time: `${now.getHours()}시 ${String(now.getMinutes()).padStart(2, '0')}분`,
-      };
-      const updatedMessages = [...prevMessages, newMessage];
-      setRoomMessages(prev => ({ ...prev, [currentRoom.id]: updatedMessages }));
-      setChatRooms(prevRooms =>
-        prevRooms.map(room =>
-          room.id === currentRoom.id ? { ...room, preview: newMessage.text, date: getToday() } : room
-        )
-      );
-      setLastReadMessageIds(prev => ({ ...prev, [currentRoom.id]: newMessage.id }));
-      setIsSending(false);
-      return updatedMessages;
-    });
-  };
-
-  const toggleRoomSelection = (roomId) => {
-    setSelectedRoomsToLeave(prev =>
-      prev.includes(roomId) ? prev.filter(id => id !== roomId) : [...prev, roomId]
-    );
-  };
-
-  const handleLeaveSelectedRooms = () => {
-    if (selectedRoomsToLeave.length === 0) return;
-
-    const updatedRooms = chatRooms.filter(room => !selectedRoomsToLeave.includes(room.id));
-    setChatRooms(updatedRooms);
-    setSelectedRoomsToLeave([]);
-    setIsCheckboxMode(false);
-
-    if (currentRoom && selectedRoomsToLeave.includes(currentRoom.id)) {
-      if (updatedRooms.length > 0) {
-        const newRoom = updatedRooms[0];
-        setCurrentRoom(newRoom);
-        const msgs = roomMessages[newRoom.id] || [];
-        setMessages(msgs);
-        if (msgs.length > 0) {
-          setLastReadMessageIds(prev => ({ ...prev, [newRoom.id]: msgs[msgs.length - 1].id }));
-        }
-      } else {
-        setCurrentRoom(null);
-        setMessages([]);
-      }
-    }
-  };
-
-  const handleAddMember = (name) => {
-    setShowAddMenu(false);
-    setSelectedTeamFilter('전체');
-    const existingRoom = chatRooms.find(room => room.name === name);
-    if (existingRoom) {
-      if (!isCheckboxMode) {
-        handleRoomClick(existingRoom);
-      }
-      return;
-    }
-    const newId = getNextRoomId();
-    const today = getToday();
-    const newRoom = {
-      id: newId,
-      name: name,
-      date: today,
-      preview: '',
-    };
-    setRoomMessages(prev => ({ ...prev, [newId]: [] }));
-    setChatRooms(prev => [...prev, newRoom]);
-    if (!isCheckboxMode) {
-      handleRoomClick(newRoom);
-    }
-    setLastReadMessageIds(prev => ({ ...prev, [newId]: 0 }));
-  };
-
-  const handleSortChange = (e) => {
-    setSortBy(e.target.value);
-  };
-
-  const togglePinRoom = (roomId) => {
-    setPinnedRooms(prev => {
-      if (prev.includes(roomId)) return prev.filter(id => id !== roomId);
-      return [...prev, roomId];
-    });
-  };
-
-  const sortedRooms = useMemo(() => {
-    const pinnedSet = new Set(pinnedRooms);
-    const pinned = chatRooms.filter(r => pinnedSet.has(r.id));
-    const notPinned = chatRooms.filter(r => !pinnedSet.has(r.id));
-
-    const sortFn = (a, b) => {
-      if (sortBy === 'date') {
-        const parseDate = (str) => {
-          const [yy, mm, dd] = str.split('.').map(Number);
-          return new Date(2000 + yy, mm - 1, dd);
-        };
-        return parseDate(b.date) - parseDate(a.date);
-      } else if (sortBy === 'name') {
-        return a.name.localeCompare(b.name);
-      }
-      return 0;
-    };
-
-    pinned.sort(sortFn);
-    notPinned.sort(sortFn);
-
-    return [...pinned, ...notPinned];
-  }, [chatRooms, pinnedRooms, sortBy]);
-
-  const filteredRooms = sortedRooms.filter(room =>
-    room.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const filteredMessages = useMemo(() => {
-    if (!messageSearchTerm.trim()) return messages;
-    const term = messageSearchTerm.toLowerCase();
-    return messages.map(msg => ({
-      ...msg,
-      highlight: msg.text.toLowerCase().includes(term),
-    }));
-  }, [messages, messageSearchTerm]);
-
-  const filteredMembers = useMemo(() => {
-    if (selectedTeamFilter === '전체') return allMembers.map(m => m.name);
-    return allMembers.filter(m => m.team === selectedTeamFilter).map(m => m.name);
-  }, [selectedTeamFilter]);
-
-  const handleShowMemberDetail = () => setShowMemberModal(true);
-  const handleCloseModal = () => setShowMemberModal(false);
-
-  const currentMemberDetail = currentRoom ? memberDetails[currentRoom.name] : null;
-  const isLeftMember = currentMemberDetail && currentMemberDetail.leaveDate !== '9999-99-99';
 
   return (
     <>
+      {/* === 상단 네비게이션 === */}
       <Header/>
       <Menu/>
+      
+      {/* === 메인 채팅 컨테이너 === */}
       <div className="chat_container">
         <div className="chat_wrapper">
+          
+          {/* === 좌측: 채팅방 목록 === */}
           <div className="chat_chatList">
 
             <div className="chat_searchAndBtn">
@@ -261,8 +28,8 @@ const ChatPage = () => {
                 <input
                   type="text"
                   placeholder="이름으로 검색"
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
                   disabled={isCheckboxMode}
                 />
               </div>
@@ -284,58 +51,55 @@ const ChatPage = () => {
                 className="chat_icon"
                 onClick={() => {
                   setShowAddMenu(prev => !prev);
-                  setIsCheckboxMode(false);
-                  setSelectedRoomsToLeave([]);
                 }}
                 title="채팅방 만들기"
               />
               <FiMoreVertical
                 className="chat_icon"
                 onClick={() => {
-                  setIsCheckboxMode(prev => !prev);
-                  setShowAddMenu(false);
-                  setSelectedRoomsToLeave([]);
+
                 }}
                 title="선택 모드 토글"
               />
             </div>
 
+            {/* 멤버 추가 모달 */}
             {showAddMenu && (
               <div className="chat_modalBackdrop" onClick={() => setShowAddMenu(false)}>
                 <div className="chat_addMemberModal" onClick={e => e.stopPropagation()}>
                   <h3>멤버 추가</h3>
                   <div className="chat_teamFilter">
-                    {teamOptions.map(team => (
+                    {deptList.map(dept => (
                       <button
-                        key={team}
-                        className={`chat_teamBtn ${selectedTeamFilter === team ? 'chat_activeTeamBtn' : ''}`}
-                        onClick={() => setSelectedTeamFilter(team)}
+                        key={dept}
+                        className={`chat_teamBtn ${selectedDept === dept ? 'chat_activeTeamBtn' : ''}`}
+                        onClick={() => setSelectedDept(dept)}
                       >
-                        {team}
+                        {dept}
                       </button>
                     ))}
                   </div>
 
                   <ul className="chat_memberList">
-                    {filteredMembers.length === 0 ? (
+                    {!memberList.find(member => member.dept === selectedDept) ? (
                       <li className="chat_noResult">해당 부서에 멤버가 없습니다.</li>
                     ) : (
-                      filteredMembers.map((name, idx) => {
-                        const alreadyAdded = chatRooms.some(room => room.name === name);
-                        const position = memberDetails[name]?.position || '';
+                      memberList.find(member => member.dept === selectedDept).map((name, idx) => {
+                        const alreadyAdded = chatRoomList.participants.some(parti => parti.memberName === name.memberName);
+                        const position = name.position || '';
                         return (
                           <li
                             key={idx}
                             className={`chat_memberItem ${alreadyAdded ? 'chat_disabled' : ''}`}
                             onClick={() => {
                               if (!alreadyAdded) {
-                                handleAddMember(name);
+                                handleAddMember(name.memberId);
                               }
                             }}
                             style={{ cursor: alreadyAdded ? 'not-allowed' : 'pointer', opacity: alreadyAdded ? 0.5 : 1 }}
-                            title={alreadyAdded ? '이미 채팅방이 존재하는 회원입니다.' : ''}
+                            title={alreadyAdded ? '이미 대화중인 회원입니다.' : ''}
                           >
-                            <span className="chat_memberName">{name}</span>
+                            <span className="chat_memberName">{name.memberName}</span>
                             <span className="chat_memberPosition">{position}</span>
                           </li>
                         );
@@ -350,22 +114,26 @@ const ChatPage = () => {
             )}
 
             <ul className="chat_roomList">
-              {filteredRooms.length === 0 && <li className="chat_noResult">검색 결과가 없습니다.</li>}
+              {chatRoomList.length === 0 && <li className="chat_noResult">검색 결과가 없습니다.</li>}
 
-              {filteredRooms.map(room => {
-                const isSelected = selectedRoomsToLeave.includes(room.id);
+              {chatRoomList.map(room => {
+                const isSelected = selectedRoomsToLeave.includes(room.roomIdx);
                 const checkboxClass = isCheckboxMode ? 'chat_checkboxModeRoomItem' : '';
-                const isPinned = pinnedRooms.includes(room.id);
+                const isPinned = pinnedRooms.includes(room.roomIdx);
 
                 return (
                   <li
-                    key={room.id}
-                    className={`chat_roomItem ${checkboxClass} ${currentRoom?.id === room.id && !isCheckboxMode ? 'chat_activeRoom' : ''} ${isPinned ? 'chat_pinned' : ''} ${isSelected ? 'chat_selectedRoom' : ''}`}
+                    key={room.roomIdx}
+                    className={
+                      `chat_roomItem ${checkboxClass}
+                      ${currentRoom?.roomIdx === room.roomIdx && !isCheckboxMode ? 'chat_activeRoom' : ''}
+                      ${isPinned ? 'chat_pinned' : ''}
+                      ${isSelected ? 'chat_selectedRoom' : ''}`}
                     onClick={() => {
                       if (isCheckboxMode) {
-                        toggleRoomSelection(room.id);
+                        toggleRoomSelection(room.roomIdx);
                       } else {
-                        handleRoomClick(room);
+                        handleRoomClick(room.roomIdx);
                       }
                     }}
                   >
@@ -373,15 +141,15 @@ const ChatPage = () => {
                       className={`chat_pinIcon ${isPinned ? 'chat_pinned' : ''}`}
                       onClick={e => {
                         e.stopPropagation();
-                        togglePinRoom(room.id);
+                        togglePinRoom(room.roomIdx);
                       }}
                       title={isPinned ? '고정 해제' : '고정'}
                     />
                     <div className={`chat_roomItemInner ${room.pinned ? 'chat_pinnedRoom' : ''}`}>
-                      <div className="chat_roomName">{room.name}</div>
+                      <div className="chat_roomName">{room.roomName}</div>
                       <div className="chat_roomMeta">
-                        <span className="chat_roomDate">{room.date}</span>
-                        <span className="chat_roomPreview">{room.preview}</span>
+                        <span className="chat_roomDate">{room.createdAt}</span>
+                        <span className="chat_roomPreview">{room.lastMessage.msgContent}</span>
                       </div>
                     </div>
                   </li>
@@ -389,20 +157,23 @@ const ChatPage = () => {
               })}
             </ul>
 
+            {/* 다중 선택 모드일 때 나가기 버튼 */}
             {isCheckboxMode && (
               <button
                 className="chat_leaveBtn"
                 disabled={selectedRoomsToLeave.length === 0}
-                onClick={handleLeaveSelectedRooms}
+                onClick={LeaveSelectedRooms}
               >
                 나가기
               </button>
             )}
           </div>
-
+          {/* 여기까지봄 */}
+          {/* === 우측: 채팅창 === */}
           <div className="chat_chatWindow">
             {currentRoom ? (
               <>
+                {/* 채팅방 헤더 (상대방 정보) */}
                 <div className="chat_chatHeader">
                   <div className="chat_userInfo">
                     <span className="chat_chatName">{currentRoom.name}</span>
@@ -415,6 +186,7 @@ const ChatPage = () => {
                     </button>
                   </div>
                 </div>
+                {/* 메시지 검색창 */}
                 <div className="chat_messageSearchBox" style={{ marginBottom: '12px' }}>
                   <FaSearch style={{ marginRight: 6, color: '#a678e2' }} />
                   <input
@@ -425,6 +197,7 @@ const ChatPage = () => {
                   />
                 </div>
 
+                {/* 메시지 목록 표시 영역 */}
                 <div className="chat_chatBody">
                   {filteredMessages.length === 0 && <div className="chat_noMsg">대화가 없습니다.</div>}
                   {filteredMessages.map(msg => (
@@ -438,8 +211,10 @@ const ChatPage = () => {
                   ))}
                 </div>
 
+                {/* 메시지 입력창 */}
                 <div className="chat_chatInput">
                   {isLeftMember ? (
+                    /* 탈퇴한 멤버에게는 메시지 전송 불가 안내 */
                     <div className="chat_leftMemberNotice">
                       이 회원은 탈퇴한 상태이므로 메시지 전송이 불가능합니다.
                     </div>
@@ -465,6 +240,7 @@ const ChatPage = () => {
                     </>
                   )}
                 </div>
+                {/* 멤버 상세정보 모달 */}
                 {showMemberModal && currentRoom && (
                 <div className="chat_modalBackdrop" onClick={handleCloseModal}>
                   <div className="chat_modal" onClick={e => e.stopPropagation()}>
