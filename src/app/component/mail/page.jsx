@@ -30,7 +30,7 @@ export default function MailList() {
             alert("로그인 후 이용해주세요.");
             location.href = '/';
         }
-    }, [sort, align]);
+    }, [sort, align, currentPage]);
 
     // 검색결과용 리스트 재정렬
     const sortList = (arr, order) =>
