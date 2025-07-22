@@ -413,7 +413,6 @@ export default function User() {
     setSelectedUser(null);
   };
 
-  // 뱃지 디스플레이 컴포넌트
   const BadgeDisplay = ({ userId }) => {
     const tiers = userTiers[userId];
     const detail = userDetail[userId];
@@ -422,27 +421,37 @@ export default function User() {
       return <div style={{ padding: '10px 0', textAlign: 'center' }}>뱃지 정보 로딩 중...</div>;
     }
 
-    // 유저 타입에 따른 뱃지 이미지
+    // 유저 타입에 따른 뱃지 이미지 (없으면 none.png)
     const type = detail?.user_type?.trim();
-    const typeBadgeName = tierMap[type];
+    const typeBadgeName = tierMap[type] || 'none';
 
     return (
-      <div className="badge-container" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '10px', padding: '0 24px', justifyContent: 'center' }}>
+      <div className="badge-container"
+        style={{
+          display: 'flex', gap: '8px', flexWrap: 'wrap',
+          marginTop: '10px', padding: '0 24px', justifyContent: 'center'
+        }}>
         {/* 유저 타입 뱃지 */}
-        {typeBadgeName && (
-          <img
-            style={{ width: '50px', height: '56px' }}
-            src={`/badge/${typeBadgeName}.png`}
-            alt="유저 타입 뱃지"
-            title={type}
-          />
-        )}
+        <img
+          style={{ width: '50px', height: '56px' }}
+          src={`/badge/${typeBadgeName}.png`}
+          alt={type ? `${type} 뱃지` : '뱃지 없음'}
+          title={type || '뱃지 없음'}
+        />
         {/* 시즌별 티어 뱃지들 */}
         {tiers.map((seasonInfo) => {
           if (!seasonInfo || !seasonInfo.tier_season) {
-            return <img key={`none-${seasonInfo?.season || Math.random()}`} style={{ width: '50px', height: '56px' }} src="/badge/none.png" alt="기록 없음" title={`시즌 ${seasonInfo?.season}: 기록 없음`} />;
+            return (
+              <img
+                key={`none-${seasonInfo?.season || Math.random()}`}
+                style={{ width: '50px', height: '56px' }}
+                src="/badge/none.png"
+                alt="기록 없음"
+                title={`시즌 ${seasonInfo?.season}: 기록 없음`}
+              />
+            );
           }
-          const tierBadgeName = tierMap[seasonInfo.tier_season];
+          const tierBadgeName = tierMap[seasonInfo.tier_season] || 'none';
           const imageName = `${seasonInfo.season}${tierBadgeName}.png`;
           return (
             <div key={seasonInfo.season}>
@@ -458,6 +467,7 @@ export default function User() {
       </div>
     );
   };
+
 
   return (
     <div className="user-list-container">
