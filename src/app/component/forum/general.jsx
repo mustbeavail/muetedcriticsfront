@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function General({ forumPosts }) {
     const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
-    const router = useRouter();
 
     const [openMenuId, setOpenMenuId] = useState(null);
     const [hoverBadgeId, setHoverBadgeId] = useState(null);
@@ -52,7 +50,7 @@ export default function General({ forumPosts }) {
     const getUserTier = async (userId) => {
         if (userTiers[userId]) return;
         const tiers = [];
-        for (let season = 1; season <= 4; season++) {
+        for (let season = 1; season <= 6; season++) {
             const { data } = await axios.get(`${URL}/user/stats/season`, {
                 params: {
                     userId,
@@ -362,10 +360,10 @@ export default function General({ forumPosts }) {
                                         <button onClick={() => openUserDetailModal(post.userId)}>
                                             유저 상세보기
                                         </button>
-                                        <button onClick={() => router.push(`/component/user/${post.userId}`)}>
+                                        <button onClick={() => alert('유저 통계보기')}>
                                             유저 통계보기
                                         </button>
-                                        <button onClick={() => router.push(`/component/userExpenditure?id=${post.userId}`)}>
+                                        <button onClick={() => alert('유저 지출 상세내역')}>
                                             유저 지출 상세내역
                                         </button>
                                         <button onClick={() => openMemoModal(userDetail[post.userId] || { userId: post.userId })}>
@@ -420,7 +418,7 @@ export default function General({ forumPosts }) {
                 <div className="forum-modalBackdrop">
                     <div className="forum-modal">
                         <div className="forum-modalHeader">
-                            <div className="forum-userName">{selectedUser.user_id}님에 대한 메모</div>
+                            <div className="forum-userName">{selectedUser?.userId}님에 대한 메모</div>
                             <div className="forum-modalHeaderBtns">
                                 <button className="forum-deleteBtn" onClick={deleteMemo}>삭제</button>
                                 <button className="forum-editBtn" onClick={handleEditMemoClick}>수정</button>
@@ -464,11 +462,11 @@ export default function General({ forumPosts }) {
 
             {/* 메모 작성 모달 */}
             {showWriteMemoModal && (
-                <div>
+                <div className="forum-modalBackdrop">
                     <div className="forum-modal">
                         <div className="forum-modalHeader">
                             <div className="forum-userName">
-                                <b>{selectedUser.user_id}</b> 님에 대한 메모 작성
+                                <b>{selectedUser?.userId}</b> 님에 대한 메모 작성
                             </div>
                         </div>
                         <hr className="forum-divider" />
@@ -492,7 +490,7 @@ export default function General({ forumPosts }) {
 
             {/* 메모 수정 모달 */}
             {showEditMemoModal && (
-                <div>
+                <div className="forum-modalBackdrop">
                     <div className="forum-modal forum-editMemoModal">
                         <div className="forum-modalHeader">
                             <div className="forum-userName">

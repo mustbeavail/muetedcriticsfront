@@ -420,7 +420,7 @@ export default function Competition({ forumPosts }) {
                 <div className="forum-modalBackdrop">
                     <div className="forum-modal">
                         <div className="forum-modalHeader">
-                            <div className="forum-userName">{selectedUser.user_id}님에 대한 메모</div>
+                            <div className="forum-userName">{selectedUser?.userId}님에 대한 메모</div>
                             <div className="forum-modalHeaderBtns">
                                 <button className="forum-deleteBtn" onClick={deleteMemo}>삭제</button>
                                 <button className="forum-editBtn" onClick={handleEditMemoClick}>수정</button>
@@ -468,7 +468,7 @@ export default function Competition({ forumPosts }) {
                     <div className="forum-modal">
                         <div className="forum-modalHeader">
                             <div className="forum-userName">
-                                <b>{selectedUser.user_id}</b> 님에 대한 메모 작성
+                                <b>{selectedUser?.userId}</b> 님에 대한 메모 작성
                             </div>
                         </div>
                         <hr className="forum-divider" />
