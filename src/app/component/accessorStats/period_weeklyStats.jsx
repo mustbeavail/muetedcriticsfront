@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import axios from 'axios';
+import { getISOWeek, subWeeks } from 'date-fns';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -18,46 +19,63 @@ export default function PeriodWeeklyStats() {
 
     useEffect(() => {
         const now = new Date();
-        setFromYear(now.getFullYear().toString());
-        setFromMonth((now.getMonth() + 1).toString());
-        setFromWeek("1");
-        setToYear(now.getFullYear().toString());
-        setToMonth((now.getMonth() + 1).toString());
-        setToWeek("1");
+        const fiveWeeksAgo = new Date();
+        fiveWeeksAgo.setDate(now.getDate() - 7 * 5);
+
+        const getWeekNumber = (date) => {
+            const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+            const dayOfWeek = firstDayOfMonth.getDay();
+            const adjustedDate = date.getDate() + dayOfWeek;
+            return Math.ceil(adjustedDate / 7);
+        };
+
+        // 계산된 값 저장
+        const fromY = fiveWeeksAgo.getFullYear().toString();
+        const fromM = (fiveWeeksAgo.getMonth() + 1).toString();
+        const fromW = getWeekNumber(fiveWeeksAgo).toString();
+
+        const toY = now.getFullYear().toString();
+        const toM = (now.getMonth() + 1).toString();
+        const toW = getWeekNumber(now).toString();
+
+        // setState
+        setFromYear(fromY);
+        setFromMonth(fromM);
+        setFromWeek(fromW);
+        setToYear(toY);
+        setToMonth(toM);
+        setToWeek(toW);
+
+        // 👉 직접 계산된 값으로 조회 함수 호출
+        weeklyAccessData(fromY, fromM, fromW, toY, toM, toW);
     }, []);
 
-    const weeklyAccessData = async () => {
-        if (!fromYear || !fromMonth || !fromWeek || !toYear || !toMonth || !toWeek) {
+    const weeklyAccessData = async (
+        fromY = fromYear,
+        fromM = fromMonth,
+        fromW = fromWeek,
+        toY = toYear,
+        toM = toMonth,
+        toW = toWeek
+    ) => {
+        if (!fromY || !fromM || !fromW || !toY || !toM || !toW) {
             alert("모든 날짜 값을 선택해 주세요.");
-            return;
-        }
-        if (fromYear > toYear) {
-            alert("시작 년도는 종료 년도보다 앞서야 합니다.");
-            return;
-        }
-        if (fromYear === toYear && fromMonth > toMonth) {
-            alert("시작 월은 종료 월보다 앞서야 합니다.");
-            return;
-        }
-        if (fromYear === toYear && fromMonth === toMonth && fromWeek > toWeek) {
-            alert("시작 주는 종료 주보다 앞서야 합니다.");
             return;
         }
 
         const { data } = await axios.get(`${URL}/activity/periodWeeklyUser`, {
             params: {
-                fromYear,
-                fromMonth,
-                fromWeek,
-                toYear,
-                toMonth,
-                toWeek
+                fromYear: fromY,
+                fromMonth: fromM,
+                fromWeek: fromW,
+                toYear: toY,
+                toMonth: toM,
+                toWeek: toW
             },
             headers: {
                 authorization: token
             }
         });
-        console.log(data.periodWAU);
         setWeeklyData(data.periodWAU);
     }
 
@@ -118,7 +136,7 @@ export default function PeriodWeeklyStats() {
                             </select>
                         </span>
                     </div>
-                    <button onClick={weeklyAccessData}>조회</button>
+                    <button onClick={() => weeklyAccessData()}>조회</button>
                 </div>
 
                 <div className="stats-chart-container" style={{ height: '900px', marginTop: '20px' }}>
