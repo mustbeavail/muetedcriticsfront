@@ -16,32 +16,49 @@ export default function PeriodMonthlyStats() {
 
     useEffect(() => {
         const now = new Date();
-        setFromYear(now.getFullYear().toString());
-        setFromMonth((now.getMonth() + 1).toString());
-        setToYear(now.getFullYear().toString());
-        setToMonth((now.getMonth() + 1).toString());
+        const toY = now.getFullYear();
+        const toM = now.getMonth() + 1;
+    
+        const fromDate = new Date(toY, toM - 7, 1); // 6개월 전
+        const fromY = fromDate.getFullYear();
+        const fromM = fromDate.getMonth() + 1;
+    
+        setFromYear(fromY.toString());
+        setFromMonth(fromM.toString());
+        setToYear(toY.toString());
+        setToMonth(toM.toString());
+    
+        // 6개월 범위가 설정된 이후에 조회
+        setTimeout(() => {
+            monthlyAccessData(fromY.toString(), fromM.toString(), toY.toString(), toM.toString());
+        }, 0);
     }, []);
 
-    const monthlyAccessData = async () => {
-        if (!fromYear || !fromMonth || !toYear || !toMonth) {
+    const monthlyAccessData = async (
+        fromY = fromYear,
+        fromM = fromMonth,
+        toY = toYear,
+        toM = toMonth
+    ) => {
+        if (!fromY || !fromM || !toY || !toM) {
             alert("모든 날짜 값을 선택해 주세요.");
             return;
         }
-        if (fromYear > toYear) {
+        if (fromY > toY) {
             alert("시작 년도는 종료 년도보다 앞서야 합니다.");
             return;
         }
-        if (fromYear === toYear && fromMonth > toMonth) {
+        if (fromY === toY && fromM > toM) {
             alert("시작 월은 종료 월보다 앞서야 합니다.");
             return;
         }
 
         const { data } = await axios.get(`${URL}/activity/periodMonthlyUser`, {
             params: {
-                fromYear,
-                fromMonth,
-                toYear,
-                toMonth
+                fromYear: fromY,
+                fromMonth: fromM,
+                toYear: toY,
+                toMonth: toM
             },
             headers: {
                 authorization: token

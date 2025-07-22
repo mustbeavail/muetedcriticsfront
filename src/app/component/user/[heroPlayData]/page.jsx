@@ -135,7 +135,7 @@ export default function HeroPlayDataPage({ params }) {
                     backgroundColor: time === 0 ? 'transparent' : '#3498db',
                   }}
                 />
-                <span className="bar-label">{time}시간</span>
+                <span className="bar-label">{time}분</span>
               </div>
             </div>
           );
@@ -179,7 +179,7 @@ export default function HeroPlayDataPage({ params }) {
                     backgroundColor: time === 0 ? 'transparent' : '#3498db',
                   }}
                 />
-                <span className="bar-label">{time}시간</span>
+                <span className="bar-label">{time}분</span>
               </div>
             </div>
           );
@@ -216,7 +216,7 @@ export default function HeroPlayDataPage({ params }) {
                     backgroundColor: time === 0 ? 'transparent' : '#3498db',
                   }}
                 />
-                <span className="bar-label">{time}시간</span>
+                <span className="bar-label">{time}분</span>
               </div>
             </div>
           ))}
@@ -321,7 +321,7 @@ export default function HeroPlayDataPage({ params }) {
                 </div>
                 <div className="data-card">
                   <MdMoreTime className="data-icon" />
-                  <span className="data-value">{seasonData?.total_play_time_season.toLocaleString()}시간</span>
+                  <span className="data-value">{seasonData?.total_play_time_season.toLocaleString()}분</span>
                   <div className="divider" />
                   <span className="data-label">{selectedSeason}시즌 총 플레이 타임</span>
                 </div>
@@ -350,7 +350,7 @@ export default function HeroPlayDataPage({ params }) {
                 </div>
                 <div className="data-card">
                   <MdMoreTime className="data-icon" />
-                  <span className="data-value">{playData?.total_play_time.toLocaleString()}시간</span>
+                  <span className="data-value">{playData?.total_play_time.toLocaleString()}분</span>
                   <div className="divider" />
                   <span className="data-label">총 플레이 타임</span>
                 </div>
