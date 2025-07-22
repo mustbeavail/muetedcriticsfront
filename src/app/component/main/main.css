@@ -16,10 +16,12 @@
 }
 
 .dashboard-title {
-    width: 30%;
-    height: 100px;
-    margin-top: 10px;
-    margin-bottom: 30px;
+    margin-left: 10px;
+    font-size: 40px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-style: italic;
+    color: tomato;
     display: flex;
 }
 
