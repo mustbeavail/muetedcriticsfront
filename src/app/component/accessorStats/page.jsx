@@ -8,6 +8,7 @@ import PeriodWeeklyStats from './period_weeklyStats';
 import PeriodMonthlyStats from './period_monthlyStats';
 
 const AccessorStats = () => {
+  const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
   return (
     <>
       <Header token={token}/>

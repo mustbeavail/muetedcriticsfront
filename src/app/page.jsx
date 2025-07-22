@@ -65,6 +65,10 @@ const PasswordChangeModal = ({ onClose }) => {
       setChangeError('비밀번호가 일치하지 않습니다.');
       return;
     }
+    if (changePwInfo.member_pw.length < 8 || changePwInfo.member_pw.length > 20) {
+      setChangeError('비밀번호는 8자 이상 20자 이하로 입력해주세요.');
+      return;
+    }
 
     const { data } = await axios.post(`${URL}/member/change_password`, {
       memberId: changePwInfo.member_id,
@@ -97,7 +101,7 @@ const PasswordChangeModal = ({ onClose }) => {
         <h3 className={styles['login-modalTitle']}>비밀번호 변경</h3>
         <input
           type="password"
-          placeholder="새 비밀번호"
+          placeholder="새 비밀번호 (8~20자)"
           name="member_pw"
           value={changePwInfo.member_pw}
           onChange={(e) => {

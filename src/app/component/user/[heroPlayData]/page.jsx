@@ -294,7 +294,7 @@ export default function HeroPlayDataPage({ params }) {
                   getSeasonData(season);
                 }}
                 value={selectedSeason}>
-                {Array.from({ length: 6 }, (_, index) => (
+                {Array.from({ length: 4 }, (_, index) => (
                   <option key={index + 1} value={index + 1}>
                     {index + 1}시즌
                   </option>

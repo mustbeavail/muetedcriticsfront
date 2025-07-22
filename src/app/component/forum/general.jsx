@@ -52,7 +52,7 @@ export default function General({ forumPosts }) {
     const getUserTier = async (userId) => {
         if (userTiers[userId]) return;
         const tiers = [];
-        for (let season = 1; season <= 6; season++) {
+        for (let season = 1; season <= 4; season++) {
             const { data } = await axios.get(`${URL}/user/stats/season`, {
                 params: {
                     userId,
