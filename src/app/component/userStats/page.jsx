@@ -10,16 +10,25 @@ import SeasonTier_UserStats from './seasonTier_userStats';
 
 const UserStats = () => {
 
+  // 로그인 체크 (최초 1회만)
   useEffect(() => {
     const id = sessionStorage.getItem('member_id');
     const token = sessionStorage.getItem('token');
-    // console.log(id, token);
-
-    if (!id || !token) {
+    const admin = sessionStorage.getItem('admin_yn');
+    const dept = sessionStorage.getItem('dept_name');
+    if (!id || !token || !admin || !dept) {
       alert('로그인 후 접근 가능합니다.');
-      window.location.href = "/";
-      return;
-    };
+      router.push("/");
+    }
+
+    // 접근 허용 부서
+    const allowedDepts = ['마케팅팀', '개발팀', '총괄'];
+
+    // 접근 허용 부서 체크
+    if (!allowedDepts.includes(dept)) {
+      alert('접근 권한이 없습니다.');
+      router.push("/");
+    }
   }, []);
 
   return (
