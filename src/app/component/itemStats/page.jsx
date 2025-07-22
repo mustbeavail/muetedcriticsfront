@@ -280,7 +280,7 @@ const ItemStats = () => {
 
   return (
     <>
-      <Header token={token} memberId={memberId}/>
+      <Header token={token}/>
       <Menu />
       <div className="stats_container">
         <span className={"itemStats-mainTitle"}>아이템 통계</span>

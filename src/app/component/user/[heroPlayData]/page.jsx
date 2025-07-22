@@ -272,7 +272,7 @@ export default function HeroPlayDataPage({ params }) {
 
   return (
     <div className="user-list-container1">
-      <Header token={token} memberId={memberId}/>
+      <Header token={token}/>
       <Menu />
       <div className={"user-list-header"}>
         <h2 className="user-list-title">유저 통계 보기</h2>

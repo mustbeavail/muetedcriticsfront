@@ -105,7 +105,7 @@ export default function InquiryDetail({ params }) {
 
     return (
         <>
-            <Header token={token} memberId={memberId}/>
+            <Header token={token}/>
             <Menu />
             <div className="inquiry-list-container">
                 <span className={"inquiry-list-mainTitle"}>문의 상세보기</span>
