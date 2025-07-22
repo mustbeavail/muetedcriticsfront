@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Competition({ forumPosts }) {
     const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
-
+    const router = useRouter();
+    
     const [openMenuId, setOpenMenuId] = useState(null);
     const [hoverBadgeId, setHoverBadgeId] = useState(null);
     const [hoveredPostId, setHoveredPostId] = useState(null);
@@ -360,10 +362,10 @@ export default function Competition({ forumPosts }) {
                                         <button onClick={() => openUserDetailModal(post.userId)}>
                                             유저 상세보기
                                         </button>
-                                        <button onClick={() => alert('유저 통계보기')}>
+                                        <button onClick={() => router.push(`/component/user/${post.userId}`)}>
                                             유저 통계보기
                                         </button>
-                                        <button onClick={() => alert('유저 지출 상세내역')}>
+                                        <button onClick={() => router.push(`/component/userExpenditure?id=${post.userId}`)}>
                                             유저 지출 상세내역
                                         </button>
                                         <button onClick={() => openMemoModal(userDetail[post.userId] || { userId: post.userId })}>
