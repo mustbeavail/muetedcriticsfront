@@ -108,7 +108,7 @@ function UserExpenditureContent() {
 
     return (
         <div className="user-expenditure-container">
-            <Header />
+            <Header token={token} memberId={memberId}/>
             <Menu />
 
             {/* 헤더 영역 */}
