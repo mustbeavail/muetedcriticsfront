@@ -13,6 +13,7 @@ const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Member = () => {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+  const memberId = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
   const adminYn = typeof window !== "undefined" ? sessionStorage.getItem('admin_yn') : null;
 
   const [page, setPage] = useState(1);
@@ -174,12 +175,22 @@ const Member = () => {
 
   // 회원과 채팅하기
   const chatWithMember = async (member) => {
-    console.log(member.memberId + ' 채팅하기');
+    const { data } = await axios.post(`${URL}/room/private/`, {
+      memberId: memberId,
+      targetMemberId: member.memberId
+    }, {
+      headers: {
+        authorization: token
+      }
+    });
+    console.log(data);
+    alert(member.memberId + ' 채팅하기');
+    // 해당 회원과의 채팅방으로 이동
   }
 
   return (
     <div className="memberList-container">
-      <Header/>
+      <Header />
       <Menu />
       <h2 className="memberList-title">회원 리스트</h2>
 
