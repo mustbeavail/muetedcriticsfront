@@ -11,6 +11,16 @@ const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Report = () => {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+  const memberId = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
+
+  // 로그인 체크
+  useEffect(() => {
+    if (!memberId || !token) {
+      alert("로그인 후 이용해주세요.");
+      location.href = "/";
+    }
+  }, []);
+  if (!memberId || !token) return null;
 
   const [reportList, setReportList] = useState([]);
 
@@ -70,7 +80,7 @@ const Report = () => {
 
   return (
     <>
-      <Header/>
+      <Header />
       <Menu />
       <div className="report-container">
         <span className={"report-mainTitle"}>유저 신고 내역</span>

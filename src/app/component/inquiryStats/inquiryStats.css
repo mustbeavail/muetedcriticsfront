@@ -35,14 +35,25 @@
 
 /* 신고/문의 통계 페이지 css */
 .inquiryStats-chartWrapper {
-    margin-top: 20px;
+    /* margin-top: 20px;
     width: 100%;
     height: auto;
     background: #1c1b23;
     border-radius: 16px;
     padding: 20px;
     box-sizing: border-box;
+    margin-bottom: 30px; */
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    background: transparent;
+    border-radius: 12px;
+    box-sizing: border-box;
     margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .inquiryStats-title {
@@ -106,14 +117,25 @@
 }
 
 .inquiryStats-chartWrapper-period {
-    margin-top: 20px;
+    /* margin-top: 20px;
     width: 100%;
     height: auto;
     background: #1c1b23;
     border-radius: 16px;
     padding: 20px;
     box-sizing: border-box;
+    margin-bottom: 30px; */
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    background: transparent;
+    border-radius: 12px;
+    box-sizing: border-box;
     margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .row.total {

@@ -11,6 +11,16 @@ const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Inquiry = () => {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+  const memberId = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
+  
+  // 로그인 체크
+  useEffect(() => {
+    if (!memberId || !token) {
+      alert("로그인 후 이용해주세요.");
+      location.href = "/";
+    }
+  }, []);
+  if (!memberId || !token) return null;
 
   const [inquiryList, setInquiryList] = useState([]);
 
@@ -75,7 +85,7 @@ const Inquiry = () => {
 
   return (
     <>
-      <Header/>
+      <Header />
       <Menu />
       <div className="inquiry-list-container">
         <span className={"inquiry-list-mainTitle"}>유저 문의 내역</span>

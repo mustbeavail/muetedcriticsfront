@@ -16,6 +16,15 @@ const Member = () => {
   const memberId = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
   const adminYn = typeof window !== "undefined" ? sessionStorage.getItem('admin_yn') : null;
 
+  // 로그인 체크
+  useEffect(() => {
+    if (!memberId || !token) {
+      alert("로그인 후 이용해주세요.");
+      location.href = "/";
+    }
+  }, []);
+  if (!memberId || !token) return null;
+
   const [page, setPage] = useState(1);
 
   const [memberList, setMemberList] = useState({ members: [] });

@@ -14,6 +14,15 @@ const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : 
 const member_id = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
 
 export default function ReportDetail({ params }) {
+    // 로그인 체크
+    useEffect(() => {
+        if (!member_id || !token) {
+            alert("로그인 후 이용해주세요.");
+            location.href = "/";
+        }
+    }, []);
+    if (!member_id || !token) return null;
+
     const { reportDetail } = use(params);
     const router = useRouter();
 
@@ -101,7 +110,7 @@ export default function ReportDetail({ params }) {
 
     return (
         <>
-            <Header/>
+            <Header />
             <Menu />
             <div className="report-container">
                 <span className="report-mainTitle">신고 상세보기</span>
@@ -116,20 +125,20 @@ export default function ReportDetail({ params }) {
                     <div className="report-detail-content">{info.content}</div>
                     {/* 만약 status가 false일시 답변 작성 섹션 보여주기 */}
                     {info.status != "완료" && (
-                    <div className="report-detail-reply-section">
-                        <span className="report-detail-reply-title">상담사 답변 작성</span>
-                        <textarea
-                            className="report-detail-reply-input"
-                            name="response"
-                            placeholder="본문 내용을 입력해주세요."
-                            value={response}
-                            onChange={(e) => setResponse(e.target.value)}
-                        />
-                        <div className="report-detail-button-group">
-                            <button className="report-detail-ai-btn" onClick={aiResponse} disabled={isDisabled}>AI 답변 생성</button>
-                            <button className="report-detail-submit-btn" onClick={agentResponse}>답변 작성</button>
+                        <div className="report-detail-reply-section">
+                            <span className="report-detail-reply-title">상담사 답변 작성</span>
+                            <textarea
+                                className="report-detail-reply-input"
+                                name="response"
+                                placeholder="본문 내용을 입력해주세요."
+                                value={response}
+                                onChange={(e) => setResponse(e.target.value)}
+                            />
+                            <div className="report-detail-button-group">
+                                <button className="report-detail-ai-btn" onClick={aiResponse} disabled={isDisabled}>AI 답변 생성</button>
+                                <button className="report-detail-submit-btn" onClick={agentResponse}>답변 작성</button>
+                            </div>
                         </div>
-                    </div>
                     )}
                     {/* 만약 status가 true일 시 response 내용 보여주기 */}
                     {info.status === "완료" && (

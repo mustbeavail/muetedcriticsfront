@@ -98,7 +98,6 @@ const Header = () => {
         headers: { Authorization: token }
       }
     );
-    console.log('data: ', data);
     setMyInfo(data);
   };
 

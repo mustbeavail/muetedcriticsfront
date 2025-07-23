@@ -9,6 +9,16 @@ const URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ForumDetailPage({ params }) {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+  const member_id = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
+  
+  // 로그인 체크
+  useEffect(() => {
+    if (!member_id || !token) {
+      alert("로그인 후 이용해주세요.");
+      location.href = "/";
+    }
+  }, []);
+  if (!member_id || !token) return null;
 
   const router = useRouter();
   const resolvedParams = use(params);
