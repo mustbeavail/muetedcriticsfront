@@ -210,7 +210,7 @@ export default function ForumDetailPage({ params }) {
     setShowMemoModal(true);
     setMemoLoading(true);
     try {
-      const { data } = await axios.get(`${URL}/user/${user.userId}/list`, {
+      const { data } = await axios.get(`${URL}/user/${user.user_id}/list`, {
         headers: { Authorization: sessionStorage.getItem('token') }
       });
       setMemoList(data);
@@ -308,7 +308,7 @@ export default function ForumDetailPage({ params }) {
       alert("메모 내용을 입력하세요.");
       return;
     }
-    await writeMemo(selectedMemoUser.userId, memoContent);
+    await writeMemo(selectedMemoUser.user_id, memoContent);
     setShowWriteMemoModal(false);
     setMemoContent('');
     // 작성 후 바로 메모 리스트 새로고침 하려면 아래 추가

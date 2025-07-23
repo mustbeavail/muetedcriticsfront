@@ -172,7 +172,7 @@ export default function Competition({ token, forumPosts }) {
         setShowMemoModal(true);
         setMemoLoading(true);
         try {
-            const { data } = await axios.get(`${URL}/user/${user.userId}/list`, {
+            const { data } = await axios.get(`${URL}/user/${user.user_id}/list`, {
                 headers: { Authorization: sessionStorage.getItem('token') }
             });
             setMemoList(data);
