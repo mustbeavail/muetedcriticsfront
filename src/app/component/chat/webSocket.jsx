@@ -2,15 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
-import axios from 'axios';
 
-const useWebSocket = ({ token, memberId, setSendCnt }) => {
+const useWebSocket = ({ token, memberId, setSendCnt, currentRoomIdx, onMessageReceived }) => {
 
     const [isConnected, setIsConnected] = useState(false);
     const [stompClient, setStompClient] = useState(null);
-    const [messages, setMessages] = useState([]);
-    const [filteredMessages, setFilteredMessages] = useState([]);
-    const URL = process.env.NEXT_PUBLIC_API_URL;
+    const [currentSubscription, setCurrentSubscription] = useState(null);
 
     useEffect(() => {
 
@@ -30,15 +27,6 @@ const useWebSocket = ({ token, memberId, setSendCnt }) => {
         client.onConnect = (frame) => {
             setIsConnected(true);
             console.log('STOMP 연결 성공:', frame);
-
-            // 채팅방 구독
-            client.subscribe('/topic/chat/1', (message) => {
-                const receivedMessage = JSON.parse(message.body);
-                console.log('수신된 메시지:', receivedMessage);
-
-                // 메시지 상태 업데이트
-                setMessages(prev => [...prev, receivedMessage]);
-            });
         };
 
         // 연결 실패
@@ -61,6 +49,35 @@ const useWebSocket = ({ token, memberId, setSendCnt }) => {
         };
     }, [token, memberId]);
 
+    // 채팅방 구독 관리
+    useEffect(() => {
+        if (!stompClient || !isConnected || !currentRoomIdx) return;
+
+        // 이전 구독 해제
+        if (currentSubscription) {
+            currentSubscription.unsubscribe();
+        }
+
+        // 새 채팅방 구독
+        const subscription = stompClient.subscribe(`/topic/chat/${currentRoomIdx}`, (message) => {
+            const receivedMessage = JSON.parse(message.body);
+            console.log('수신된 메시지:', receivedMessage);
+
+            // 메시지를 page.jsx로 전달
+            if (onMessageReceived) {
+                onMessageReceived(receivedMessage);
+            }
+        });
+
+        setCurrentSubscription(subscription);
+
+        return () => {
+            if (subscription) {
+                subscription.unsubscribe();
+            }
+        };
+    }, [stompClient, isConnected, currentRoomIdx]);
+
     // 메시지 전송 함수
     const sendMessage = (roomIdx, memberId, receiverId, content) => {
         if (stompClient && isConnected) {
@@ -81,7 +98,7 @@ const useWebSocket = ({ token, memberId, setSendCnt }) => {
             }, 100);
         }
     };
-    return { sendMessage };
+    return { sendMessage, isConnected };
 }
 
 export default useWebSocket;
