@@ -142,7 +142,7 @@
   width: 400px;
   padding: 24px;
   z-index: 2000;
-  background: rgba(32, 32, 32, 0.4);
+  background: rgba(32, 32, 32, 1);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 16px;
