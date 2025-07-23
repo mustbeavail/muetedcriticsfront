@@ -67,10 +67,14 @@ function UserExpenditureContent() {
                     params: { userId }
                 });
 
+                // 배열인지 확인하고 아니면 빈 배열로 초기화(구매이력 없을 때 에러 뜨는 것 방지)
+                const itemList = Array.isArray(data.item) ? data.item : [];
+                const bundleList = Array.isArray(data.bundle) ? data.bundle : [];
+
                 // item과 bundle 데이터를 하나의 배열로 합치기
                 const merged = [
                     // 아이템 데이터 매핑
-                    ...(data.item ?? []).map(item => ({
+                    ...itemList.map(item => ({
                         name: item.item_name,
                         price: item.item_price,
                         order_date: item.order_date,
@@ -78,7 +82,7 @@ function UserExpenditureContent() {
                         subType: item.sell_type || "",
                     })),
                     // 번들 데이터 매핑
-                    ...(data.bundle ?? []).map(bundle => ({
+                    ...bundleList.map(bundle => ({
                         name: bundle.bundle_name,
                         price: bundle.bundle_price,
                         order_date: bundle.order_date,
@@ -136,7 +140,7 @@ function UserExpenditureContent() {
 
             {/* 헤더 영역 */}
             <div className="user-expenditure-header">
-                <button className="user-expenditure-backBtn" onClick={() => router.back()}>
+                <button className="user-expenditure-backBtn" onClick={() => window.close()}>
                     {'< 리스트로'}
                 </button>
                 <span className="user-expenditure-title">유저 지출 상세내역</span>
