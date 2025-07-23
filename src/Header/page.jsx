@@ -90,12 +90,12 @@ const Header = () => {
 
   // 내 정보 가져오기
   const getMyInfo = async () => {
-    const { data } = await axios.post(`${URL}/memberInfo`, {
-      requesterId: memberId,
-      memberId: id
-    },
+    const { data } = await axios.get(`${URL}/memberInfo`,
       {
-        headers: { Authorization: token }
+        headers: { Authorization: token },
+        params: {
+          member_id: id
+        }
       }
     );
     setMyInfo(data);
