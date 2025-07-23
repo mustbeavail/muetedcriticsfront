@@ -21,7 +21,7 @@ export default function ReportDetail({ params }) {
             location.href = "/";
         }
     }, []);
-    if (!member_id || !token) return null;
+    // if (!member_id || !token) return null;
 
     const { reportDetail } = use(params);
     const router = useRouter();

@@ -166,6 +166,7 @@ export default function Competition({ token, forumPosts }) {
     // 메모 모달 열기 (메모 리스트 불러오기)
     const [selectedMemoUser, setSelectedMemoUser] = useState(null);
     const openMemoModal = async (user) => {
+        console.log(user);
         setSelectedMemoUser(user);
         setSelectedMemo(null);
         setShowMemoModal(true);
@@ -235,6 +236,7 @@ export default function Competition({ token, forumPosts }) {
 
     // 메모 작성하기
     const writeMemo = async (userId, memoContent) => {
+        console.log(userId);
         try {
             const { data } = await axios.post(`${URL}/user/write/memo`, {
                 memberId: sessionStorage.getItem('member_id'),
@@ -264,12 +266,15 @@ export default function Competition({ token, forumPosts }) {
         setSelectedMemoUser(null);
     };
 
+    //
     const handleSubmitMemo = async () => {
         if (!memoContent.trim()) {
             alert("메모 내용을 입력하세요.");
             return;
         }
-        await writeMemo(selectedMemoUser.userId, memoContent);
+        console.log(selectedMemoUser);
+        await writeMemo(selectedMemoUser.user_id, memoContent);
+        
         setShowWriteMemoModal(false);
         setMemoContent('');
         // 작성 후 바로 메모 리스트 새로고침 하려면 아래 추가

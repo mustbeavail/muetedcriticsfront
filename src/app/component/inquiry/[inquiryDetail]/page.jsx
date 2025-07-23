@@ -20,7 +20,7 @@ export default function InquiryDetail({ params }) {
             location.href = "/";
         }
     }, []);
-    if (!member_id || !token) return null;
+    // if (!member_id || !token) return null;
 
     const { inquiryDetail } = use(params);
     const router = useRouter();

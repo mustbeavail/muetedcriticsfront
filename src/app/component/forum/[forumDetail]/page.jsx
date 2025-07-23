@@ -18,7 +18,7 @@ export default function ForumDetailPage({ params }) {
       location.href = "/";
     }
   }, []);
-  if (!member_id || !token) return null;
+  // if (!member_id || !token) return null;
 
   const router = useRouter();
   const resolvedParams = use(params);

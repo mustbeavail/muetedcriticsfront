@@ -22,7 +22,7 @@ const Forum = () => {
       location.href = "/";
     }
   }, []);
-  if (!member_id || !token) return null;
+  // if (!member_id || !token) return null;
 
   const [forumPosts, setForumPosts] = useState([]);
   const [totalFilteredPages, setTotalFilteredPages] = useState(1);
