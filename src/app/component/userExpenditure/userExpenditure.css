@@ -203,8 +203,8 @@ select.user-expenditure-sortSelect option {
 }
 
 .user-expenditure-pagination button.active {
-    background: #AECCEE;
-    color: #1e1e26;
+    background: #8d35f0;
+    color: #fff;
     font-weight: 700;
-    box-shadow: 0 0 8px rgba(174, 204, 238, 0.4);
+    box-shadow: 0 0 8px rgba(141, 53, 240, 0.4);
 }

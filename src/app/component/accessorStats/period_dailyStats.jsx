@@ -5,8 +5,8 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tool
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
-export default function PeriodDailyStats({ token }) {
-    // const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+export default function PeriodDailyStats() {
+    const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
 
     const [dailyData, setDailyData] = useState([]);
     const [startDate, setStartDate] = useState('');

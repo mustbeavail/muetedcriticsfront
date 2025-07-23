@@ -30,7 +30,7 @@
     padding: 20px;
     box-sizing: border-box;
     margin-bottom: 30px; */
-    overflow-y: scroll;
+    overflow-y: auto;
     margin-top: 20px;
     width: 100%;
     height: auto;
@@ -149,10 +149,33 @@
     font-weight: bold;
 }
 
-.report-table .cell {
+.report-table .date-cell {
+    flex: 0.5;
+    padding: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.report-table .content-cell {
+    flex: 1.5;
+    padding: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.report-table .user-cell {
     flex: 1;
     padding: 16px;
-    /* border-right: 1px solid #3c3c3c; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.report-table .status-cell {
+    flex: 0.5;
+    padding: 16px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
