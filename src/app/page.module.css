@@ -32,6 +32,10 @@ html, body {
   text-shadow: 0 0 12px #fff;
 }
 
+.login-container {
+  width: 500px;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;

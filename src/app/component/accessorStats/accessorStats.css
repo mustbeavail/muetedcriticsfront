@@ -2,8 +2,9 @@
     margin-top: 16px;
     margin-bottom: 16px;
     display: flex;
+    flex-direction: row;
     align-items: flex-end;
-    gap: 8px;
+    gap: 12px;
 }
 
 .accessorStats-filterBox > div:nth-child(1) {
@@ -15,6 +16,7 @@
     display: flex;
     gap: 10px;
     margin-left: 30px;
+    align-items: flex-end;
 }
 
 .accessorStats-filterBox input[type="date"] {
@@ -33,6 +35,8 @@
     border-radius: 6px;
     cursor: pointer;
     margin-left: 20px;
+    width: 80px;
+    height: 39.47px;
 }
 
 .accessorStats-filterBox button:hover {

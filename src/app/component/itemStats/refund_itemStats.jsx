@@ -120,7 +120,7 @@ export default function RefundItemStats(
                                 <div className="cell">{item.why}</div>
                             </div>
                         ))}
-                        <div className="refundStats-pagination">
+                        <div className="itemStats-pagination">
                             <button disabled={refundListPage === 1} onClick={() => setRefundListPage(refundListPage - 1)}>이전</button>
                             {getVisiblePages(refundListPage, refundList[0]?.total_page || 0).map((page) => (
                                 <button

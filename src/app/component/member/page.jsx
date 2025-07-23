@@ -16,6 +16,15 @@ const Member = () => {
   const memberId = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
   const adminYn = typeof window !== "undefined" ? sessionStorage.getItem('admin_yn') : null;
 
+  // 로그인 체크
+  useEffect(() => {
+    if (!memberId || !token) {
+      alert("로그인 후 이용해주세요.");
+      location.href = "/";
+    }
+  }, []);
+  if (!memberId || !token) return null;
+
   const [page, setPage] = useState(1);
 
   const [memberList, setMemberList] = useState({ members: [] });
@@ -107,14 +116,26 @@ const Member = () => {
       );
 
       if (!confirmRevoke) return;
-      const { data } = await axios.get(`${URL}/admin/revoke/${selectedMember.memberId}`, {
-        headers: { authorization: token }
-      });
-      if (data.success) {
-        alert('관리자 권한이 박탈되었습니다.');
-        getMemberList(page);
-      } else {
-        alert('관리자 권한 박탈에 실패했습니다.');
+
+      try {
+        const { data } = await axios.post(`${URL}/admin/revoke`, {
+          memberId: selectedMember.memberId,
+          requesterId: sessionStorage.getItem('member_id')
+        }, {
+          headers: { authorization: token }
+        });
+        if (data.success) {
+          alert('관리자 권한이 박탈되었습니다.');
+          getMemberList(page);
+        } else {
+          alert('관리자 권한 박탈에 실패했습니다.');
+        }
+      } catch (error) {
+        if (error.response.data.msg) {
+          alert(error.response.data.msg);
+        } else {
+          alert('관리자 권한 박탈에 실패했습니다.');
+        }
       }
     }
   };

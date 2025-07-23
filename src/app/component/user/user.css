@@ -181,7 +181,16 @@ select.user-list-sortSelect option {
 }
 
 .user-list-card {
-    background: #1e1e1e;
+    /* background: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease; */
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     padding: 20px;
     display: flex;
@@ -428,15 +437,6 @@ select.user-list-sortSelect option {
     gap: 4px;
 }
 
-.user-list-userName {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #8d35f0;
-    /* 보라 포인트 */
-    text-shadow: 0 0 8px rgba(141, 53, 240, 0.35);
-    letter-spacing: 0.4px;
-}
-
 .user-list-divider {
     border: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -451,11 +451,11 @@ select.user-list-sortSelect option {
     /* 보조 텍스트 */
 }
 
-.user-list-leftContent section {
+.user-list-modalContent section {
     flex: 1;
 }
 
-.user-list-leftContent h4 {
+.user-list-modalContent h4 {
     font-size: 1.15rem;
     font-weight: 600;
     color: #8d35f0;
@@ -463,17 +463,21 @@ select.user-list-sortSelect option {
     margin-bottom: 10px;
 }
 
-.user-list-leftContent ul {
+.user-list-modalContent ul {
     list-style: none;
     padding-left: 0;
     font-size: 1rem;
     line-height: 1.65;
-    color: #c5c6c6;
+    color: #fff;
     /* 서브 텍스트 */
 }
 
-.user-list-leftContent ul li strong {
-    color: #fdfdff;
+.user-list-modalContent ul li {
+    margin-bottom: 10px;
+}
+
+.user-list-modalContent ul li strong {
+    color: #757279;
     font-weight: 600;
 }
 
@@ -482,8 +486,6 @@ select.user-list-sortSelect option {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .user-list-closeBtn,
@@ -615,17 +617,15 @@ select.user-list-sortSelect option {
 }
 
 .user-list-pagination button.active {
-    background: #AECCEE;
-    color: #1e1e26;
-    font-weight: 700;
-    box-shadow: 0 0 8px rgba(174, 204, 238, 0.4);
+    background: #a678e2;
+    color: #fff;
 }
 
-.user-list-ellipsis {
+/* .user-list-ellipsis {
     color: #777;
     font-size: 1rem;
     padding: 0 6px;
-}
+} */
 
 /* 기타 모달 (다른 메모 보기) */
 .user-list-otherMemoModal {
@@ -660,7 +660,7 @@ select.user-list-sortSelect option {
     color: #8d35f0;
 }
 
-.user-list-pagination {
+/* .user-list-pagination {
     display: flex;
     justify-content: center;
     gap: 8px;
@@ -682,7 +682,7 @@ select.user-list-sortSelect option {
 .user-list-pagination button:hover {
     background-color: #a678e2;
     color: #fff;
-}
+} */
 
 .user-list-modalBackdrop {
     position: fixed;
@@ -714,7 +714,7 @@ select.user-list-sortSelect option {
 .user-list-userName {
     font-size: 20px;
     font-weight: bold;
-    color: #a678e2;
+    /* color: #a678e2; */
 }
 
 .user-list-divider {
@@ -741,13 +741,6 @@ select.user-list-sortSelect option {
     padding: 10px;
     font-size: 15px;
     resize: none;
-}
-
-.user-list-modalFooter {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 16px;
 }
 
 .user-list-searchGroup {

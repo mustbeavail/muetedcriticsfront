@@ -135,8 +135,8 @@ export default function PeriodWeeklyStats() {
                                 ))}
                             </select>
                         </span>
+                        <button onClick={() => weeklyAccessData()}>조회</button>
                     </div>
-                    <button onClick={() => weeklyAccessData()}>조회</button>
                 </div>
 
                 <div className="stats-chart-container" style={{ height: '900px', marginTop: '20px' }}>

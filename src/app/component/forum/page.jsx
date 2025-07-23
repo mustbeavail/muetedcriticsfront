@@ -13,7 +13,16 @@ const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Forum = () => {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
-  const memberId = typeof window !== "undefined" ? sessionStorage.getItem('memberId') : null;
+  const member_id = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
+
+  // 로그인 체크
+  useEffect(() => {
+    if (!member_id || !token) {
+      alert("로그인 후 이용해주세요.");
+      location.href = "/";
+    }
+  }, []);
+  if (!member_id || !token) return null;
 
   const [forumPosts, setForumPosts] = useState([]);
   const [totalFilteredPages, setTotalFilteredPages] = useState(1);
@@ -35,6 +44,7 @@ const Forum = () => {
         authorization: token
       }
     });
+    console.log(data);
     setForumPosts(data.forumPosts.content);
     setTotalFilteredPages(data.forumPosts.totalPages);
   }
@@ -83,7 +93,7 @@ const Forum = () => {
 
   return (
     <>
-      <Header/>
+      <Header />
       <Menu />
       <div className="forum-container">
         <span className={"forum-mainTitle"}>유저 포럼 분석</span>

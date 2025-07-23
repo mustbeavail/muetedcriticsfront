@@ -11,6 +11,8 @@ const Header = () => {
 
   const router = useRouter();
   const URL = process.env.NEXT_PUBLIC_API_URL;
+  const id = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
+  const [myInfo, setMyInfo] = useState(null);
 
   const [notiList, setNotiList] = useState([]);
   const [token, setToken] = useState('');
@@ -18,6 +20,7 @@ const Header = () => {
   const [notiCheckCnt, setNotiCheckCnt] = useState(0);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [notifications, setNotifications] = useState(0);
+  const [showMyInfoModal, setShowMyInfoModal] = useState(false);
 
   const hideTimer = useRef(null);
 
@@ -41,13 +44,20 @@ const Header = () => {
     getNotiList(token, memberId);
   }, [notiCheckCnt]);
 
+  // 내 정보 띄우기
+  useEffect(() => {
+    if (token && memberId && id) {
+      getMyInfo();
+    }
+  }, [token, memberId, id]);
+
   const getNotiList = async (token, memberId) => {
     try {
-    const { data } = await axios.get(`${URL}/notice/chat/list`, {
-      headers: { Authorization: token },
-      params: {
-        memberId : memberId
-      }
+      const { data } = await axios.get(`${URL}/notice/chat/list`, {
+        headers: { Authorization: token },
+        params: {
+          memberId: memberId
+        }
       });
       setNotiList(data.notiList);
     } catch (error) {
@@ -57,8 +67,8 @@ const Header = () => {
 
   const setNotiCheck = async (token, notiIdx) => {
     try {
-      const { data } = await axios.put(`${URL}/notice/read`, 
-        { notiIdx: notiIdx }, 
+      const { data } = await axios.put(`${URL}/notice/read`,
+        { notiIdx: notiIdx },
         { headers: { Authorization: token } }
       );
       setNotiCheckCnt(prev => prev + 1);
@@ -77,6 +87,21 @@ const Header = () => {
     }
     return () => clearTimeout(hideTimer.current);
   }, [showNotificationModal, notiList]);
+
+  // 내 정보 가져오기
+  const getMyInfo = async () => {
+    const { data } = await axios.get(`${URL}/memberInfo`,
+      {
+        headers: { Authorization: token },
+        params: {
+          member_id: id
+        }
+      }
+    );
+    setMyInfo(data);
+  };
+
+  const toggleMyInfoModal = () => setShowMyInfoModal(prev => !prev);
 
   return (
     <header className={styles.header}>
@@ -105,6 +130,9 @@ const Header = () => {
 
         <div className={styles.header_userInfoWrapper}>
           <div className={styles.header_userInfo}>
+            <button className={styles.header_userInfoName} onClick={toggleMyInfoModal}>
+              {myInfo?.deptName} {myInfo?.positionName} {myInfo?.memberName} 님
+            </button>
           </div>
         </div>
       </div>
@@ -143,6 +171,53 @@ const Header = () => {
           </div>
         </div>
       )}
+
+
+
+      {showMyInfoModal && myInfo && (
+        <div className={styles.fullscreen_modalOverlay}>
+          <div className={styles.fullscreen_modalContent}>
+            {/* 이름 + 태그 */}
+            <div className={styles.modalTitle}>
+              <h2 style={{ fontSize: '24px', fontWeight: 'bold', display: 'inline-block', marginRight: '8px' }}>
+                {myInfo.memberName}
+              </h2>
+              <span className={styles.badge}>{myInfo.deptName}</span>
+              <span className={styles.badge}>{myInfo.positionName}</span>
+            </div>
+
+            {/* 정보 리스트 */}
+            <ul className={styles.infoList}>
+              <li>
+                <span className={styles.modalLabel}>아이디</span>
+                <span>{myInfo.memberId}</span>
+              </li>
+              <li>
+                <span className={styles.modalLabel}>이메일</span>
+                <span>{myInfo.email}</span>
+              </li>
+              <li>
+                <span className={styles.modalLabel}>사내 연락처</span>
+                <span>{myInfo.officePhone}</span>
+              </li>
+              <li>
+                <span className={styles.modalLabel}>개인 연락처</span>
+                <span>{myInfo.mobilePhone}</span>
+              </li>
+            </ul>
+
+            <div className={styles.modalButtonGroup}>
+              <button className={styles.modalCloseButton} onClick={toggleMyInfoModal}>
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
+
     </header>
   );
 };
