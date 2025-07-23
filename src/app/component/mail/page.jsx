@@ -22,6 +22,13 @@ export default function MailList() {
     useEffect(() => {
         const member_id = sessionStorage.getItem("member_id");
         const token = sessionStorage.getItem("token");
+        const dept = sessionStorage.getItem("dept_name");
+        const adminYn = sessionStorage.getItem("admin_yn");
+
+        if (!adminYn && (dept != "CS팀" || dept != "마케팅팀")) {
+            alert("접근 권한이 없습니다.");
+            location.href = "/component/main";
+        }
         if (member_id && token && !isSearch) {
             getList(token);
         } else if (member_id && token && isSearch) {
