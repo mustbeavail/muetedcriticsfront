@@ -363,7 +363,7 @@ const ChatPage = () => {
                     }}
                   >
                     <div className={`chat_roomItemInner`}>
-                      <div className="chat_roomName">{room.roomName}</div>
+                      <div className="chat_roomName">{room.participants.find(parti => parti.memberId !== memberId).memberName}</div>
                       <div className="chat_roomMeta">
                         <span className="chat_roomDate">{formatDate(room.createdAt)}</span>
                         <span className="chat_roomPreview">{room.lastMessage?.msgContent || '메시지가 없습니다.'}</span>
