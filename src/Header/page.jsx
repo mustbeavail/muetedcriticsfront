@@ -132,7 +132,7 @@ const Header = () => {
         <div className={styles.header_userInfoWrapper}>
           <div className={styles.header_userInfo}>
             <button className={styles.header_userInfoName} onClick={toggleMyInfoModal}>
-              {myInfo?.deptName} {myInfo?.positionName} {myInfo?.memberName}
+              {myInfo?.deptName} {myInfo?.positionName} {myInfo?.memberName} 님
             </button>
           </div>
         </div>

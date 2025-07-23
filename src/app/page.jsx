@@ -210,7 +210,13 @@ const Login = () => {
       sessionStorage.setItem('admin_yn', data.adminYn);
       sessionStorage.setItem('dept_name', data.deptName);
     } else {
-      setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+      if (data.message === '탈퇴한 계정입니다.') {
+        setError('탈퇴한 계정입니다.');
+      } else if (data.message === '승인되지 않은 계정입니다. 관리자 승인 후 이용 가능합니다.') {
+        setError('승인되지 않은 계정입니다. 관리자 승인 후 이용 가능합니다.');
+      } else {
+        setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+      }
     }
   };
 
