@@ -34,8 +34,31 @@ const ChatPage = () => {
   const [filteredMessages, setFilteredMessages] = useState([]);
   const [sendCnt, setSendCnt] = useState(0);
 
+  // 메시지 수신 핸들러
+  const handleMessageReceived = (newMessage) => {
+    console.log('새 메시지 수신:', newMessage);
+    if (newMessage.roomIdx === currentRoom?.roomIdx) {
+      setMessages(prev => {
+        const exists = prev.some(msg => msg.msgIdx === newMessage.msgIdx);
+        if (exists) return prev;
+        return [...prev, newMessage];
+      });
+      // 검색 조건 확인 후 필터링된 메시지에 추가
+      if (!messageSearch || newMessage.msgContent.includes(messageSearch)) {
+        setFilteredMessages(prev => {
+          const exists = prev.some(msg => msg.msgIdx === newMessage.msgIdx);
+          if (exists) return prev;
+          return [...prev, newMessage];
+        });
+      }
+    }
+  };
   // 웹소켓 훅 사용
-  const { sendMessage } = useWebSocket({token, memberId, setSendCnt});
+  const { sendMessage, isConnected } = useWebSocket({
+    token, memberId, setSendCnt,
+    currentRoomIdx: currentRoom?.roomIdx,
+    onMessageReceived : handleMessageReceived
+  });
 
   // 로그인 체크
   useEffect(() => {
