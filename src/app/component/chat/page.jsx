@@ -41,6 +41,7 @@ const ChatPage = () => {
       setMessages(prev => {
         const exists = prev.some(msg => msg.msgIdx === newMessage.msgIdx);
         if (exists) return prev;
+        setSendCnt(prev => prev + 1);
         return [...prev, newMessage];
       });
       // 검색 조건 확인 후 필터링된 메시지에 추가

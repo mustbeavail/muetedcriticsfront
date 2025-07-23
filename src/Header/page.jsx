@@ -28,7 +28,7 @@ const Header = () => {
 
   const goToChatRoom = (idx) => {
     setNotiCheck(token, idx);
-    router.push(`/chat/${idx}`);
+    router.push(`/component/chat`);
   };
 
   useEffect(() => {
