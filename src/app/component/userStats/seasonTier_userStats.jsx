@@ -7,7 +7,7 @@ const URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SeasonTier_UserStats() {
     const [seasonList, setSeasonList] = useState([1, 2, 3, 4]);
-    const [selectedSeason, setSelectedSeason] = useState(1);
+    const [selectedSeason, setSelectedSeason] = useState(4);
     const [tierStats, setTierStats] = useState([]);
 
     // 시즌별 티어 통계
