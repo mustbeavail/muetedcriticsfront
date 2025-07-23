@@ -28,11 +28,12 @@ const ChatPage = () => {
   const [deptList, setDeptList] = useState([]);
   const [memberId, setMemberId] = useState('');
   const [showMemberModal, setShowMemberModal] = useState(false);
-  const [filteredMessages, setFilteredMessages] = useState([]);
   const [initialized, setInitialized] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [filteredMessages, setFilteredMessages] = useState([]);
 
   // 웹소켓 훅 사용
-  const { sendMessage, messages, setMessages } = useWebSocket(token, memberId);
+  const { sendMessage } = useWebSocket({token, memberId});
 
   // 로그인 체크
   useEffect(() => {
@@ -57,23 +58,18 @@ const ChatPage = () => {
     getMemberList(token);
   }, [initialized]);
 
-  // 정렬기준 바뀔때마다 채팅방 목록 조회
+  // 정렬기준, 검색어 바뀔때마다 채팅방 목록 조회
   useEffect(() => {
     if (!initialized) return;
     getChatRoomList(token);
-  },[sortBy]);
+  },[sortBy, search]);
 
-  // 검색어 바뀔때마다 채팅방 목록 조회
-  useEffect(() => {
-    if (!initialized || search === '') return;
-    getChatRoomList(token);
-  }, [search]);
 
   // 채팅방 선택 시 메시지 내역 조회
   useEffect(() => {
     if (!initialized || !currentRoom) return;
     getChatMessageList(token, currentRoom.roomIdx);
-  }, [currentRoom]);
+  }, [currentRoom, messages]);
 
   // 메시지 검색 시 메시지 내역 조회
   useEffect(() => {
@@ -108,7 +104,7 @@ const ChatPage = () => {
     });
     setChatRoomList(data.content);
   };
-
+  
   // 채팅 메시지 내역 조회 함수
   const getChatMessageList = async (token, roomIdx) => {
     const {data} = await axios.get(`${URL}/room/${roomIdx}/messages`, {
@@ -145,15 +141,8 @@ const ChatPage = () => {
       const results = await Promise.all(promises);
       console.log('모든 방 나가기 완료:', results);
       
-      // 성공한 방들만 UI에서 제거
-      const succeededRooms = results
-        .map((result, index) => result.data.success ? roomIdxArray[index] : null)
-        .filter(roomIdx => roomIdx !== null);
-      
       // UI 업데이트
-      setChatRoomList(prev => 
-        prev.filter(room => !succeededRooms.includes(room.roomIdx))
-      );
+      getChatRoomList(token);
       
       setSelectedRoomsToLeave([]);
       setIsCheckboxMode(false);
@@ -197,7 +186,7 @@ const ChatPage = () => {
         }
       }
     );
-    setChatRoomList(prev => [...prev, data]);
+    getChatRoomList(token);
     setShowAddMenu(false);
   };
 
