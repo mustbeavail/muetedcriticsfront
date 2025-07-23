@@ -614,16 +614,17 @@ export default function User() {
             <hr className="user-list-divider" />
             <div className="user-list-modalContent">
               <ul>
-                <li><strong>아이디</strong> : {selectedUser.user_id}</li>
-                <li><strong>성별</strong> : {selectedUser.user_gender}</li>
-                <li><strong>전화번호</strong> : {selectedUser.phone?.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') || '-'}</li>
-                <li><strong>접속 지역</strong> : {selectedUser.region}</li>
-                <li><strong>가입일</strong> : {selectedUser.join_date}</li>
-                <li><strong>휴면 전환일</strong> : {selectedUser.dormant_date || '-'}</li>
-                <li><strong>탈퇴일</strong> : {selectedUser.withdraw_date || '-'}</li>
-                <li><strong>분류</strong> : {selectedUser.user_type}{selectedUser.vip_yn ? ' (VIP)' : ''}</li>
+                <li><strong>아이디</strong> {selectedUser.user_id}</li>
+                <li><strong>성별</strong> {selectedUser.user_gender}</li>
+                <li><strong>전화번호</strong> {selectedUser.phone?.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') || '-'}</li>
+                <li><strong>접속 지역</strong> {selectedUser.region}</li>
+                <li><strong>가입일</strong> {selectedUser.join_date}</li>
+                <li><strong>휴면 전환일</strong> {selectedUser.dormant_date || '-'}</li>
+                <li><strong>탈퇴일</strong> {selectedUser.withdraw_date || '-'}</li>
+                <li><strong>분류</strong> {selectedUser.user_type}{selectedUser.vip_yn ? ' (VIP)' : ''}</li>
               </ul>
             </div>
+            <hr className="user-list-divider" />
             <div className="user-list-modalFooter">
               <button className="user-list-closeBtn" onClick={closeModal}>닫기</button>
             </div>
