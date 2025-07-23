@@ -6,8 +6,8 @@ import { getISOWeek, subWeeks } from 'date-fns';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
-export default function PeriodWeeklyStats({ token }) {
-    // const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+export default function PeriodWeeklyStats() {
+    const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
 
     const [weeklyData, setWeeklyData] = useState([]);
     const [fromYear, setFromYear] = useState('');

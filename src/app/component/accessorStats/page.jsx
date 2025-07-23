@@ -39,9 +39,9 @@ const AccessorStats = () => {
       <div className="stats_container">
         <span className={"accessorStats-mainTitle"}>접속자 수 통계</span>
 
-        <PeriodDailyStats token={token} />
-        <PeriodWeeklyStats token={token} />
-        <PeriodMonthlyStats token={token} />
+        <PeriodDailyStats />
+        <PeriodWeeklyStats />
+        <PeriodMonthlyStats />
       </div>
     </>
   );
