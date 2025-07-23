@@ -181,7 +181,16 @@ select.user-list-sortSelect option {
 }
 
 .user-list-card {
-    background: #1e1e1e;
+    /* background: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease; */
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     padding: 20px;
     display: flex;
@@ -608,17 +617,15 @@ select.user-list-sortSelect option {
 }
 
 .user-list-pagination button.active {
-    background: #AECCEE;
-    color: #1e1e26;
-    font-weight: 700;
-    box-shadow: 0 0 8px rgba(174, 204, 238, 0.4);
+    background: #a678e2;
+    color: #fff;
 }
 
-.user-list-ellipsis {
+/* .user-list-ellipsis {
     color: #777;
     font-size: 1rem;
     padding: 0 6px;
-}
+} */
 
 /* 기타 모달 (다른 메모 보기) */
 .user-list-otherMemoModal {
@@ -653,7 +660,7 @@ select.user-list-sortSelect option {
     color: #8d35f0;
 }
 
-.user-list-pagination {
+/* .user-list-pagination {
     display: flex;
     justify-content: center;
     gap: 8px;
@@ -675,7 +682,7 @@ select.user-list-sortSelect option {
 .user-list-pagination button:hover {
     background-color: #a678e2;
     color: #fff;
-}
+} */
 
 .user-list-modalBackdrop {
     position: fixed;

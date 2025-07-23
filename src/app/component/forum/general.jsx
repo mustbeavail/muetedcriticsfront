@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function General({ forumPosts }) {
     const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+    const router = useRouter();
 
     const [openMenuId, setOpenMenuId] = useState(null);
     const [hoverBadgeId, setHoverBadgeId] = useState(null);
@@ -21,6 +23,7 @@ export default function General({ forumPosts }) {
     const [selectedMemo, setSelectedMemo] = useState(null);
     const [showEditMemoModal, setShowEditMemoModal] = useState(false);
     const [editMemoContent, setEditMemoContent] = useState('');
+
 
     // 각각의 유저 디테일 불러오기 (유저 타입 뱃지)
     const [userDetail, setUserDetail] = useState({});
@@ -125,7 +128,7 @@ export default function General({ forumPosts }) {
         setOpenMenuId(openMenuId === id ? null : id);
     };
 
-    // 유저 이름에 0.01초간 hover하면 뱃지 목록 나옴
+    // 유저 이름에 0.1초간 hover하면 뱃지 목록 나옴
     const handleMouseEnter = (post) => {
         hoverTimeoutRef.current = setTimeout(() => {
             setHoveredPostId(post.postIdx);
@@ -380,10 +383,18 @@ export default function General({ forumPosts }) {
         return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
     };
 
-    // 해당 유저에게 메모가 존재하는지 확인하는 함수
-    const hasMemo = (userId) => {
-        return memoList.some(memo => memo.userId === userId);
-    };
+    // 메뉴 외부 클릭 시 메뉴 닫기
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            if (openMenuId !== null && !event.target.closest('.forum-dropdown')) {
+                setOpenMenuId(null);
+            }
+        };
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, [openMenuId]);
 
     return (
         <div>
@@ -411,19 +422,17 @@ export default function General({ forumPosts }) {
                                     onClick={() => toggleMenu(post.postIdx)}
                                     onMouseEnter={() => handleMouseEnter(post)}
                                     onMouseLeave={handleMouseLeave}>
-                                    {/* 해당 유저에게 메모가 존재할 시 이름 뒤에 📑 아이콘 추가 */}
                                     {post.userId}
-                                    {hasMemo && <span style={{ color: 'red', marginLeft: '4px' }}>📑</span>}
                                 </button>
                                 {openMenuId === post.postIdx && (
                                     <div className="forum-dropdown">
                                         <button onClick={() => openUserDetailModal(post.userId)}>
                                             유저 상세보기
                                         </button>
-                                        <button onClick={() => alert('유저 통계보기')}>
+                                        <button onClick={() => router.push(`/component/user/${post.userId}`)}>
                                             유저 통계보기
                                         </button>
-                                        <button onClick={() => alert('유저 지출 상세내역')}>
+                                        <button onClick={() => router.push(`/component/userExpenditure?id=${post.userId}`)}>
                                             유저 지출 상세내역
                                         </button>
                                         <button onClick={() => openMemoModal(userDetail[post.userId] || { userId: post.userId })}>
@@ -438,7 +447,7 @@ export default function General({ forumPosts }) {
                                     </div>
                                 )}
                             </div>
-                            <div className="date-cell">{post.createdAt.slice(0, 10)}</div>
+                            <div className="date-cell">{formatDate(post.createdAt)}</div>
                             <div className="hit-cell">{post.hit}</div>
                             <div className="likes-cell">{post.likes}</div>
                         </div>

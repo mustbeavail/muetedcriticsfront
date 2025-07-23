@@ -13,7 +13,6 @@ const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Forum = () => {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
-  const memberId = typeof window !== "undefined" ? sessionStorage.getItem('memberId') : null;
 
   const [forumPosts, setForumPosts] = useState([]);
   const [totalFilteredPages, setTotalFilteredPages] = useState(1);
@@ -35,6 +34,7 @@ const Forum = () => {
         authorization: token
       }
     });
+    console.log(data);
     setForumPosts(data.forumPosts.content);
     setTotalFilteredPages(data.forumPosts.totalPages);
   }
