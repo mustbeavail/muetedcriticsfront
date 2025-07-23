@@ -130,8 +130,8 @@ const Forum = () => {
             <div className={`forum-tab ${currentTab === 'competition' ? 'active' : ''}`} onClick={() => goToPage('competition')}>경쟁전 토론장</div>
           </div>
 
-          {currentTab === 'general' && <General forumPosts={forumPosts} />}
-          {currentTab === 'competition' && <Competition forumPosts={forumPosts} />}
+          {currentTab === 'general' && <General token={token} forumPosts={forumPosts} />}
+          {currentTab === 'competition' && <Competition token={token} forumPosts={forumPosts} />}
 
           {/* 페이지네이션 */}
           <div className="forum-pagination">

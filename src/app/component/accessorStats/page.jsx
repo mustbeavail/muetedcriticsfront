@@ -14,6 +14,8 @@ const AccessorStats = () => {
   const dept = typeof window !== "undefined" ? sessionStorage.getItem('dept_name') : null;
   const router = useRouter();
   const allowedDepts = ['마케팅팀', '개발팀', '총괄'];
+
+  const [mounted, setMounted] = useState(false);
   
   // 로그인 체크
   useEffect(() => {
@@ -26,8 +28,9 @@ const AccessorStats = () => {
       alert('접근 권한이 없습니다.');
       router.push("/component/main");
     }
+    setMounted(true);
   }, []);
-  if (!memberId || !token || !allowedDepts.includes(dept)) return null;
+  if (!memberId || !token || !allowedDepts.includes(dept) || !mounted) return null;
 
   return (
     <>
@@ -36,9 +39,9 @@ const AccessorStats = () => {
       <div className="stats_container">
         <span className={"accessorStats-mainTitle"}>접속자 수 통계</span>
 
-        <PeriodDailyStats />
-        <PeriodWeeklyStats />
-        <PeriodMonthlyStats />
+        <PeriodDailyStats token={token} />
+        <PeriodWeeklyStats token={token} />
+        <PeriodMonthlyStats token={token} />
       </div>
     </>
   );

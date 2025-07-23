@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
-export default function Competition({ forumPosts }) {
-    const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+export default function Competition({ token, forumPosts }) {
     const router = useRouter();
 
     const [openMenuId, setOpenMenuId] = useState(null);

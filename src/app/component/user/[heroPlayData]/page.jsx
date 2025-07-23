@@ -272,12 +272,14 @@ export default function HeroPlayDataPage({ params }) {
 
   return (
     <div className="user-list-container1">
-      <Header/>
+      <Header />
       <Menu />
-      <div className={"user-list-header"}>
-        <h2 className="user-list-title">유저 통계 보기</h2>
-        {/* 뒤로가기 버튼 */}
-        <button className="user-list-backBtn" onClick={() => router.back()}>← 리스트로</button>
+      {/* 헤더 영역 */}
+      <div className="user-list-header">
+        <button className="user-list-backBtn" onClick={() => router.back()}>
+          {'< 리스트로'}
+        </button>
+        <span className="user-list-title">유저 통계 보기</span>
       </div>
       <div className={"user-list-heroPlayData"}>
         <div style={{ fontSize: "20px", marginBottom: "20px" }}><span style={{ fontWeight: 600 }}>{playData?.user_id}</span> 의 통계 확인</div>

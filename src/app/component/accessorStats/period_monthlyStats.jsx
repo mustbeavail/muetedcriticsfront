@@ -5,8 +5,8 @@ import axios from 'axios';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
-export default function PeriodMonthlyStats() {
-    const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
+export default function PeriodMonthlyStats({ token }) {
+    // const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
 
     const [fromYear, setFromYear] = useState('');
     const [fromMonth, setFromMonth] = useState('');
