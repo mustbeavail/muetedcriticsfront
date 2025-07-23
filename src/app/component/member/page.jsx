@@ -107,14 +107,26 @@ const Member = () => {
       );
 
       if (!confirmRevoke) return;
-      const { data } = await axios.get(`${URL}/admin/revoke/${selectedMember.memberId}`, {
-        headers: { authorization: token }
-      });
-      if (data.success) {
-        alert('관리자 권한이 박탈되었습니다.');
-        getMemberList(page);
-      } else {
-        alert('관리자 권한 박탈에 실패했습니다.');
+
+      try {
+        const { data } = await axios.post(`${URL}/admin/revoke`, {
+          memberId: selectedMember.memberId,
+          requesterId: sessionStorage.getItem('member_id')
+        }, {
+          headers: { authorization: token }
+        });
+        if (data.success) {
+          alert('관리자 권한이 박탈되었습니다.');
+          getMemberList(page);
+        } else {
+          alert('관리자 권한 박탈에 실패했습니다.');
+        }
+      } catch (error) {
+        if (error.response.data.msg) {
+          alert(error.response.data.msg);
+        } else {
+          alert('관리자 권한 박탈에 실패했습니다.');
+        }
       }
     }
   };
