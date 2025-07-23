@@ -8,6 +8,7 @@ import { FiSend, FiMoreVertical } from 'react-icons/fi';
 import { FaCheck, FaTimes, FaEdit } from 'react-icons/fa';
 import useWebSocket from './webSocket';
 import axios from 'axios';
+import './chat.css';
 
 const ChatPage = () => {
 
@@ -31,9 +32,10 @@ const ChatPage = () => {
   const [initialized, setInitialized] = useState(false);
   const [messages, setMessages] = useState([]);
   const [filteredMessages, setFilteredMessages] = useState([]);
+  const [sendCnt, setSendCnt] = useState(0);
 
   // 웹소켓 훅 사용
-  const { sendMessage } = useWebSocket({token, memberId});
+  const { sendMessage } = useWebSocket({token, memberId, setSendCnt});
 
   // 로그인 체크
   useEffect(() => {
@@ -56,7 +58,7 @@ const ChatPage = () => {
     if (!initialized) return;
     getChatRoomList(token);
     getMemberList(token);
-  }, [initialized]);
+  }, [initialized, sendCnt]);
 
   // 정렬기준, 검색어 바뀔때마다 채팅방 목록 조회
   useEffect(() => {
@@ -69,7 +71,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (!initialized || !currentRoom) return;
     getChatMessageList(token, currentRoom.roomIdx);
-  }, [currentRoom, messages]);
+  }, [currentRoom, sendCnt]);
 
   // 메시지 검색 시 메시지 내역 조회
   useEffect(() => {
@@ -77,6 +79,23 @@ const ChatPage = () => {
     if (!messageSearch) { setFilteredMessages(messages); return; }
     setFilteredMessages(messages.filter(msg => msg.msgContent.includes(messageSearch)));
   }, [messageSearch, messages]);
+
+  // 날짜를 한국 형식으로 포맷팅하는 함수
+  const formatDate = (dateString) => {
+    if (!dateString) return '-'; // 날짜 문자열이 없으면 '-' 반환
+
+    const date = new Date(dateString); // 날짜 객체 생성
+    // 날짜 부분을 한국어 형식으로 변환하고 공백 제거
+    const datePart = date.toLocaleDateString('ko-KR').replace(/ /g, '');
+    // 시간 부분을 24시간 형식으로 변환
+    const timePart = date.toLocaleTimeString('ko-KR', {
+        hour: '2-digit', // 시간: 두 자리 숫자
+        minute: '2-digit', // 분: 두 자리 숫자
+        hour12: false // 24시간 형식 사용
+    });
+
+    return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
+  };
 
   // 멤버 목록 조회 함수
   const getMemberList = async (token) => {
@@ -160,7 +179,7 @@ const ChatPage = () => {
         'Authorization': token
       },
       params: {
-        memberId: memberId
+        member_id: memberId
       }
     });
     setCurrentMemberDetail(data);
@@ -322,7 +341,7 @@ const ChatPage = () => {
                     <div className={`chat_roomItemInner`}>
                       <div className="chat_roomName">{room.roomName}</div>
                       <div className="chat_roomMeta">
-                        <span className="chat_roomDate">{room.createdAt}</span>
+                        <span className="chat_roomDate">{formatDate(room.createdAt)}</span>
                         <span className="chat_roomPreview">{room.lastMessage?.msgContent || '메시지가 없습니다.'}</span>
                       </div>
                     </div>
@@ -350,7 +369,7 @@ const ChatPage = () => {
                 <div className="chat_chatHeader">
                   <div className="chat_userInfo">
                     <span className="chat_chatName">{currentRoom.roomName}</span>
-                    <span className="chat_chatTag">{currentRoom.participants.find(parti => parti.memberId !== memberId).deptName || '팀 정보 없음'}</span>
+                    <span className="chat_chatTag">{currentRoom.participants.find(parti => parti.memberId !== memberId).department || '팀 정보 없음'}</span>
                     <span className="chat_chatTag">{currentRoom.participants.find(parti => parti.memberId !== memberId).position || '직급 정보 없음'}</span>
                   </div>
                   <div className="chat_chatActions">
@@ -382,7 +401,7 @@ const ChatPage = () => {
                       className={`${msg.senderId === memberId ? 'chat_myMsg' : 'chat_otherMsg'} ${msg.highlight ? 'chat_highlight' : ''}`}
                     >
                       <div className="chat_bubble">{msg.msgContent}</div>
-                      <span className="chat_time">{msg.sentAt}</span>
+                      <span className="chat_time">{formatDate(msg.sentAt)}</span>
                     </div>
                   ))}
                 </div>
@@ -447,17 +466,8 @@ const ChatPage = () => {
                       </div>
                       <div className="chat_infoRow">
                         <span className="chat_label">직급</span>
-                        <span className="chat_value">{currentMemberDetail?.position || '-'}</span>
+                        <span className="chat_value">{currentMemberDetail?.positionName || '-'}</span>
                       </div>
-                      {currentMemberDetail.withdrawalAt ? (
-                        <div className="chat_infoRow">
-                          <span className="chat_label">탈퇴일</span>
-                          <span className="chat_value">{currentMemberDetail.withdrawalAt}</span>
-                        </div>
-                      )
-                      : (
-                      <>
-                      </>)}
                     </div>
                     <button className="chat_modalCloseBtn" onClick={handleCloseModal}>닫기</button>
                   </div>

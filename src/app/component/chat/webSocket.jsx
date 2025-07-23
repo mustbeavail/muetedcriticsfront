@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import axios from 'axios';
 
-const useWebSocket = ({token, memberId}) => {
+const useWebSocket = ({ token, memberId, setSendCnt }) => {
 
     const [isConnected, setIsConnected] = useState(false);
     const [stompClient, setStompClient] = useState(null);
@@ -61,17 +61,6 @@ const useWebSocket = ({token, memberId}) => {
         };
     }, [token, memberId]);
 
-    // 채팅 메시지 내역 조회 함수
-    const getChatMessageList = async (token, roomIdx) => {
-        const { data } = await axios.get(`${URL}/room/${roomIdx}/messages`, {
-            headers: {
-                'Authorization': token
-            }
-        });
-        setMessages(data);
-        setFilteredMessages(data);
-    };
-
     // 메시지 전송 함수
     const sendMessage = (roomIdx, memberId, receiverId, content) => {
         if (stompClient && isConnected) {
@@ -85,10 +74,14 @@ const useWebSocket = ({token, memberId}) => {
                 destination: '/app/chat/' + roomIdx,
                 body: JSON.stringify(message)
             });
-            getChatMessageList(token, roomIdx);
+            setTimeout(() => {
+                if (setSendCnt) {
+                    setSendCnt(prev => prev + 1);
+                }
+            }, 100);
         }
     };
-    return { sendMessage, messages, setMessages, filteredMessages, setFilteredMessages };
+    return { sendMessage };
 }
 
 export default useWebSocket;
