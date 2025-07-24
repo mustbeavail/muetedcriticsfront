@@ -115,15 +115,16 @@ const Report = () => {
           {/* 테이블 영역 */}
           <div className="report-table">
             <div className="row header">
-              <div className="date-cell">날짜</div>
+              
               <div className="content-cell">내용</div>
               <div className="user-cell">신고자 ID</div>
               <div className="user-cell">피신고자 ID</div>
+              <div className="date-cell">등록일</div>
               <div className="status-cell">처리 여부</div>
             </div>
             {currentReportList.map((report, index) => (
               <div className={`row ${report.status === "완료" ? "status-complete" : ''}`} key={index}>
-                <div className="date-cell">{formatDate(report.createdAt)}</div>
+                
                 <div className="content-cell">
                   <Link className='report-detail-link' href={`/component/report/${report.inquiryIdx}`}>
                     {report.content}
@@ -131,6 +132,7 @@ const Report = () => {
                 </div>
                 <div className="user-cell">{report.userId}</div>
                 <div className="user-cell">{report.reportedUserId}</div>
+                <div className="date-cell">{formatDate(report.createdAt)}</div>
                 <div className="status-cell">{report.status}</div>
               </div>
             ))}
