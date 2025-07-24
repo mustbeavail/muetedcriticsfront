@@ -128,7 +128,7 @@ const ChatPage = () => {
         'Authorization': token
       }
     });
-    setMemberList(data.members);
+    setMemberList(data.members.filter(member => member.memberId !== memberId && member.withdrawDate === null && member.acceptYn === true));
     setDeptList([...new Set(data.members.map(member => member.deptName))]);
   };
 
