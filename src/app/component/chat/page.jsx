@@ -134,6 +134,7 @@ const ChatPage = () => {
 
   // 채팅방 목록 조회 함수
   const getChatRoomList = async (token) => {
+    try {
     const { data } = await axios.get(`${URL}/rooms`, {
       headers: {
         'Authorization': token
@@ -145,19 +146,30 @@ const ChatPage = () => {
         searchType: 'memberName'
       }
     });
-    setChatRoomList(data.content);
-    console.log(data.content);
+      setChatRoomList(data.content);
+      console.log(data.content);
+    } catch (error) {
+      alert('채팅방 목록 조회 실패, 다시 로그인 후 시도해주세요.');
+      location.href = '/';
+      return;
+    }
   };
 
   // 채팅 메시지 내역 조회 함수
   const getChatMessageList = async (token, roomIdx) => {
+    try {
     const { data } = await axios.get(`${URL}/room/${roomIdx}/messages`, {
       headers: {
         'Authorization': token
       }
     });
-    setMessages(data);
-    setFilteredMessages(data);
+      setMessages(data);
+      setFilteredMessages(data);
+    } catch (error) {
+      alert('채팅 메시지 내역 조회 실패, 다시 로그인 후 시도해주세요.');
+      location.href = '/';
+      return;
+    }
   };
 
   // 채팅방 선택 함수
@@ -192,13 +204,15 @@ const ChatPage = () => {
       setIsCheckboxMode(false);
 
     } catch (error) {
-      console.error('방 나가기 실패:', error);
-      alert('일부 방 나가기에 실패했습니다.');
+      alert('방 나가기 실패, 다시 로그인 후 시도해주세요.');
+      location.href = '/';
+      return;
     }
   };
 
   // 멤버 상세정보 조회 함수
   const getMemberDetail = async (memberId) => {
+    try {
     const { data } = await axios.get(`${URL}/memberInfo`, {
       headers: {
         'Authorization': token
@@ -207,7 +221,12 @@ const ChatPage = () => {
         member_id: memberId
       }
     });
-    setCurrentMemberDetail(data);
+      setCurrentMemberDetail(data);
+    } catch (error) {
+      alert('멤버 상세정보 조회 실패, 다시 로그인 후 시도해주세요.');
+      location.href = '/';
+      return;
+    }
   };
 
   // 모달 닫기 함수
@@ -219,6 +238,7 @@ const ChatPage = () => {
 
   // 채팅방 추가 함수
   const createChatRoom = async (targetMemberId) => {
+    try {
     const { data } = await axios.post(`${URL}/room/private`,
       {
         targetMemberId: targetMemberId,
@@ -230,8 +250,13 @@ const ChatPage = () => {
         }
       }
     );
-    getChatRoomList(token);
-    setShowAddMenu(false);
+      getChatRoomList(token);
+      setShowAddMenu(false);
+    } catch (error) {
+      alert('채팅방 생성 실패, 다시 로그인 후 시도해주세요.');
+      location.href = '/';
+      return;
+    }
   };
 
   return (
