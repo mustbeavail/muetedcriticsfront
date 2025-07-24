@@ -105,11 +105,11 @@ export default function WinningRate_Playtime_UserStats() {
                 <div className={"userStats-input-wrapper"}>
                     <input
                         type="text"
-                        placeholder="Search"
+                        placeholder="유저 ID 입력"
                         value={searchId}
                         onChange={(e) => setSearchId(e.target.value)}
                     />
-                    <button className={"userStats-search-btn"}><IoSearch /></button>
+                    {/* <button className={"userStats-search-btn"}><IoSearch /></button> */}
                 </div>
             </div>
 
