@@ -7,7 +7,7 @@
     position: fixed;
     top: 80px;
     left: 80px;
-    width: 97%;
+    width: calc(100vw - 80px);
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;

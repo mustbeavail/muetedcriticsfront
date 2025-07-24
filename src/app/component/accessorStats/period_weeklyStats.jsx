@@ -46,7 +46,7 @@ export default function PeriodWeeklyStats() {
         setToMonth(toM);
         setToWeek(toW);
 
-        // 👉 직접 계산된 값으로 조회 함수 호출
+        // 직접 계산된 값으로 조회 함수 호출
         weeklyAccessData(fromY, fromM, fromW, toY, toM, toW);
     }, []);
 
@@ -63,21 +63,43 @@ export default function PeriodWeeklyStats() {
             return;
         }
 
+        const fY = Number(fromY);
+        const fM = Number(fromM);
+        const fW = Number(fromW);
+        const tY = Number(toY);
+        const tM = Number(toM);
+        const tW = Number(toW);
+
+        const toDate = new Date(tY, tM - 1, 1 + (tW - 1) * 7); // 해당 주의 날짜 추정
+        const today = new Date();
+
+        if (toDate > today) {
+            alert("종료 날짜는 현재 날짜보다 이후일 수 없습니다.");
+            return;
+        }
+
+        const fromDate = new Date(fY, fM - 1, 1 + (fW - 1) * 7);
+        if (fromDate > toDate) {
+            alert("시작 날짜는 종료 날짜보다 이전이어야 합니다.");
+            return;
+        }
+
         const { data } = await axios.get(`${URL}/activity/periodWeeklyUser`, {
             params: {
-                fromYear: fromY,
-                fromMonth: fromM,
-                fromWeek: fromW,
-                toYear: toY,
-                toMonth: toM,
-                toWeek: toW
+                fromYear: fY,
+                fromMonth: fM,
+                fromWeek: fW,
+                toYear: tY,
+                toMonth: tM,
+                toWeek: tW
             },
             headers: {
                 authorization: token
             }
         });
         setWeeklyData(data.periodWAU);
-    }
+    };
+
 
     return (
         <>

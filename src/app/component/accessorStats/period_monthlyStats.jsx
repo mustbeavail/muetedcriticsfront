@@ -44,12 +44,12 @@ export default function PeriodMonthlyStats() {
             alert("모든 날짜 값을 선택해 주세요.");
             return;
         }
-        if (fromY > toY) {
-            alert("시작 년도는 종료 년도보다 앞서야 합니다.");
+        if (fromY > toY || (fromY === toY && fromM > toM)) {
+            alert("시작 날짜는 종료 날짜보다 이전이어야 합니다.");
             return;
         }
-        if (fromY === toY && fromM > toM) {
-            alert("시작 월은 종료 월보다 앞서야 합니다.");
+        if (toM > new Date().getMonth() + 1) {
+            alert("종료 날짜는 현재 날짜보다 이후일 수 없습니다.");
             return;
         }
 
@@ -109,7 +109,7 @@ export default function PeriodMonthlyStats() {
                                 ))}
                             </select>
                         </span>
-                        <button onClick={monthlyAccessData}>조회</button>
+                        <button onClick={() => monthlyAccessData(fromYear, fromMonth, toYear, toMonth)}>조회</button>
                     </div>
                 </div>
 
