@@ -1,4 +1,8 @@
 /* ------------------------------ 공통 css ------------------------------ */
+.hidden {
+    display: none;
+}
+
 .stats-container {
     position: fixed;
     top: 80px;
