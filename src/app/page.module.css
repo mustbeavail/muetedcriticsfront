@@ -1,13 +1,3 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  color: #eee;
-}
-
 .container {
   width: 480px;
   max-width: 90vw;
@@ -23,7 +13,7 @@ html, body {
 }
 
 .login-title {
-  font-size: 30px; 
+  font-size: 30px;
   font-weight: 700;
   margin-bottom: 36px;
   letter-spacing: 1.4px;
@@ -302,4 +292,3 @@ html, body {
   background: #6BBF8D !important;
   transition: background 0.3s ease;
 }
-
