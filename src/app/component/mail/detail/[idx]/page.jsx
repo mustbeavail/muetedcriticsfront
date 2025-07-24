@@ -7,6 +7,8 @@ import { IoCalendarClearOutline } from "react-icons/io5";
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
+import Header from '../../../../../Header/page';
+import Menu from '../../../../../menu/Menu';
 
 export default function MailDetailPage() {
 
@@ -68,55 +70,62 @@ export default function MailDetailPage() {
     return <div>Loading...</div>;
   }
 
+  // 최상단 stats_container 추가, mailDetail-title 위치 변경
   return (
     <>
-      <div className={"mailDetail-container"}>
-        <h1 className={"mailDetail-title"}>{mailDetail.mailIdx ? "📨 발신 메일 상세보기" : "📨 정기 발송 메일 상세보기"}</h1>
+      <Header />
+      <Menu />
+      <div className="stats_container">
+      <h1 className={"mailDetail-title"}>{mailDetail.mailIdx ? "📨 발신 메일 상세보기" : "📨 정기 발송 메일 상세보기"}</h1>
+        <div className={"mailDetail-container"}>
+          
 
-        <div className={"mailDetail-card"}>
-          <div className={"mailDetail-btn-wrapper"}>
-            <Link href="/component/mail">
-              <button className={"mailDetail-backBtn"}>← 리스트로 돌아가기</button>
-            </Link>
-            <button className={`${mailDetail.scheduleIdx ? "mailDetail-updateBtn" : "hidden"}`} onClick={() => {
-              location.href = `/component/mail/update/scheduleIdxEQ${mailDetail.scheduleIdx}`;
-            }}>정기 메일 수정</button>
-          </div>
-
-          <section className={"mailDetail-section"}>
-            <h2 className={"mailDetail-subject"}>📧 {mailDetail.mailSub}</h2>
-            <p className={"mailDetail-meta"}>
-              수신 대상:{" "}
-              <span>
-                {mailDetail.recipient}
-              </span>
-            </p>
-            <p className={"mailDetail-meta"}>
-              담당자 ID: <span>{mailDetail.memberId}</span>
-            </p>
-            {mailDetail.scheduleIdx ? (
-              <>
-                <p className={"mailDetail-meta"}>
-                  다음 발송 일자: <span>{mailDetail.nextSendDate}</span>
-                </p>
-                <p className={"mailDetail-meta"}>
-                  발송 주기: <span>{mailDetail.intervalDays}일</span>
-                </p>
-                <p className={"mailDetail-meta"}>
-                  활성화 여부: <span>{mailDetail.active ? "활성화" : "비활성화"}</span>
-                </p>
-              </>
-            ) : (
-              <>
-              </>
-            )}
-            <div className={"mailDetail-date"}>
-              <IoCalendarClearOutline />
-              <span>{mailDetail.mailDate ? mailDetail.mailDate : mailDetail.createdAt}</span>
+          {/* <div className={"mailDetail-card"}> */}
+          <div>
+            <div className={"mailDetail-btn-wrapper"}>
+              <Link href="/component/mail">
+                <button className={"mailDetail-backBtn"}>{'< 리스트로'}</button>
+              </Link>
+              <button className={`${mailDetail.scheduleIdx ? "mailDetail-updateBtn" : "hidden"}`} onClick={() => {
+                location.href = `/component/mail/update/scheduleIdxEQ${mailDetail.scheduleIdx}`;
+              }}>정기 메일 수정</button>
             </div>
-          </section>
 
-          <div className={"mailDetail-content"} dangerouslySetInnerHTML={{ __html: mailDetail.mailContent }} />
+            <section className={"mailDetail-section"}>
+              <h2 className={"mailDetail-subject"}>📧 {mailDetail.mailSub}</h2>
+              <p className={"mailDetail-meta"}>
+                수신 대상:{" "}
+                <span>
+                  {mailDetail.recipient}
+                </span>
+              </p>
+              <p className={"mailDetail-meta"}>
+                담당자 ID: <span>{mailDetail.memberId}</span>
+              </p>
+              {mailDetail.scheduleIdx ? (
+                <>
+                  <p className={"mailDetail-meta"}>
+                    다음 발송 일자: <span>{mailDetail.nextSendDate}</span>
+                  </p>
+                  <p className={"mailDetail-meta"}>
+                    발송 주기: <span>{mailDetail.intervalDays}일</span>
+                  </p>
+                  <p className={"mailDetail-meta"}>
+                    활성화 여부: <span>{mailDetail.active ? "활성화" : "비활성화"}</span>
+                  </p>
+                </>
+              ) : (
+                <>
+                </>
+              )}
+              <div className={"mailDetail-date"}>
+                <IoCalendarClearOutline />
+                <span>{mailDetail.mailDate ? mailDetail.mailDate : mailDetail.createdAt}</span>
+              </div>
+            </section>
+
+            <div className={"mailDetail-content"} dangerouslySetInnerHTML={{ __html: mailDetail.mailContent }} />
+          </div>
         </div>
       </div>
     </>
