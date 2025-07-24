@@ -232,7 +232,7 @@ export default function HeroPlayDataPage({ params }) {
     const { data } = await axios.get(`${URL}/user/stats/season`, {
       params: {
         userId: user_id,
-        season: season
+        season: season === 'all' ? null : season
       },
       headers: {
         authorization: token
@@ -301,6 +301,7 @@ export default function HeroPlayDataPage({ params }) {
                     {index + 1}시즌
                   </option>
                 ))}
+                <option value="all">전체</option> {/* 전체 시즌 선택 옵션 */}
               </select>
             </div>
             {/* 시즌별 데이터 렌더링 */}

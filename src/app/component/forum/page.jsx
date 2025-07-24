@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
-import './forum.css';
+import forumStyles from './forum.module.css';
 import { IoSearch } from 'react-icons/io5';
 import axios from 'axios';
 
@@ -95,25 +95,25 @@ const Forum = () => {
     <>
       <Header />
       <Menu />
-      <div className="forum-container">
-        <span className={"forum-mainTitle"}>유저 포럼 분석</span>
-        <div className={"forum-chartWrapper"}>
-          <div className={"forum-filterBox-wrapper"}>
-            <div className="forum-filter-left">
-              <select className={"forum-select-category"} onChange={(e) => setSearchType(e.target.value)}>
+      <div className={forumStyles.forumContainer}>
+        <span className={forumStyles.forumMainTitle}>유저 포럼 분석</span>
+        <div className={forumStyles.forumChartWrapper}>
+          <div className={forumStyles.forumFilterBoxWrapper}>
+            <div className={forumStyles.forumFilterLeft}>
+              <select className={forumStyles.forumSelectCategory} onChange={(e) => setSearchType(e.target.value)}>
                 <option value="title">제목</option>
                 <option value="content">내용</option>
                 <option value="userId">글쓴이</option>
               </select>
-              <div className={"forum-search"}>
-                <div className={"forum-input-wrapper"}>
+              <div className={forumStyles.forumSearch}>
+                <div className={forumStyles.forumInputWrapper}>
                   <input type="text" placeholder="포럼 검색" onChange={(e) => setSearch(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && forumSearch()} />
-                  <button className={"forum-search-btn"} onClick={forumSearch} onKeyUp={(e) => e.key === 'Enter' && forumSearch()}><IoSearch /></button>
+                  <button className={forumStyles.forumSearchBtn} onClick={forumSearch} onKeyUp={(e) => e.key === 'Enter' && forumSearch()}><IoSearch /></button>
                 </div>
               </div>
             </div>
-            <div className="forum-filter-right">
-              <select className={"forum-select"} onChange={(e) => setSortKey(e.target.value)}>
+            <div className={forumStyles.forumFilterRight}>
+              <select className={forumStyles.forumSelect} onChange={(e) => setSortKey(e.target.value)}>
                 <option value="dateDesc">작성 날짜 최신순</option>
                 <option value="dateAsc">작성 날짜 오래된순</option>
                 <option value="hitDesc">조회수 높은순</option>
@@ -125,16 +125,16 @@ const Forum = () => {
           </div>
 
           {/* 포럼 탭 컴포넌트 */}
-          <div className="forum-menu">
-            <div className={`forum-tab ${currentTab === 'general' ? 'active' : ''}`} onClick={() => goToPage('general')}>일반 토론장</div>
-            <div className={`forum-tab ${currentTab === 'competition' ? 'active' : ''}`} onClick={() => goToPage('competition')}>경쟁전 토론장</div>
+          <div className={forumStyles.forumMenu}>
+            <div className={`${forumStyles.forumTab} ${currentTab === 'general' ? forumStyles.active : ''}`} onClick={() => goToPage('general')}>일반 토론장</div>
+            <div className={`${forumStyles.forumTab} ${currentTab === 'competition' ? forumStyles.active : ''}`} onClick={() => goToPage('competition')}>경쟁전 토론장</div>
           </div>
 
           {currentTab === 'general' && <General token={token} forumPosts={forumPosts} />}
           {currentTab === 'competition' && <Competition token={token} forumPosts={forumPosts} />}
 
           {/* 페이지네이션 */}
-          <div className="forum-pagination">
+          <div className={forumStyles.forumPagination}>
             <button
               disabled={currentPage === 1}
               onClick={() => handlePageChange(currentPage - 1)}
@@ -145,7 +145,7 @@ const Forum = () => {
             {Array.from({ length: totalFilteredPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
-                className={page === currentPage ? 'active' : ''}
+                className={page === currentPage ? forumStyles.active : ''}
                 onClick={() => handlePageChange(page)}
               >
                 {page}
