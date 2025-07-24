@@ -1,14 +1,14 @@
 import { XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, AreaChart, Area, Brush } from 'recharts';
 
 export default function DailyInterval({
-    token, intervalStartDate, intervalEndDate, setIntervalStartDate, setIntervalEndDate, getInterval, interval}) {
+    token, intervalStartDate, intervalEndDate, setIntervalStartDate, setIntervalEndDate, getInterval, interval, today}) {
     return (
         <>
             <div className={"salesStats-chartWrapper"}>
                 <h2 className={"salesStats-title"}>📈 평균 구매 간격</h2>
                 <div className={"salesStats-filterBox"}>
-                    기간 시작일 <input type="date" value={intervalStartDate} onChange={(e)=>{setIntervalStartDate(e.target.value)}}/>
-                    기간 종료일 <input type="date" value={intervalEndDate} onChange={(e)=>{setIntervalEndDate(e.target.value)}}/>
+                    기간 시작일 <input type="date" value={intervalStartDate} max={today} onChange={(e)=>{setIntervalStartDate(e.target.value)}}/>
+                    기간 종료일 <input type="date" value={intervalEndDate} max={today} onChange={(e)=>{setIntervalEndDate(e.target.value)}}/>
                     <button onClick={()=>{getInterval(token, intervalStartDate, intervalEndDate)}}>조회</button>
                 </div>
                 <ResponsiveContainer width="100%" height="85%">
