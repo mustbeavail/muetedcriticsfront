@@ -20,7 +20,7 @@ const Inquiry = () => {
       location.href = "/";
     }
   }, []);
-  if (!memberId || !token) return null;
+  // if (!memberId || !token) return null;
 
   const [inquiryList, setInquiryList] = useState([]);
 

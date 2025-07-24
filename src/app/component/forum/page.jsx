@@ -13,16 +13,16 @@ const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Forum = () => {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
-  const member_id = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
+  const memberId = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
 
   // 로그인 체크
   useEffect(() => {
-    if (!member_id || !token) {
+    if (!memberId || !token) {
       alert("로그인 후 이용해주세요.");
       location.href = "/";
     }
   }, []);
-  // if (!member_id || !token) return null;
+  // if (!memberId || !token) return null;
 
   const [forumPosts, setForumPosts] = useState([]);
   const [totalFilteredPages, setTotalFilteredPages] = useState(1);

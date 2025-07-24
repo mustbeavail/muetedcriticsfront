@@ -20,7 +20,7 @@ const Report = () => {
       location.href = "/";
     }
   }, []);
-  if (!memberId || !token) return null;
+  // if (!memberId || !token) return null;
 
   const [reportList, setReportList] = useState([]);
 

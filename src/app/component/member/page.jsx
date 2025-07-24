@@ -8,10 +8,12 @@ import './member.css';
 import { MdOutlinePhoneAndroid } from "react-icons/md";
 import { TbDeviceDesktop } from "react-icons/tb";
 import { FiMoreVertical } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Member = () => {
+  const router = useRouter();
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
   const memberId = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
   const adminYn = typeof window !== "undefined" ? sessionStorage.getItem('admin_yn') : null;
@@ -23,7 +25,7 @@ const Member = () => {
       location.href = "/";
     }
   }, []);
-  if (!memberId || !token) return null;
+  // if (!memberId || !token) return null;
 
   const [page, setPage] = useState(1);
 
@@ -205,8 +207,9 @@ const Member = () => {
       }
     });
     console.log(data);
-    alert(member.memberId + ' 채팅하기');
+    // alert(member.memberId + ' 채팅하기');
     // 해당 회원과의 채팅방으로 이동
+    router.push(`/component/chat?roomIdx=${data.roomIdx}`);
   }
 
   // 탈퇴 처리
