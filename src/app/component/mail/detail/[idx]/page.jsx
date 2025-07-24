@@ -91,12 +91,12 @@ export default function MailDetailPage() {
     <>
       <Header />
       <Menu />
-      <div className="stats_container">
+      <div className="common-container">
       <h1 className={"mailDetail-title"}>{mailDetail.mailIdx ? "📨 발신 메일 상세보기" : "📨 정기 발송 메일 상세보기"}</h1>
         <div className={"mailDetail-container"}>
           
 
-        <div className={"mailDetail-card"}>
+        {/* <div className={"mailDetail-card"}> */}
           <div className={"mailDetail-btn-wrapper"}>
             <Link href="/component/mail">
               <button className={"mailDetail-backBtn"}>← 리스트로 돌아가기</button>
@@ -106,7 +106,7 @@ export default function MailDetailPage() {
             }}>정기 메일 수정</button>
           </div>
 
-          {/* <section className={"mailDetail-section"}>
+          <section className={"mailDetail-section"}>
             <h2 className={"mailDetail-subject"}>📧 {mailDetail.mailSub}</h2>
             <p className={"mailDetail-meta"}>
               수신 대상:{" "}
@@ -136,9 +136,9 @@ export default function MailDetailPage() {
             <div className={"mailDetail-date"}>
               <IoCalendarClearOutline />
               <span>{mailDetail.mailDate ? formatDate(mailDetail.mailDate) : formatDate(mailDetail.createdAt)}</span>
-            </div> */}
+            </div>
 
-            <section className={"mailDetail-section"}>
+            {/* <section className={"mailDetail-section"}>
               <h2 className={"mailDetail-subject"}>📧 {mailDetail.mailSub}</h2>
               <p className={"mailDetail-meta"}>
                 수신 대상:{" "}
@@ -168,13 +168,13 @@ export default function MailDetailPage() {
               <div className={"mailDetail-date"}>
                 <IoCalendarClearOutline />
                 <span>{mailDetail.mailDate ? mailDetail.mailDate : mailDetail.createdAt}</span>
-              </div>
+              </div> */}
             </section>
 
             <div className={"mailDetail-content"} dangerouslySetInnerHTML={{ __html: mailDetail.mailContent }} />
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 }
