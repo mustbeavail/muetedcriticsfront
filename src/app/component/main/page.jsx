@@ -175,7 +175,7 @@ const Main = () => {
     <div>
       <Header />
       <Menu />
-      <div className="stats-container">
+      <div className="stats_container">
         <h1 className="dashboard-title">Dashboard</h1>
         <StatsNoti
           notiList={notiList}

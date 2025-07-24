@@ -3,22 +3,6 @@
     display: none;
 }
 
-.stats-container {
-    position: fixed;
-    top: 80px;
-    left: 80px;
-    width: calc(100vw - 80px);
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    height: calc(100vh - 56px);
-    border-radius: 8px;
-    background-color: transparent;
-    font-size: 18px;
-    font-family: 'Noto Sans KR', sans-serif;
-    margin-bottom: 20px;
-}
-
 .dashboard-title {
     margin-left: 10px;
     font-size: 40px;
@@ -27,24 +11,6 @@
     font-style: italic;
     color: tomato;
     display: flex;
-}
-
-.row.header {
-    font-weight: bold;
-    background-color: #d4cad331;
-}
-
-.row {
-    display: flex;
-    border-bottom: 1px solid #cccccc6e;
-    padding: 10px 0;
-}
-
-.cell {
-    flex: 1;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
 }
 
 /* ------------------------------ 통계 알림 css ------------------------------ */
