@@ -207,8 +207,12 @@ const Member = () => {
       }
     });
     console.log(data);
-    // alert(member.memberId + ' 채팅하기');
     // 해당 회원과의 채팅방으로 이동
+    // 만약 본인과 채팅하려고 하면 alert 창 띄우고 채팅방으로 이동하지 않음
+    if (memberId === member.memberId) {
+      alert('본인과는 채팅할 수 없습니다.');
+      return;
+    }
     router.push(`/component/chat?roomIdx=${data.roomIdx}`);
   }
 

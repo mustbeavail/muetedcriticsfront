@@ -30,7 +30,7 @@ const AccessorStats = () => {
     }
     setMounted(true);
   }, []);
-  if (!memberId || !token || !allowedDepts.includes(dept) || !mounted) return null;
+  // if (!memberId || !token || !allowedDepts.includes(dept) || !mounted) return null;
 
   return (
     <>
