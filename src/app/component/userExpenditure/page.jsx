@@ -30,17 +30,17 @@ function UserExpenditureContent() {
     useEffect(() => {
         const id = sessionStorage.getItem('member_id');
         const token = sessionStorage.getItem('token');
+        const adminYn = sessionStorage.getItem('admin_yn');
         const dept = sessionStorage.getItem('dept_name');
-        if (!id || !token || !dept) {
+        if (!id || !token || !dept || !adminYn) {
             alert('로그인 후 접근 가능합니다.');
             router.push("/");
         }
 
         // 접근 허용 부서
-        const allowedDepts = ['CS팀', '마케팅팀', '개발팀', '총괄'];
+        const allowedDepts = ['마케팅팀', '개발팀', 'CS팀'];
 
-        // 접근 허용 부서 체크
-        if (!allowedDepts.includes(dept)) {
+        if (adminYn === 'false' && !allowedDepts.includes(dept)) {
             alert('접근 권한이 없습니다.');
             router.push("/component/main");
         }
