@@ -187,17 +187,22 @@
     color: white;
 }
 
-.forumTable .row {
+.row {
     display: flex;
     border-bottom: 1px solid #7f748c80;
 }
 
-.forumTable .row.header {
-    background-color: #272031;
+.header {
+    background-color: #342d3d;
     font-weight: bold;
 }
 
-.forumTable .idxCell {
+.row.header {
+    background-color: #342d3d;
+    color: white;
+}
+
+.idxCell {
     flex: 0.5;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -205,7 +210,7 @@
     text-overflow: ellipsis;
 }
 
-.forumTable .titleCell {
+.titleCell {
     flex: 2;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -213,7 +218,7 @@
     text-overflow: ellipsis;
 }
 
-.forumTable .userCell {
+.userCell {
     flex: 1.5;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -222,7 +227,7 @@
     display: block;
 }
 
-.forumTable .dateCell {
+.dateCell {
     flex: 1;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -230,7 +235,7 @@
     text-overflow: ellipsis;
 }
 
-.forumTable .hitCell {
+.hitCell {
     flex: 0.5;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -238,7 +243,7 @@
     text-overflow: ellipsis;
 }
 
-.forumTable .likesCell {
+.likesCell {
     flex: 0.5;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -246,8 +251,8 @@
     text-overflow: ellipsis;
 }
 
-.forumTable .titleCell a:hover,
-.forumTable .userCell button:hover {
+.titleCell a:hover,
+.userCell button:hover {
     text-decoration: underline;
 }
 

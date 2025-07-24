@@ -404,7 +404,7 @@ export default function Competition({ token, forumPosts }) {
     return (
         <div>
             <div className={forumStyles.forumTable}>
-                <div className={forumStyles.row + ' ' + forumStyles.header}>
+                <div className={`row ${forumStyles.header}`}>
                     <div className={forumStyles.idxCell}>글 번호</div>
                     <div className={forumStyles.titleCell}>주제</div>
                     <div className={forumStyles.userCell}>글쓴이</div>
@@ -414,7 +414,7 @@ export default function Competition({ token, forumPosts }) {
                 </div>
                 {forumPosts.map((post) => (
                     <div key={post.postIdx}>
-                        <div className={forumStyles.row}>
+                        <div className={`row ${forumStyles.row}`}>
                             <div className={forumStyles.idxCell}>{post.postIdx}</div>
                             <div className={forumStyles.titleCell}>
                                 <Link href={`/component/forum/${post.postIdx}`}>
