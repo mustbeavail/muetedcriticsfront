@@ -3,21 +3,29 @@
     display: none;
 }
 
-.mailList-title {
-    color: #fff;
-}
-
 .mailList-background {
-    padding: 10px;
+    /* padding: 10px;
     background-color: #1A171F;
-    border-radius: 10px;
+    border-radius: 10px; */
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    background: transparent;
+    border-radius: 12px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .mailList-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1rem;
+    /* padding: 0.75rem 1rem; */
+    padding-bottom: 10px;
     gap: 1rem;
     flex-wrap: wrap;
     border-radius: 12px;
@@ -127,8 +135,9 @@
 }
 
 .mailList-item {
-    background-color: #010101;
+    background-color: #01010130;
     border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-left: 4px solid #9C27B0;
     color: #fff;
     display: flex;
@@ -159,6 +168,14 @@
 }
 
 .mailList-title {
+    /* font-weight: bold; */
+    /* font-size: 16px; */
+    color: #fff;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.mailList-itemTitle {
     font-weight: bold;
     font-size: 16px;
 }
@@ -177,7 +194,7 @@
 }
 
 .mailList-right {
-    font-size: 10px;
+    font-size: 12px;
     color: #7F748C;
     white-space: nowrap;
     align-self: flex-start;
@@ -191,35 +208,49 @@
     width: 200px;
 }
 
+/* 페이지네이션 */
 .mailList-pagination {
     display: flex;
     justify-content: center;
-    margin-top: 24px;
+    align-items: center;
     gap: 8px;
+    margin: 28px auto 12px;
+    flex-wrap: wrap;
 }
 
 .mailList-pagination button {
-    background-color: #2e2e3a;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #c5c6c6;
+    border: 1px solid transparent;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.18s ease;
 }
 
-.mailList-pagination button:hover {
-    background-color: #44445a;
+.mailList-pagination button:hover:not(:disabled) {
+    background: #8d35f0;
+    color: #fff;
+}
+
+.mailList-pagination button:disabled {
+    background: rgba(255, 255, 255, 0.02);
+    color: #555;
+    cursor: not-allowed;
 }
 
 .mailList-pagination button.active {
-    background-color: #9C27B0;
-    font-weight: bold;
+    background: #8d35f0;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 0 8px rgba(141, 53, 240, 0.4);
 }
 
 /* ------------------------------ 메일 발송 css ------------------------------ */
 .mailSend-container {
-    width: 100%;
+    /* width: 100%;
     height: auto;
     padding: 20px;
     box-sizing: border-box;
@@ -227,14 +258,24 @@
     background: linear-gradient(to bottom right, #1e1c28, #2e1f3a);
     color: white;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-family: 'Apple SD Gothic Neo', sans-serif; */
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    background: transparent;
+    border-radius: 12px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .mailSend-title {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 32px;
     color: #fff;
+    font-size: 28px;
+    font-weight: 600;
 }
 
 .mailSend-subtitle {
@@ -245,10 +286,19 @@
     color: #fff;
 }
 
+.mailSend-subtitle-userType {
+    /* margin-top: 20px; */
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #fff;
+}
+
 .mailSend-span {
     display: block;
     margin: 20px 0 8px;
     font-size: 15px;
+    font-weight: 600;
     color: #cccccc;
 }
 
@@ -285,8 +335,8 @@
 .mailSend-textarea {
     width: 100%;
     padding: 14px 16px;
-    background-color: #1b1b29;
-    border: 1px solid #3e3e52;
+    background-color: #1b1b2950;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     font-size: 15px;
     color: white;

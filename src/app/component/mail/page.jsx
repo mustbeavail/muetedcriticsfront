@@ -165,7 +165,7 @@ export default function MailList() {
                                 className={"mailList-item"}>
                                 <div className={"mailList-subItem"}>
                                     <div className={"mailList-left"}>
-                                        <div className={"mailList-title"}>📧 {mail.mailSub}</div>
+                                        <div className={"mailList-itemTitle"}>📧 {mail.mailSub}</div>
                                         <div className={"mailList-recipient"}>
                                             {mail.recipient.includes("@") ? "수신인: " : "수신 유저 분류: "}
                                             <span style={{ color: 'white' }}>{mail.recipient}</span>

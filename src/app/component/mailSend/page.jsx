@@ -235,7 +235,7 @@ export default function MailSend() {
             <div className="stats_container">
                 <h1 className="mailSend-title">메일 발송</h1>
                 <div className="mailSend-container">
-                    <h3 className="mailSend-subtitle">🎯 수신 대상 설정</h3>
+                    <h3 className="mailSend-subtitle-userType">🎯 수신 대상 설정</h3>
                     <span className="mailSend-span">유저 분류</span>
                     <select
                     className="mailSend-select"
