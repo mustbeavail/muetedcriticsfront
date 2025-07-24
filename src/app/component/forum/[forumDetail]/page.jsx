@@ -377,12 +377,12 @@ export default function ForumDetailPage({ params }) {
     const typeBadgeName = tierMap[type] || 'none';
 
     return (
-      <div className="badge-container">
+      <div className={forumStyles.badgeContainer}>
         <img
           style={{ width: '50px', height: '56px' }}
           src={`/badge/${typeBadgeName}.png`}
           alt="유저 타입 뱃지 이미지"
-          className="season-image"
+          className={forumStyles.seasonImage}
         />
         {tiers.map((seasonInfo) => {
           // 만약 tier_season이 없으면 none.png 이미지 출력
@@ -396,7 +396,7 @@ export default function ForumDetailPage({ params }) {
                 style={{ width: '50px', height: '56px' }}
                 src={`/badge/${imageName}`}
                 alt="시즌 뱃지 이미지"
-                className="season-image"
+                className={forumStyles.seasonImage}
               />
             </div>
           );
@@ -422,10 +422,16 @@ export default function ForumDetailPage({ params }) {
     return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
   };
 
+  const dropdownRef = useRef(null);
+
   // 메뉴 외부 클릭 시 메뉴 닫기
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      if (openMenuId !== null && !event.target.closest('.forum-dropdown')) {
+      if (
+        openMenuId !== null &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
         setOpenMenuId(null);
       }
     };
@@ -452,7 +458,7 @@ export default function ForumDetailPage({ params }) {
               {forumDetailData?.userId}
             </button>
             {openMenuId === forumDetailData?.postIdx && (
-              <div className={forumStyles.forumDropdown}>
+              <div className={forumStyles.forumDropdown} ref={dropdownRef}>
                 <button onClick={() => openUserDetailModal(forumDetailData?.userId)}>
                   유저 상세보기
                 </button>

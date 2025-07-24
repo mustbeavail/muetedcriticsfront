@@ -124,10 +124,6 @@ export default function General({ token, forumPosts }) {
         );
     };
 
-    const toggleMenu = (id) => {
-        setOpenMenuId(openMenuId === id ? null : id);
-    };
-
     // 유저 이름에 0.1초간 hover하면 뱃지 목록 나옴
     const handleMouseEnter = (post) => {
         hoverTimeoutRef.current = setTimeout(() => {
@@ -142,12 +138,94 @@ export default function General({ token, forumPosts }) {
         }, 10);
     };
 
+    // 유저 뱃지 목록 나오는 영역 밖으로 마우스 나갈 시 뱃지 목록 사라짐
     const handleMouseLeave = () => {
         if (hoverTimeoutRef.current) {
             clearTimeout(hoverTimeoutRef.current);
             hoverTimeoutRef.current = null;
         }
         setHoveredPostId(null);
+    };
+
+    // 뱃지 디스플레이
+    const BadgeDisplay = ({ userId }) => {
+        const tiers = userTiers[userId];
+        const detail = userDetail[userId];
+
+        if (!tiers || !detail) {
+            return <div style={{ padding: '10px 0', textAlign: 'center' }}>뱃지 정보 로딩 중...</div>;
+        }
+
+        // 유저 타입에 따른 뱃지 이미지 (없으면 none.png)
+        const type = detail?.user_type?.trim();
+        const typeBadgeName = tierMap[type] || 'none';
+
+        return (
+            <div className={forumStyles.badgeContainer}>
+                <img
+                    style={{ width: '50px', height: '56px' }}
+                    src={`/badge/${typeBadgeName}.png`}
+                    alt="유저 타입 뱃지 이미지"
+                    className={forumStyles.seasonImage}
+                />
+                {tiers.map((seasonInfo) => {
+                    // 만약 tier_season이 없으면 none.png 이미지 출력
+                    const imageCode = tierMap[seasonInfo.tier_season];
+                    const imageName = imageCode
+                        ? `${seasonInfo.season}${imageCode}.png`
+                        : 'none.png';
+                    return (
+                        <div key={seasonInfo.season}>
+                            <img
+                                style={{ width: '50px', height: '56px' }}
+                                src={`/badge/${imageName}`}
+                                alt="시즌 뱃지 이미지"
+                                className={forumStyles.seasonImage}
+                            />
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    };
+
+    // 날짜를 한국 형식으로 포맷팅하는 함수
+    const formatDate = (dateString) => {
+        if (!dateString) return '-'; // 날짜 문자열이 없으면 '-' 반환
+
+        const date = new Date(dateString); // 날짜 객체 생성
+        // 날짜 부분을 한국어 형식으로 변환하고 공백 제거
+        const datePart = date.toLocaleDateString('ko-KR').replace(/ /g, '');
+        // 시간 부분을 24시간 형식으로 변환
+        const timePart = date.toLocaleTimeString('ko-KR', {
+            hour: '2-digit', // 시간: 두 자리 숫자
+            minute: '2-digit', // 분: 두 자리 숫자
+            hour12: false // 24시간 형식 사용
+        });
+
+        return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
+    };
+
+    // 메뉴 외부 클릭 시 메뉴 닫기
+    const dropdownRefs = useRef({});
+
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            if (openMenuId !== null) {
+                const ref = dropdownRefs.current[openMenuId];
+                if (ref && !ref.contains(event.target)) {
+                    setOpenMenuId(null);
+                }
+            }
+        };
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, [openMenuId]);
+
+    const toggleMenu = (id) => {
+        setOpenMenuId(openMenuId === id ? null : id);
     };
 
     // 유저 상세보기 버튼을 누를 시 상세보기 모달 출력
@@ -267,7 +345,7 @@ export default function General({ token, forumPosts }) {
         setSelectedMemoUser(null);
     };
 
-    //
+    // 메모 작성하기
     const handleSubmitMemo = async () => {
         if (!memoContent.trim()) {
             alert("메모 내용을 입력하세요.");
@@ -329,78 +407,6 @@ export default function General({ token, forumPosts }) {
         setSelectedMemoUser(null);
     };
 
-    // 뱃지 디스플레이
-    const BadgeDisplay = ({ userId }) => {
-        const tiers = userTiers[userId];
-        const detail = userDetail[userId];
-
-        if (!tiers || !detail) {
-            return <div style={{ padding: '10px 0', textAlign: 'center' }}>뱃지 정보 로딩 중...</div>;
-        }
-
-        // 유저 타입에 따른 뱃지 이미지 (없으면 none.png)
-        const type = detail?.user_type?.trim();
-        const typeBadgeName = tierMap[type] || 'none';
-
-        return (
-            <div className={forumStyles.badgeContainer}>
-                <img
-                    style={{ width: '50px', height: '56px' }}
-                    src={`/badge/${typeBadgeName}.png`}
-                    alt="유저 타입 뱃지 이미지"
-                    className={forumStyles.seasonImage}
-                />
-                {tiers.map((seasonInfo) => {
-                    // 만약 tier_season이 없으면 none.png 이미지 출력
-                    const imageCode = tierMap[seasonInfo.tier_season];
-                    const imageName = imageCode
-                        ? `${seasonInfo.season}${imageCode}.png`
-                        : 'none.png';
-                    return (
-                        <div key={seasonInfo.season}>
-                            <img
-                                style={{ width: '50px', height: '56px' }}
-                                src={`/badge/${imageName}`}
-                                alt="시즌 뱃지 이미지"
-                                className={forumStyles.seasonImage}
-                            />
-                        </div>
-                    );
-                })}
-            </div>
-        );
-    };
-
-    // 날짜를 한국 형식으로 포맷팅하는 함수
-    const formatDate = (dateString) => {
-        if (!dateString) return '-'; // 날짜 문자열이 없으면 '-' 반환
-
-        const date = new Date(dateString); // 날짜 객체 생성
-        // 날짜 부분을 한국어 형식으로 변환하고 공백 제거
-        const datePart = date.toLocaleDateString('ko-KR').replace(/ /g, '');
-        // 시간 부분을 24시간 형식으로 변환
-        const timePart = date.toLocaleTimeString('ko-KR', {
-            hour: '2-digit', // 시간: 두 자리 숫자
-            minute: '2-digit', // 분: 두 자리 숫자
-            hour12: false // 24시간 형식 사용
-        });
-
-        return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
-    };
-
-    // 메뉴 외부 클릭 시 메뉴 닫기
-    useEffect(() => {
-        const handleOutsideClick = (event) => {
-            if (openMenuId !== null && !event.target.closest('.forum-dropdown')) {
-                setOpenMenuId(null);
-            }
-        };
-        document.addEventListener('mousedown', handleOutsideClick);
-        return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        };
-    }, [openMenuId]);
-
     return (
         <div>
             <div className={forumStyles.forumTable}>
@@ -430,7 +436,10 @@ export default function General({ token, forumPosts }) {
                                     {post.userId}
                                 </button>
                                 {openMenuId === post.postIdx && (
-                                    <div className={forumStyles.forumDropdown}>
+                                    <div
+                                        className={forumStyles.forumDropdown}
+                                        ref={el => { dropdownRefs.current[post.postIdx] = el; }}
+                                    >
                                         <button onClick={() => openUserDetailModal(post.userId)}>
                                             유저 상세보기
                                         </button>
