@@ -160,6 +160,7 @@ body {
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
+  overflow-x: auto;
   height: calc(100vh - 56px);
   border-radius: 8px;
   background-color: transparent;
