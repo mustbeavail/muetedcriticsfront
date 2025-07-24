@@ -1,8 +1,8 @@
-.forum-container {
+.forumContainer {
     position: fixed;
     top: 80px;
     left: 80px;
-    width: 97%;
+    width: calc(100vw - 80px);
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
@@ -14,12 +14,12 @@
     margin-bottom: 20px;
 }
 
-.forum-mainTitle {
+.forumMainTitle {
     font-size: 28px;
     font-weight: 600;
 }
 
-.forum-chartWrapper {
+.forumChartWrapper {
     /* margin-top: 20px;
     width: 100%;
     background: #0a06105b;
@@ -40,7 +40,7 @@
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.forum-filterBox-wrapper {
+.forumFilterBoxWrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -49,21 +49,21 @@
     margin-bottom: 36px;
 }
 
-.forum-filter-left,
-.forum-filter-right {
+.forumFilterLeft,
+.forumFilterRight {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.forum-search {
+.forumSearch {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     border-radius: 8px;
 }
 
-.forum-search input {
+.forumSearch input {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
     border-radius: 8px;
@@ -74,11 +74,11 @@
     outline: none;
 }
 
-.forum-search input::placeholder {
+.forumSearch input::placeholder {
     color: #c2b8ce;
 }
 
-.forum-input-wrapper {
+.forumInputWrapper {
     display: flex;
     align-items: center;
     border-radius: 4px;
@@ -88,7 +88,7 @@
     overflow: hidden;
 }
 
-.forum-input-wrapper input {
+.forumInputWrapper input {
     flex: 1;
     border: none;
     padding: 8px 12px;
@@ -96,7 +96,7 @@
     outline: none;
 }
 
-.forum-search-btn {
+.forumSearchBtn {
     border: none;
     background: transparent;
     cursor: pointer;
@@ -107,7 +107,7 @@
     color: #fff;
 }
 
-.forum-select-category {
+.forumSelectCategory {
     width: 200px;
     padding: 0.5rem 0.9rem;
     font-size: 0.875rem;
@@ -123,7 +123,7 @@
     background-size: 0.65rem; */
 }
 
-.forum-select {
+.forumSelect {
     width: 200px;
     padding: 0.5rem 0.9rem;
     font-size: 0.875rem;
@@ -141,8 +141,7 @@
 }
 
 /* 포럼 탭 컴포넌트 */
-
-.forum-menu {
+.forumMenu {
     display: flex;
     gap: 32px;
     /* background-color: #000; */
@@ -153,7 +152,7 @@
     margin-bottom: 20px;
 }
 
-.forum-tab {
+.forumTab {
     width: 150px;
     position: relative;
     padding-bottom: 8px;
@@ -163,12 +162,12 @@
     text-align: center;
 }
 
-.forum-tab.active {
+.forumTab.active {
     color: #a050e6;
     /* 보라색 */
 }
 
-.forum-tab.active::after {
+.forumTab.active::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -180,7 +179,7 @@
 }
 
 /* 포럼 테이블 */
-.forum-table {
+.forumTable {
     width: 100%;
     border-collapse: collapse;
     font-family: 'Pretendard', sans-serif;
@@ -188,17 +187,17 @@
     color: white;
 }
 
-.forum-table .row {
+.forumTable .row {
     display: flex;
     border-bottom: 1px solid #7f748c80;
 }
 
-.forum-table .row.header {
+.forumTable .row.header {
     background-color: #272031;
     font-weight: bold;
 }
 
-.forum-table .idx-cell {
+.forumTable .idxCell {
     flex: 0.5;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -206,7 +205,7 @@
     text-overflow: ellipsis;
 }
 
-.forum-table .title-cell {
+.forumTable .titleCell {
     flex: 2;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -214,7 +213,7 @@
     text-overflow: ellipsis;
 }
 
-.forum-table .user-cell {
+.forumTable .userCell {
     flex: 1.5;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -223,7 +222,7 @@
     display: block;
 }
 
-.forum-table .date-cell {
+.forumTable .dateCell {
     flex: 1;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -231,7 +230,7 @@
     text-overflow: ellipsis;
 }
 
-.forum-table .hit-cell {
+.forumTable .hitCell {
     flex: 0.5;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -239,7 +238,7 @@
     text-overflow: ellipsis;
 }
 
-.forum-table .likes-cell {
+.forumTable .likesCell {
     flex: 0.5;
     padding: 16px 16px 10px 16px;
     white-space: nowrap;
@@ -247,21 +246,21 @@
     text-overflow: ellipsis;
 }
 
-.forum-table .title-cell a:hover,
-.forum-table .user-cell button:hover {
+.forumTable .titleCell a:hover,
+.forumTable .userCell button:hover {
     text-decoration: underline;
 }
 
-.forum-detail-user {
+.forumDetailUser {
     position: relative;
     display: block;
 }
 
-.forum-detail-user button:hover {
+.forumDetailUser button:hover {
     text-decoration: underline;
 }
 
-.forum-dropdown {
+.forumDropdown {
     position: absolute;
     top: 100%;
     left: 0;
@@ -278,7 +277,7 @@
     z-index: 999;
 }
 
-.forum-dropdown button {
+.forumDropdown button {
     background: none;
     border: none;
     color: #eee;
@@ -289,24 +288,24 @@
     border-radius: 6px;
 }
 
-.forum-dropdown button:hover {
+.forumDropdown button:hover {
     background-color: #3d3453;
 }
 
 /* 뱃지 목록 */
-.badge-container {
+.badgeContainer {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
 }
 
-.season-image {
+.seasonImage {
     width: 50px;
     height: 56px;
 }
 
-.forum-badge {
+.forumBadge {
     position: absolute;
     bottom: 100%;
     left: 0;
@@ -323,7 +322,7 @@
     z-index: 999;
 }
 
-.forum-badge button {
+.forumBadge button {
     background: none;
     border: none;
     color: #eee;
@@ -334,14 +333,14 @@
     border-radius: 6px;
 }
 
-.season-box {
+.seasonBox {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
 /* 페이지네이션 */
-.forum-pagination {
+.forumPagination {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -350,7 +349,7 @@
     flex-wrap: wrap;
 }
 
-.forum-pagination button {
+.forumPagination button {
     background: rgba(255, 255, 255, 0.05);
     color: #c5c6c6;
     border: 1px solid transparent;
@@ -362,30 +361,30 @@
     transition: all 0.18s ease;
 }
 
-.forum-pagination button:hover:not(:disabled) {
+.forumPagination button:hover:not(:disabled) {
     background: #8d35f0;
     color: #fff;
 }
 
-.forum-pagination button:disabled {
+.forumPagination button:disabled {
     background: rgba(255, 255, 255, 0.02);
     color: #555;
     cursor: not-allowed;
 }
 
-.forum-pagination button.active {
+.forumPagination button.active {
     background: #a678e2;
     color: #fff;
 }
 
 /* 포럼 상세보기 */
-.forum-chart-wrapper>span:nth-child(1) {
+.forumChartWrapper>span:nth-child(1) {
     color: #aaa;
     font-size: 16px;
     font-weight: 500;
 }
 
-.forum-chart-wrapper>span:nth-child(2) {
+.forumChartWrapper>span:nth-child(2) {
     display: block;
     font-size: 28px;
     font-weight: 700;
@@ -393,26 +392,26 @@
     margin-bottom: 8px;
 }
 
-.forum-chart-wrapper>span:nth-child(3) {
+.forumChartWrapper>span:nth-child(3) {
     font-weight: 500;
     color: #bbb;
 }
 
-.forum-detail-info {
+.forumDetailInfo {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
 }
 
-.forum-detail-info>span {
+.forumDetailInfo>span {
     display: block;
     font-size: 14px;
     color: #888;
     margin-top: 4px;
 }
 
-.forum-detail-content {
+.forumDetailContent {
     background: rgba(255, 255, 255, 0.05);
     padding: 16px;
     border-left: 4px solid #b276f4;
@@ -424,55 +423,55 @@
     white-space: pre-wrap;
 }
 
-.forum-comment-wrapper {
+.forumCommentWrapper {
     border-top: 1px solid #444;
     padding-top: 24px;
     margin-top: 24px;
 }
 
-.forum-comment-wrapper>span,
-.forum-comment-wrapper>h3 {
+.forumCommentWrapper>span,
+.forumCommentWrapper>h3 {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 16px;
     display: block;
 }
 
-.forum-comment-list {
+.forumCommentList {
     display: flex;
     flex-direction: column;
     gap: 12px;
     padding-bottom: 20px;
 }
 
-.forum-comment-item {
+.forumCommentItem {
     background-color: #000;
     padding: 16px;
     border-radius: 12px;
     border: 1px solid #333;
 }
 
-.forum-comment-item span:nth-child(1) {
+.forumCommentItem span:nth-child(1) {
     display: block;
     font-weight: 600;
     color: #9f74f8;
     margin-bottom: 4px;
 }
 
-.forum-comment-item span:nth-child(2) {
+.forumCommentItem span:nth-child(2) {
     font-size: 13px;
     color: #777;
     margin-bottom: 8px;
     display: block;
 }
 
-.forum-comment-item span:nth-child(3) {
+.forumCommentItem span:nth-child(3) {
     font-size: 15px;
     line-height: 1.6;
     white-space: pre-wrap;
 }
 
-.forum-comment-list button {
+.forumCommentList button {
     align-self: flex-end;
     background-color: #9f74f8;
     border: none;
@@ -484,12 +483,12 @@
     transition: background-color 0.2s;
 }
 
-.forum-comment-list button:hover {
+.forumCommentList button:hover {
     background-color: #a05dee;
 }
 
 /* 모달 백드롭 */
-.forum-modalBackdrop {
+.forumModalBackdrop {
     position: fixed;
     top: 0;
     left: 0;
@@ -503,7 +502,7 @@
     z-index: 9999;
 }
 
-.forum-modal {
+.forumModal {
     background: linear-gradient(145deg, rgba(33, 33, 33, 0.98), rgba(28, 28, 36, 0.96));
     border: 1px solid rgba(141, 53, 240, 0.15);
     border-radius: 16px;
@@ -522,37 +521,37 @@
 
 
 /* 헤더 */
-.forum-modalHeader {
+.forumModalHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.forum-leftHeader {
+.forumLeftHeader {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.forum-divider {
+.forumDivider {
     border: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     margin: 10px 0 20px 0;
 }
 
 /* 모달 본문 */
-.forum-modalContent {
+.forumModalContent {
     display: flex;
     gap: 28px;
     color: #caadeb;
     /* 보조 텍스트 */
 }
 
-.forum-modalContent section {
+.forumModalContent section {
     flex: 1;
 }
 
-.forum-modalContent h4 {
+.forumModalContent h4 {
     font-size: 1.15rem;
     font-weight: 600;
     color: #8d35f0;
@@ -560,7 +559,7 @@
     margin-bottom: 10px;
 }
 
-.forum-modalContent ul {
+.forumModalContent ul {
     list-style: none;
     padding-left: 0;
     font-size: 1rem;
@@ -569,26 +568,26 @@
     /* 서브 텍스트 */
 }
 
-.forum-modalContent ul li {
+.forumModalContent ul li {
     margin-bottom: 10px;
 }
 
-.forum-modalContent ul li strong {
+.forumModalContent ul li strong {
     color: #757279;
     font-weight: 600;
 }
 
 /* 버튼 영역 */
-.forum-modalFooter {
+.forumModalFooter {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
 }
 
-.forum-closeBtn,
-.forum-saveBtn,
-.forum-editBtn,
-.forum-deleteBtn {
+.forumCloseBtn,
+.forumSaveBtn,
+.forumEditBtn,
+.forumDeleteBtn {
     padding: 10px 20px;
     border-radius: 12px;
     font-weight: 600;
@@ -599,54 +598,54 @@
     backdrop-filter: blur(4px);
 }
 
-.forum-deleteBtn {
+.forumDeleteBtn {
     background: #ff4d4d;
     color: #fff;
     box-shadow: 0 4px 12px rgba(255, 77, 77, 0.3);
 }
 
-.forum-deleteBtn:hover {
+.forumDeleteBtn:hover {
     background: rgba(182, 0, 0, 0.8);
 }
 
 /* 닫기 버튼 */
-.forum-closeBtn {
+.forumCloseBtn {
     background: rgba(255, 255, 255, 0.05);
     color: #c5c6c6;
     margin-left: 10px;
 }
 
-.forum-closeBtn:hover {
+.forumCloseBtn:hover {
     background: rgba(255, 255, 255, 0.1);
     color: #fff;
 }
 
 /* 수정 버튼 */
-.forum-editBtn {
+.forumEditBtn {
     background: #8d35f0;
     color: #fff;
     margin-left: 10px;
 }
 
-.forum-editBtn:hover {
+.forumEditBtn:hover {
     background: #7322d0;
 }
 
 /* 저장 버튼 */
-.forum-saveBtn {
+.forumSaveBtn {
     background: #8d35f0;
     color: white;
     font-weight: 700;
     margin-left: 10px;
 }
 
-.forum-saveBtn:hover {
+.forumSaveBtn:hover {
     background: #7322d0;
 }
 
 
 /* 메모 textarea */
-.forum-memoTextarea {
+.forumMemoTextarea {
     width: 100%;
     height: 150px;
     background: rgba(44, 44, 44, 0.95);
@@ -661,19 +660,19 @@
     transition: border 0.2s ease;
 }
 
-.forum-memoTextarea:focus {
+.forumMemoTextarea:focus {
     border: 1px solid #8d35f0;
     box-shadow: 0 0 6px rgba(141, 53, 240, 0.3);
 }
 
-.forum-memoTextarea[readonly] {
+.forumMemoTextarea[readonly] {
     background: rgba(33, 33, 33, 0.9);
     color: #c5c6c6;
     cursor: default;
 }
 
 /* 메모 작성일 표시 */
-.forum-memoInfo {
+.forumMemoInfo {
     display: flex;
     justify-content: space-between;
     font-size: 0.95rem;
@@ -682,7 +681,7 @@
 }
 
 /* 기타 모달 (다른 메모 보기) */
-.forum-otherMemoModal {
+.forumOtherMemoModal {
     width: 420px;
     background: linear-gradient(145deg, rgba(33, 33, 33, 0.98), rgba(28, 28, 36, 0.95));
     border-radius: 18px;
@@ -692,20 +691,20 @@
     border: 1px solid rgba(141, 53, 240, 0.15);
 }
 
-.forum-modalTitle {
+.forumModalTitle {
     font-size: 1.15rem;
     font-weight: 700;
     margin-bottom: 12px;
     color: #fff;
 }
 
-.forum-otherMemoUser {
+.forumOtherMemoUser {
     font-size: 0.95rem;
     margin-bottom: 14px;
     color: #8d35f0;
 }
 
-.forum-modalBackdrop {
+.forumModalBackdrop {
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.6);
@@ -716,7 +715,7 @@
     z-index: 9999;
 }
 
-.forum-modal {
+.forumModal {
     background-color: #26242e;
     border-radius: 18px;
     padding: 24px;
@@ -726,25 +725,25 @@
     color: #fff;
 }
 
-.forum-modalHeader {
+.forumModalHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.forum-userName {
+.forumUserName {
     font-size: 20px;
     font-weight: bold;
     color: #fff;
 }
 
-.forum-divider {
+.forumDivider {
     border: none;
     border-bottom: 1px solid #444;
     margin: 16px 0;
 }
 
-.forum-memoInfo {
+.forumMemoInfo {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
@@ -752,7 +751,7 @@
     margin-bottom: 14px;
 }
 
-.forum-memoTextarea {
+.forumMemoTextarea {
     width: 100%;
     height: 140px;
     border-radius: 10px;

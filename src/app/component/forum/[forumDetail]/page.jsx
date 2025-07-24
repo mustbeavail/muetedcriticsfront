@@ -4,6 +4,7 @@ import Menu from '@/menu/Menu';
 import { useRouter } from 'next/navigation';
 import { use, useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+import forumStyles from '../forum.module.css';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -438,11 +439,11 @@ export default function ForumDetailPage({ params }) {
     <>
       <Header />
       <Menu />
-      <div className="forum-container">
-        <div className="forum-chart-wrapper">
+      <div className={forumStyles.forumContainer}>
+        <div className={forumStyles.forumChartWrapper}>
           <span>{forumDetailData?.topic} 토론장</span>
           <span>{forumDetailData?.title}</span>
-          <div className="forum-detail-user">
+          <div className={forumStyles.forumDetailUser}>
             <button
               style={{ color: 'white' }}
               onClick={() => toggleMenu(forumDetailData?.postIdx)}
@@ -451,7 +452,7 @@ export default function ForumDetailPage({ params }) {
               {forumDetailData?.userId}
             </button>
             {openMenuId === forumDetailData?.postIdx && (
-              <div className="forum-dropdown">
+              <div className={forumStyles.forumDropdown}>
                 <button onClick={() => openUserDetailModal(forumDetailData?.userId)}>
                   유저 상세보기
                 </button>
@@ -468,21 +469,21 @@ export default function ForumDetailPage({ params }) {
               </div>
             )}
           </div>
-          <div className="forum-detail-info">
+          <div className={forumStyles.forumDetailInfo}>
             <span>작성 날짜 {formatDate(forumDetailData?.createdAt)}</span>
             <span>조회수 {forumDetailData?.hit} | 좋아요 {forumDetailData?.likes}</span>
           </div>
 
-          <div className="forum-detail-content">
+          <div className={forumStyles.forumDetailContent}>
             <span>{forumDetailData?.content}</span>
           </div>
         </div>
 
-        <div className="forum-comment-wrapper">
+        <div className={forumStyles.forumCommentWrapper}>
           <span>댓글</span>
-          <div className="forum-comment-list">
+          <div className={forumStyles.forumCommentList}>
             {forumCommentData?.content.map((comment) => (
-              <div className="forum-comment-item" key={comment.comIdx}>
+              <div className={forumStyles.forumCommentItem} key={comment.comIdx}>
                 <span>{comment.userId}</span>
                 <span>{formatDate(comment.createdAt)}</span>
                 <span>{comment.comContent}</span>
@@ -493,17 +494,17 @@ export default function ForumDetailPage({ params }) {
         </div>
         {/* 유저 상세보기 모달 */}
         {selectedDetailUser && (
-          <div className="forum-modalBackdrop">
-            <div className="forum-modal">
-              <div className="forum-modalHeader">
-                <div className="forum-userName">{selectedDetailUser?.user_nick}</div>
+          <div className={forumStyles.forumModalBackdrop}>
+            <div className={forumStyles.forumModal}>
+              <div className={forumStyles.forumModalHeader}>
+                <div className={forumStyles.forumUserName}>{selectedDetailUser?.user_nick}</div>
               </div>
 
               {/* 뱃지 디스플레이 컴포넌트 */}
               <BadgeDisplay userId={selectedDetailUser?.user_id} />
 
-              <hr className="forum-divider" />
-              <div className="forum-modalContent">
+              <hr className={forumStyles.forumDivider} />
+              <div className={forumStyles.forumModalContent}>
                 <ul>
                   <li><strong>아이디</strong> {selectedDetailUser?.user_id}</li>
                   <li><strong>성별</strong> {selectedDetailUser?.user_gender}</li>
@@ -515,9 +516,9 @@ export default function ForumDetailPage({ params }) {
                   <li><strong>분류</strong> {selectedDetailUser?.user_type}{selectedDetailUser?.vip_yn ? ' (VIP)' : ''}</li>
                 </ul>
               </div>
-              <hr className="forum-divider" />
-              <div className="forum-modalFooter">
-                <button className="forum-closeBtn" onClick={closeModal}>닫기</button>
+              <hr className={forumStyles.forumDivider} />
+              <div className={forumStyles.forumModalFooter}>
+                <button className={forumStyles.forumCloseBtn} onClick={closeModal}>닫기</button>
               </div>
             </div>
           </div>
@@ -525,19 +526,19 @@ export default function ForumDetailPage({ params }) {
 
         {/* 메모 모달 */}
         {showMemoModal && (
-          <div className="forum-modalBackdrop">
-            <div className="forum-modal forum-otherMemoModal">
-              <div className="forum-modalHeader">
-                <div className="forum-userName">
+          <div className={forumStyles.forumModalBackdrop}>
+            <div className={forumStyles.forumModal + ' ' + forumStyles.forumOtherMemoModal}>
+              <div className={forumStyles.forumModalHeader}>
+                <div className={forumStyles.forumUserName}>
                   <b>{selectedMemoUser?.user_nick}</b> 님에 대한 메모
                 </div>
-                <div className="forum-modalHeaderBtns">
-                  <button className="forum-deleteBtn" onClick={deleteMemo}>삭제</button>
-                  <button className="forum-editBtn" onClick={handleEditMemoClick}>수정</button>
-                  <button className="forum-closeBtn" onClick={closeMemoModal}>닫기</button>
+                <div className={forumStyles.forumModalHeaderBtns}>
+                  <button className={forumStyles.forumDeleteBtn} onClick={deleteMemo}>삭제</button>
+                  <button className={forumStyles.forumEditBtn} onClick={handleEditMemoClick}>수정</button>
+                  <button className={forumStyles.forumCloseBtn} onClick={closeMemoModal}>닫기</button>
                 </div>
               </div>
-              <hr className="forum-divider" />
+              <hr className={forumStyles.forumDivider} />
               {memoLoading ? (
                 <div>메모 불러오는 중...</div>
               ) : (
@@ -545,13 +546,13 @@ export default function ForumDetailPage({ params }) {
                   {memoList.length === 0 ? (
                     <div>등록된 메모가 없습니다.</div>
                   ) : (
-                    <div className="forum-otherMemoList">
+                    <div className={forumStyles.forumOtherMemoList}>
                       {memoList.map((memo) => (
                         <div key={memo.memoIdx}
-                          className={`forum-otherMemoItem ${selectedMemo?.memoIdx === memo.memoIdx ? 'selected' : ''}`}
+                          className={`${forumStyles.forumOtherMemoItem} ${selectedMemo?.memoIdx === memo.memoIdx ? 'selected' : ''}`}
                           style={{ marginBottom: 20 }}
                           onClick={() => setSelectedMemo(memo)}>
-                          <div className="forum-memoInfo">
+                          <div className={forumStyles.forumMemoInfo}>
                             <span><b>{memo.memberId}</b> 님</span>
                             <span>
                               작성일 : {formatDate(memo.createdAt)}
@@ -560,7 +561,7 @@ export default function ForumDetailPage({ params }) {
                             </span>
                           </div>
                           <textarea
-                            className="forum-memoTextarea"
+                            className={forumStyles.forumMemoTextarea}
                             value={memo.memoContent}
                             readOnly
                           />
@@ -576,17 +577,17 @@ export default function ForumDetailPage({ params }) {
 
         {/* 메모 작성 모달 */}
         {showWriteMemoModal && (
-          <div className="forum-modalBackdrop">
-            <div className="forum-modal forum-writeMemoModal">
-              <div className="forum-modalHeader">
-                <div className="forum-userName">
+          <div className={forumStyles.forumModalBackdrop}>
+            <div className={forumStyles.forumModal + ' ' + forumStyles.forumWriteMemoModal}>
+              <div className={forumStyles.forumModalHeader}>
+                <div className={forumStyles.forumUserName}>
                   <b>{selectedMemoUser?.user_nick}</b> 님에 대한 메모 작성
                 </div>
               </div>
-              <hr className="forum-divider" />
-              <div className="forum-modalContent">
+              <hr className={forumStyles.forumDivider} />
+              <div className={forumStyles.forumModalContent}>
                 <textarea
-                  className="forum-memoTextarea"
+                  className={forumStyles.forumMemoTextarea}
                   placeholder="메모 내용을 입력하세요."
                   value={memoContent}
                   onChange={(e) => setMemoContent(e.target.value)}
@@ -594,9 +595,9 @@ export default function ForumDetailPage({ params }) {
                   maxLength={500}
                 />
               </div>
-              <div className="forum-modalFooter">
-                <button className="forum-closeBtn" onClick={closeWriteMemoModal}>취소</button>
-                <button className="forum-saveBtn" onClick={handleSubmitMemo}>저장</button>
+              <div className={forumStyles.forumModalFooter}>
+                <button className={forumStyles.forumCloseBtn} onClick={closeWriteMemoModal}>취소</button>
+                <button className={forumStyles.forumSaveBtn} onClick={handleSubmitMemo}>저장</button>
               </div>
             </div>
           </div>
@@ -604,26 +605,26 @@ export default function ForumDetailPage({ params }) {
 
         {/* 메모 수정 모달 */}
         {showEditMemoModal && (
-          <div className="forum-modalBackdrop">
-            <div className="forum-modal forum-editMemoModal">
-              <div className="forum-modalHeader">
-                <div className="forum-userName">
+          <div className={forumStyles.forumModalBackdrop}>
+            <div className={forumStyles.forumModal + ' ' + forumStyles.forumEditMemoModal}>
+              <div className={forumStyles.forumModalHeader}>
+                <div className={forumStyles.forumUserName}>
                   <b>{selectedMemoUser?.user_nick}</b> 님의 메모 수정
                 </div>
               </div>
-              <hr className="forum-divider" />
-              <div className="forum-modalContent">
+              <hr className={forumStyles.forumDivider} />
+              <div className={forumStyles.forumModalContent}>
                 <textarea
-                  className="forum-memoTextarea"
+                  className={forumStyles.forumMemoTextarea}
                   value={editMemoContent}
                   onChange={e => setEditMemoContent(e.target.value)}
                   rows={6}
                   maxLength={500}
                 />
               </div>
-              <div className="forum-modalFooter">
-                <button className="forum-closeBtn" onClick={closeEditMemoModal}>취소</button>
-                <button className="forum-saveBtn" onClick={handleUpdateMemo}>수정하기</button>
+              <div className={forumStyles.forumModalFooter}>
+                <button className={forumStyles.forumCloseBtn} onClick={closeEditMemoModal}>취소</button>
+                <button className={forumStyles.forumSaveBtn} onClick={handleUpdateMemo}>수정하기</button>
               </div>
             </div>
           </div>

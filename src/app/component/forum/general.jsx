@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import forumStyles from './forum.module.css';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -95,12 +96,12 @@ export default function General({ token, forumPosts }) {
         const badgeName = tierMap[type];
 
         return (
-            <div className="season-box">
+            <div className={forumStyles.seasonBox}>
                 <img
                     style={{ width: '50px', height: '56px' }}
                     src={`/badge/${badgeName}.png`}
                     alt="유저 타입 뱃지 이미지"
-                    className="season-image"
+                    className={forumStyles.seasonImage}
                 />
                 {tiers.map((seasonInfo) => {
                     // 만약 tier_season이 없으면 none.png 이미지 출력
@@ -114,7 +115,7 @@ export default function General({ token, forumPosts }) {
                                 style={{ width: '50px', height: '56px' }}
                                 src={`/badge/${imageName}`}
                                 alt="시즌 뱃지 이미지"
-                                className="season-image"
+                                className={forumStyles.seasonImage}
                             />
                         </div>
                     );
@@ -342,12 +343,12 @@ export default function General({ token, forumPosts }) {
         const typeBadgeName = tierMap[type] || 'none';
 
         return (
-            <div className="badge-container">
+            <div className={forumStyles.badgeContainer}>
                 <img
                     style={{ width: '50px', height: '56px' }}
                     src={`/badge/${typeBadgeName}.png`}
                     alt="유저 타입 뱃지 이미지"
-                    className="season-image"
+                    className={forumStyles.seasonImage}
                 />
                 {tiers.map((seasonInfo) => {
                     // 만약 tier_season이 없으면 none.png 이미지 출력
@@ -361,7 +362,7 @@ export default function General({ token, forumPosts }) {
                                 style={{ width: '50px', height: '56px' }}
                                 src={`/badge/${imageName}`}
                                 alt="시즌 뱃지 이미지"
-                                className="season-image"
+                                className={forumStyles.seasonImage}
                             />
                         </div>
                     );
@@ -402,25 +403,25 @@ export default function General({ token, forumPosts }) {
 
     return (
         <div>
-            <div className="forum-table">
-                <div className="row header">
-                    <div className="idx-cell">글 번호</div>
-                    <div className="title-cell">주제</div>
-                    <div className="user-cell">글쓴이</div>
-                    <div className="date-cell">작성 날짜</div>
-                    <div className="hit-cell">조회수</div>
-                    <div className="likes-cell">좋아요</div>
+            <div className={forumStyles.forumTable}>
+                <div className={`${forumStyles.row} ${forumStyles.header}`}>
+                    <div className={forumStyles.idxCell}>글 번호</div>
+                    <div className={forumStyles.titleCell}>주제</div>
+                    <div className={forumStyles.userCell}>글쓴이</div>
+                    <div className={forumStyles.dateCell}>작성 날짜</div>
+                    <div className={forumStyles.hitCell}>조회수</div>
+                    <div className={forumStyles.likesCell}>좋아요</div>
                 </div>
                 {forumPosts.map((post) => (
                     <div key={post.postIdx}>
-                        <div className="row">
-                            <div className="idx-cell">{post.postIdx}</div>
-                            <div className="title-cell">
+                        <div className={forumStyles.row}>
+                            <div className={forumStyles.idxCell}>{post.postIdx}</div>
+                            <div className={forumStyles.titleCell}>
                                 <Link href={`/component/forum/${post.postIdx}`}>
                                     {post.title}
                                 </Link>
                             </div>
-                            <div className="user-cell">
+                            <div className={forumStyles.userCell}>
                                 <button
                                     style={{ color: 'white' }}
                                     onClick={() => toggleMenu(post.postIdx)}
@@ -429,7 +430,7 @@ export default function General({ token, forumPosts }) {
                                     {post.userId}
                                 </button>
                                 {openMenuId === post.postIdx && (
-                                    <div className="forum-dropdown">
+                                    <div className={forumStyles.forumDropdown}>
                                         <button onClick={() => openUserDetailModal(post.userId)}>
                                             유저 상세보기
                                         </button>
@@ -446,31 +447,31 @@ export default function General({ token, forumPosts }) {
                                     </div>
                                 )}
                                 {hoveredPostId === post.postIdx && (
-                                    <div className="forum-badge">
+                                    <div className={forumStyles.forumBadge}>
                                         {tierImage(post.userId)}
                                     </div>
                                 )}
                             </div>
-                            <div className="date-cell">{formatDate(post.createdAt)}</div>
-                            <div className="hit-cell">{post.hit}</div>
-                            <div className="likes-cell">{post.likes}</div>
+                            <div className={forumStyles.dateCell}>{formatDate(post.createdAt)}</div>
+                            <div className={forumStyles.hitCell}>{post.hit}</div>
+                            <div className={forumStyles.likesCell}>{post.likes}</div>
                         </div>
                     </div>
                 ))}
             </div>
             {/* 유저 상세보기 모달 */}
             {selectedDetailUser && (
-                <div className="forum-modalBackdrop">
-                    <div className="forum-modal">
-                        <div className="forum-modalHeader">
-                            <div className="forum-userName">{selectedDetailUser?.user_nick}</div>
+                <div className={forumStyles.forumModalBackdrop}>
+                    <div className={forumStyles.forumModal}>
+                        <div className={forumStyles.forumModalHeader}>
+                            <div className={forumStyles.forumUserName}>{selectedDetailUser?.user_nick}</div>
                         </div>
 
                         {/* 뱃지 디스플레이 컴포넌트 */}
                         <BadgeDisplay userId={selectedDetailUser?.user_id} />
 
-                        <hr className="forum-divider" />
-                        <div className="forum-modalContent">
+                        <hr className={forumStyles.forumDivider} />
+                        <div className={forumStyles.forumModalContent}>
                             <ul>
                                 <li><strong>아이디</strong> {selectedDetailUser?.user_id}</li>
                                 <li><strong>성별</strong> {selectedDetailUser?.user_gender}</li>
@@ -482,9 +483,9 @@ export default function General({ token, forumPosts }) {
                                 <li><strong>분류</strong> {selectedDetailUser?.user_type}{selectedDetailUser?.vip_yn ? ' (VIP)' : ''}</li>
                             </ul>
                         </div>
-                        <hr className="forum-divider" />
-                        <div className="forum-modalFooter">
-                            <button className="forum-closeBtn" onClick={closeModal}>닫기</button>
+                        <hr className={forumStyles.forumDivider} />
+                        <div className={forumStyles.forumModalFooter}>
+                            <button className={forumStyles.forumCloseBtn} onClick={closeModal}>닫기</button>
                         </div>
                     </div>
                 </div>
@@ -492,19 +493,19 @@ export default function General({ token, forumPosts }) {
 
             {/* 메모 모달 */}
             {showMemoModal && (
-                <div className="forum-modalBackdrop">
-                    <div className="forum-modal forum-otherMemoModal">
-                        <div className="forum-modalHeader">
-                            <div className="forum-userName">
+                <div className={forumStyles.forumModalBackdrop}>
+                    <div className={forumStyles.forumModal + ' ' + forumStyles.forumOtherMemoModal}>
+                        <div className={forumStyles.forumModalHeader}>
+                            <div className={forumStyles.forumUserName}>
                                 <b>{selectedMemoUser?.user_nick}</b> 님에 대한 메모
                             </div>
-                            <div className="forum-modalHeaderBtns">
-                                <button className="forum-deleteBtn" onClick={deleteMemo}>삭제</button>
-                                <button className="forum-editBtn" onClick={handleEditMemoClick}>수정</button>
-                                <button className="forum-closeBtn" onClick={closeMemoModal}>닫기</button>
+                            <div className={forumStyles.forumModalHeaderBtns}>
+                                <button className={forumStyles.forumDeleteBtn} onClick={deleteMemo}>삭제</button>
+                                <button className={forumStyles.forumEditBtn} onClick={handleEditMemoClick}>수정</button>
+                                <button className={forumStyles.forumCloseBtn} onClick={closeMemoModal}>닫기</button>
                             </div>
                         </div>
-                        <hr className="forum-divider" />
+                        <hr className={forumStyles.forumDivider} />
                         {memoLoading ? (
                             <div>메모 불러오는 중...</div>
                         ) : (
@@ -512,13 +513,13 @@ export default function General({ token, forumPosts }) {
                                 {memoList.length === 0 ? (
                                     <div>등록된 메모가 없습니다.</div>
                                 ) : (
-                                    <div className="forum-otherMemoList">
+                                    <div className={forumStyles.forumOtherMemoList}>
                                         {memoList.map((memo) => (
                                             <div key={memo.memoIdx}
-                                                className={`forum-otherMemoItem ${selectedMemo?.memoIdx === memo.memoIdx ? 'selected' : ''}`}
+                                                className={`${forumStyles.forumOtherMemoItem} ${selectedMemo?.memoIdx === memo.memoIdx ? 'selected' : ''}`}
                                                 style={{ marginBottom: 20 }}
                                                 onClick={() => setSelectedMemo(memo)}>
-                                                <div className="forum-memoInfo">
+                                                <div className={forumStyles.forumMemoInfo}>
                                                     <span><b>{memo.memberId}</b> 님</span>
                                                     <span>
                                                         작성일 : {formatDate(memo.createdAt)}
@@ -527,7 +528,7 @@ export default function General({ token, forumPosts }) {
                                                     </span>
                                                 </div>
                                                 <textarea
-                                                    className="forum-memoTextarea"
+                                                    className={forumStyles.forumMemoTextarea}
                                                     value={memo.memoContent}
                                                     readOnly
                                                 />
@@ -543,17 +544,17 @@ export default function General({ token, forumPosts }) {
 
             {/* 메모 작성 모달 */}
             {showWriteMemoModal && (
-                <div className="forum-modalBackdrop">
-                    <div className="forum-modal forum-writeMemoModal">
-                        <div className="forum-modalHeader">
-                            <div className="forum-userName">
+                <div className={forumStyles.forumModalBackdrop}>
+                    <div className={forumStyles.forumModal + ' ' + forumStyles.forumWriteMemoModal}>
+                        <div className={forumStyles.forumModalHeader}>
+                            <div className={forumStyles.forumUserName}>
                                 <b>{selectedMemoUser?.user_nick}</b> 님에 대한 메모 작성
                             </div>
                         </div>
-                        <hr className="forum-divider" />
-                        <div className="forum-modalContent">
+                        <hr className={forumStyles.forumDivider} />
+                        <div className={forumStyles.forumModalContent}>
                             <textarea
-                                className="forum-memoTextarea"
+                                className={forumStyles.forumMemoTextarea}
                                 placeholder="메모 내용을 입력하세요."
                                 value={memoContent}
                                 onChange={(e) => setMemoContent(e.target.value)}
@@ -561,9 +562,9 @@ export default function General({ token, forumPosts }) {
                                 maxLength={500}
                             />
                         </div>
-                        <div className="forum-modalFooter">
-                            <button className="forum-closeBtn" onClick={closeWriteMemoModal}>취소</button>
-                            <button className="forum-saveBtn" onClick={handleSubmitMemo}>저장</button>
+                        <div className={forumStyles.forumModalFooter}>
+                            <button className={forumStyles.forumCloseBtn} onClick={closeWriteMemoModal}>취소</button>
+                            <button className={forumStyles.forumSaveBtn} onClick={handleSubmitMemo}>저장</button>
                         </div>
                     </div>
                 </div>
@@ -571,26 +572,26 @@ export default function General({ token, forumPosts }) {
 
             {/* 메모 수정 모달 */}
             {showEditMemoModal && (
-                <div className="forum-modalBackdrop">
-                    <div className="forum-modal forum-editMemoModal">
-                        <div className="forum-modalHeader">
-                            <div className="forum-userName">
+                <div className={forumStyles.forumModalBackdrop}>
+                    <div className={forumStyles.forumModal + ' ' + forumStyles.forumEditMemoModal}>
+                        <div className={forumStyles.forumModalHeader}>
+                            <div className={forumStyles.forumUserName}>
                                 <b>{selectedMemoUser?.user_nick}</b> 님의 메모 수정
                             </div>
                         </div>
-                        <hr className="forum-divider" />
-                        <div className="forum-modalContent">
+                        <hr className={forumStyles.forumDivider} />
+                        <div className={forumStyles.forumModalContent}>
                             <textarea
-                                className="forum-memoTextarea"
+                                className={forumStyles.forumMemoTextarea}
                                 value={editMemoContent}
                                 onChange={e => setEditMemoContent(e.target.value)}
                                 rows={6}
                                 maxLength={500}
                             />
                         </div>
-                        <div className="forum-modalFooter">
-                            <button className="forum-closeBtn" onClick={closeEditMemoModal}>취소</button>
-                            <button className="forum-saveBtn" onClick={handleUpdateMemo}>수정하기</button>
+                        <div className={forumStyles.forumModalFooter}>
+                            <button className={forumStyles.forumCloseBtn} onClick={closeEditMemoModal}>취소</button>
+                            <button className={forumStyles.forumSaveBtn} onClick={handleUpdateMemo}>수정하기</button>
                         </div>
                     </div>
                 </div>

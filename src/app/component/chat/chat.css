@@ -1,4 +1,8 @@
 /*========== 채팅 ==========*/
+.hidden {
+  display: none;
+}
+
 .chat_wrapper {
     position: fixed;
     top: 80px;
