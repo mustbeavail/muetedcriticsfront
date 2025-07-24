@@ -80,7 +80,7 @@ const ItemStats = () => {
 
     setRefundListStartDate(oneMonthAgo);
     setRefundListEndDate(today);
-    setRefundListAlign("refundAmountASC");
+    setRefundListAlign("refundDateDESC");
     setRefundListPage(1);
 
     setEventAlign("periodRevenueDESC");
