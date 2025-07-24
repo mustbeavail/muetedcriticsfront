@@ -46,9 +46,16 @@ export default function MailSend() {
     useEffect(() => {
         const member_id = sessionStorage.getItem("member_id");
         const getToken = sessionStorage.getItem("token");
-        if (!member_id || !getToken) {
+        const admin_yn = sessionStorage.getItem("admin_yn") === "true";
+        const dept = sessionStorage.getItem("dept_name");
+        if (!member_id || !getToken || admin_yn === null || !dept) {
             alert("로그인 후 이용해주세요.");
             location.href = "/";
+            return;
+        } else if (!admin_yn && (dept != "CS팀" || dept != "마케팅팀")) {
+            alert("접근 권한이 없습니다.");
+            location.href = "/component/main";
+            return;
         } else {
             setMemberId(member_id);
             setToken(getToken);
