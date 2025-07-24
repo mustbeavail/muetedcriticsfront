@@ -436,7 +436,7 @@ export default function General({ token, forumPosts }) {
                                         <button onClick={() => router.push(`/component/user/${post.userId}`)}>
                                             유저 통계보기
                                         </button>
-                                        <button onClick={() => router.push(`/component/userExpenditure?id=${post.userId}`)}>
+                                        <button onClick={() => window.open(`/component/userExpenditure?id=${post.userId}`, '_blank')}>
                                             유저 지출 상세내역
                                         </button>
                                         <button onClick={() => openMemoModal(userDetail[post.userId] || { userId: post.userId })}>
