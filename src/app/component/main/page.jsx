@@ -112,6 +112,10 @@ const Main = () => {
   };
   // 기간별 판매액
   const getSalesByPeriod = async (token, startDate, endDate) => {
+    if (startDate > endDate) {
+      alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+      return;
+    }
     try {
       const { data } = await axios.get(`${URL}/revenue/period`, {
         headers: {
@@ -189,6 +193,7 @@ const Main = () => {
             setPeriodEndDate={setPeriodEndDate}
             salesByPeriod={salesByPeriod}
             getSalesByPeriod={getSalesByPeriod}
+            today={today}
           />
           <UserType_UserStats />
           <Period_dailyStats />

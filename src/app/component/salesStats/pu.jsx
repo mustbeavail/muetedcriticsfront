@@ -1,15 +1,15 @@
 import { XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, AreaChart, Area, Brush } from 'recharts';
 
 export default function Pu({
-    token, puStartDate, puEndDate, setPuStartDate, setPuEndDate, getPu, pu}) {
+    token, puStartDate, puEndDate, setPuStartDate, setPuEndDate, getPu, pu, today}) {
 
     return (
         <>
             <div className={"salesStats-chartWrapper"}>
                 <h2 className={"salesStats-title"}>📈 기간별 구매 유저 수 (PU)</h2>
                 <div className={"salesStats-filterBox"}>
-                    기간 시작일 <input type="date" value={puStartDate} onChange={(e)=>{setPuStartDate(e.target.value)}}/>
-                    기간 종료일 <input type="date" value={puEndDate} onChange={(e)=>{setPuEndDate(e.target.value)}}/>
+                    기간 시작일 <input type="date" value={puStartDate} max={today} onChange={(e)=>{setPuStartDate(e.target.value)}}/>
+                    기간 종료일 <input type="date" value={puEndDate} max={today} onChange={(e)=>{setPuEndDate(e.target.value)}}/>
                     <button onClick={()=>{getPu(token, puStartDate, puEndDate)}}>조회</button>
                 </div>
                 <ResponsiveContainer width="100%" height="85%">

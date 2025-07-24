@@ -3,15 +3,15 @@ import {
     AreaChart, Area, Brush} from 'recharts';
 
 export default function SalesByPeriod({
-    token, periodStartDate, setPeriodStartDate, periodEndDate, setPeriodEndDate, getSalesByPeriod, salesByPeriod}) {
+    token, periodStartDate, setPeriodStartDate, periodEndDate, setPeriodEndDate, getSalesByPeriod, salesByPeriod, today}) {
 
     return (
         <>
             <div className={"salesStats-chartWrapper"}>
                 <h2 className={"salesStats-title"}>💰 기간별 판매액</h2>
                 <div className={"salesStats-filterBox"}>
-                기간 시작일 <input type="date" value={periodStartDate} onChange={(e)=>{setPeriodStartDate(e.target.value)}}/>
-                    기간 종료일 <input type="date" value={periodEndDate} onChange={(e)=>{setPeriodEndDate(e.target.value)}}/>
+                기간 시작일 <input type="date" value={periodStartDate} max={today} onChange={(e)=>{setPeriodStartDate(e.target.value)}}/>
+                    기간 종료일 <input type="date" value={periodEndDate} max={today} onChange={(e)=>{setPeriodEndDate(e.target.value)}}/>
                     <button onClick={()=>{getSalesByPeriod(token, periodStartDate, periodEndDate)}}>조회</button>
                 </div>
                 <ResponsiveContainer width="100%" height="85%">

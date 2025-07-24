@@ -6,7 +6,7 @@ export default function IngameItemStats({
     itemList, itemListStartDate, itemListEndDate,
     itemListAlign, itemListPage, itemListSearch,
     setItemListStartDate, setItemListEndDate, setItemListAlign, setItemListPage,
-    setItemListSearch, getItemList, format3digits }) {
+    setItemListSearch, getItemList, format3digits, today }) {
 
     const [totalPage, setTotalPage] = useState(0);
 
@@ -68,11 +68,13 @@ export default function IngameItemStats({
                         <input
                             type="date"
                             value={itemListStartDate}
+                            max={today}
                             onChange={(e) => { setItemListStartDate(e.target.value) }} />
                         기간 종료일
                         <input
                             type="date"
                             value={itemListEndDate}
+                            max={today}
                             onChange={(e) => { setItemListEndDate(e.target.value) }} />
                     </div>
                     <div>

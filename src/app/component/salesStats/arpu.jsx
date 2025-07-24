@@ -1,15 +1,15 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, AreaChart, Area, Brush } from 'recharts';
 
 export default function Arpu({
-    token, arpuStartDate, arpuEndDate, setArpuStartDate, setArpuEndDate, getArpu, arpu}) {
+    token, arpuStartDate, arpuEndDate, setArpuStartDate, setArpuEndDate, getArpu, arpu, today}) {
 
     return (
         <>
             <div className={"salesStats-chartWrapper"}>
                 <h2 className={"salesStats-title"}>📈 유저당 평균 소비액 (ARPU)</h2>
                 <div className={"salesStats-filterBox"}>
-                    기간 시작일 <input type="date" value={arpuStartDate} onChange={(e)=>{setArpuStartDate(e.target.value)}}/>
-                    기간 종료일 <input type="date" value={arpuEndDate} onChange={(e)=>{setArpuEndDate(e.target.value)}}/>
+                    기간 시작일 <input type="date" value={arpuStartDate} max={today} onChange={(e)=>{setArpuStartDate(e.target.value)}}/>
+                    기간 종료일 <input type="date" value={arpuEndDate} max={today} onChange={(e)=>{setArpuEndDate(e.target.value)}}/>
                     <button onClick={()=>{getArpu(token, arpuStartDate, arpuEndDate)}}>조회</button>
                 </div>
                 <ResponsiveContainer width="100%" height="85%">

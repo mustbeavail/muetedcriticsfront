@@ -8,7 +8,7 @@ export default function RefundItemStats(
     refundListAlign, refundListPage, refundListSearch,
     setRefundListStartDate, setRefundListEndDate,
     setRefundListAlign, setRefundListPage, setRefundListSearch,
-    getRefundList, getRefundSummary, format3digits}) {
+    getRefundList, getRefundSummary, format3digits, today}) {
 
     useEffect(() => {
         getRefundList(token, refundListStartDate, refundListEndDate, refundListAlign, refundListPage, refundListSearch);
@@ -35,10 +35,12 @@ export default function RefundItemStats(
                         기간 시작일 <input
                         type="date"
                         value={refundListStartDate}
+                        max={today}
                         onChange={(e) => setRefundListStartDate(e.target.value)} />
                         기간 종료일 <input
                         type="date"
                         value={refundListEndDate}
+                        max={today}
                         onChange={(e) => setRefundListEndDate(e.target.value)} />
                     </div>
                 </div>

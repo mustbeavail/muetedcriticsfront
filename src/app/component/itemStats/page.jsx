@@ -134,6 +134,10 @@ const ItemStats = () => {
 
   // 아이템 리스트
   const getItemList = async (token, startDate, endDate, align, page, search) => {
+    if (startDate > endDate) {
+      alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+      return;
+    }
     try {
       const { data } = await axios.get(`${URL}/item/list`, {
         headers: {
@@ -233,6 +237,10 @@ const ItemStats = () => {
 
   // 환불 내역
   const getRefundList = async (token, startDate, endDate, align, page, search) => {
+    if (startDate > endDate) {
+      alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+      return;
+    }
     try {
       const { data } = await axios.get(`${URL}/item/refund/list`, {
         headers: {
@@ -256,6 +264,10 @@ const ItemStats = () => {
 
   // 환불 내역 요약
   const getRefundSummary = async (token, startDate, endDate) => {
+    if (startDate > endDate) {
+      alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+      return;
+    }
     try {
       const { data } = await axios.get(`${URL}/item/refund/summary`, {
         headers: {
@@ -293,7 +305,9 @@ const ItemStats = () => {
           itemListAlign={itemListAlign} itemListPage={itemListPage} itemListSearch={itemListSearch}
           setItemListAlign={setItemListAlign} setItemListPage={setItemListPage} setItemListSearch={setItemListSearch}
           getItemList={getItemList} itemList={itemList}
-          format3digits={format3digits} />
+          format3digits={format3digits}
+          today={today}
+          />
 
         {/* 이벤트별 아이템 정보 */}
         <EventItemStats
@@ -331,7 +345,9 @@ const ItemStats = () => {
           setRefundListStartDate={setRefundListStartDate} setRefundListEndDate={setRefundListEndDate}
           setRefundListAlign={setRefundListAlign} setRefundListPage={setRefundListPage} setRefundListSearch={setRefundListSearch}
           getRefundList={getRefundList} getRefundSummary={getRefundSummary}
-          format3digits={format3digits} />
+          format3digits={format3digits}
+          today={today}
+          />
       </div>
     </>
   );

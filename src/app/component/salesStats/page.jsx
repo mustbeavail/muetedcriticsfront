@@ -132,6 +132,10 @@ export default function RevenueChart() {
 
     // LTV
     const getLtv = async(token, startDate, endDate) => {
+        if (startDate > endDate) {
+            alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+            return;
+        }
         try{
             const {data} = await axios.get(`${URL}/revenue/LTV`, {
                 headers : {
@@ -153,12 +157,17 @@ export default function RevenueChart() {
         } catch(error) {
             alert("LTV 조회중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
+            return;
         }
 
     };
 
     // 기간별 판매액
     const getSalesByPeriod = async (token, startDate, endDate) => {
+        if (startDate > endDate) {
+            alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+            return;
+        }
         try{
             const {data} = await axios.get(`${URL}/revenue/period`, {
                 headers : {
@@ -174,11 +183,16 @@ export default function RevenueChart() {
         } catch(error) {
             alert("기간별 판매액 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
+            return;
         }
     };
 
     // ARPU
     const getArpu = async (token, startDate, endDate) => {
+        if (startDate > endDate) {
+            alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+            return;
+        }
         try{
             const {data} = await axios.get(`${URL}/revenue/ARPU`, {
                 headers : {
@@ -194,11 +208,16 @@ export default function RevenueChart() {
         } catch(error) {
             alert("ARPU 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
+            return;
         }
     };
 
     // ARPPU
     const getArppu = async (token, startDate, endDate) => {
+        if (startDate > endDate) {
+            alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+            return;
+        }
         try{
             const {data} = await axios.get(`${URL}/revenue/ARPPU`, {
                 headers : {
@@ -214,11 +233,16 @@ export default function RevenueChart() {
         } catch(error) {
             alert("ARPPU 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
+            return;
         }
     };
 
     // 평균 구매간격
     const getInterval = async (token, startDate, endDate) => {
+        if (startDate > endDate) {
+            alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+            return;
+        }
         try{
             const {data} = await axios.get(`${URL}/revenue/purchaseInterval`, {
                 headers : {
@@ -234,11 +258,16 @@ export default function RevenueChart() {
         } catch(error) {
             alert("평균 구매간격 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
+            return;
         }
     };
 
     // PU
     const getPu = async (token, startDate, endDate) => {
+        if (startDate > endDate) {
+            alert('시작일은 종료일보다 이전 날짜여야 합니다.');
+            return;
+        }
         try{
             const {data} = await axios.get(`${URL}/revenue/PU`, {
                 headers : {
@@ -254,6 +283,7 @@ export default function RevenueChart() {
         } catch(error) {
             alert("PU 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
+            return;
         }
     };
 
@@ -270,6 +300,7 @@ export default function RevenueChart() {
         } catch(error) {
             alert("세부 통계 테이블 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
+            return;
         }
     };
 
@@ -311,31 +342,41 @@ export default function RevenueChart() {
                 token={token}
                 periodStartDate={periodStartDate} setPeriodStartDate={setPeriodStartDate}
                 periodEndDate={periodEndDate} setPeriodEndDate={setPeriodEndDate}
-                getSalesByPeriod={getSalesByPeriod} salesByPeriod={salesByPeriod}/>
+                getSalesByPeriod={getSalesByPeriod} salesByPeriod={salesByPeriod}
+                today={today}
+                />
 
                 <Arpu
                 token={token}
                 arpuStartDate={arpuStartDate} setArpuStartDate={setArpuStartDate}
                 arpuEndDate={arpuEndDate} setArpuEndDate={setArpuEndDate}
-                getArpu={getArpu} arpu={arpu}/>
+                getArpu={getArpu} arpu={arpu}
+                today={today}
+                />
 
                 <Arppu
                 token={token}
                 arppuStartDate={arppuStartDate} setArppuStartDate={setArppuStartDate}
                 arppuEndDate={arppuEndDate} setArppuEndDate={setArppuEndDate}
-                getArppu={getArppu} arppu={arppu}/>
+                getArppu={getArppu} arppu={arppu}
+                today={today}
+                />
 
                 <DailyInterval
                 token={token}
                 intervalStartDate={intervalStartDate} setIntervalStartDate={setIntervalStartDate}
                 intervalEndDate={intervalEndDate} setIntervalEndDate={setIntervalEndDate}
-                getInterval={getInterval} interval={interval}/>
+                getInterval={getInterval} interval={interval}
+                today={today}
+                />
 
                 <Pu
                 token={token}
                 puStartDate={puStartDate} setPuStartDate={setPuStartDate}
                 puEndDate={puEndDate} setPuEndDate={setPuEndDate}
-                getPu={getPu} pu={pu}/>
+                getPu={getPu} pu={pu}
+                today={today}
+                />
 
                 <OtherTable
                 format3digits={format3digits}
