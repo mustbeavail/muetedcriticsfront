@@ -20,26 +20,30 @@ export default function HeroPlayDataPage({ params }) {
   const resolvedParams = use(params);
   const user_id = decodeURIComponent(resolvedParams.heroPlayData);
 
+  const [selectedSeason, setSelectedSeason] = useState(1);
+
   useEffect(() => {
     if (user_id) {
-      getHeroPlayData();
-      getSeasonData(1);
+      getSeasonData(selectedSeason);
+      getHeroPlayData(selectedSeason);
     }
-  }, [user_id]);
+  }, [user_id, selectedSeason]);
 
   // 영웅별, 모드별 플레이 타임 가져오기
-  const getHeroPlayData = async () => {
-    const { data } = await axios.get(`${URL}/user/stats`, {
-      params: {
-        userId: user_id
-      },
-      headers: {
-        authorization: token
-      }
-    });
-    console.log('영웅별, 모드별 플레이 타임:', data.userStats);
-    setPlayData(data.userStats);
-  }
+  const getHeroPlayData = async (season = 'all') => {
+      const { data } = await axios.get(`${URL}/user/stats`, {
+        params: {
+          userId: user_id,
+          season: season === 'all' ? '' : season
+        },
+        headers: {
+          authorization: token
+        }
+      });
+  
+      console.log('영웅별, 모드별 플레이 타임:', data.userStats);
+      setPlayData(data.userStats);
+  };
 
   // 영웅별, 모드별 플레이 타임 이미지 매핑
   const heroImageMap = {
@@ -226,18 +230,18 @@ export default function HeroPlayDataPage({ params }) {
 
 
   // 시즌별 데이터 가져오기
-  const [selectedSeason, setSelectedSeason] = useState(1);
   const [seasonData, setSeasonData] = useState(null);
   const getSeasonData = async (season) => {
     const { data } = await axios.get(`${URL}/user/stats/season`, {
       params: {
         userId: user_id,
-        season: season === 'all' ? null : season
+        season: season === 'all' ? '' : season,
       },
       headers: {
-        authorization: token
-      }
+        authorization: token,
+      },
     });
+
     console.log('시즌별 데이터:', data.userStatsSeason);
     setSeasonData(data.userStatsSeason);
   }
@@ -291,17 +295,20 @@ export default function HeroPlayDataPage({ params }) {
               <select
                 className="season-select"
                 onChange={(e) => {
-                  const season = Number(e.target.value);
+                  const season = e.target.value;
                   setSelectedSeason(season);
-                  getSeasonData(season);
                 }}
-                value={selectedSeason}>
-                {Array.from({ length: 4 }, (_, index) => (
-                  <option key={index + 1} value={index + 1}>
-                    {index + 1}시즌
-                  </option>
-                ))}
-                <option value="all">전체</option> {/* 전체 시즌 선택 옵션 */}
+                value={selectedSeason}
+              >
+                {Array.from({ length: 4 }, (_, index) => {
+                  const seasonNum = (index + 1).toString();
+                  return (
+                    <option key={seasonNum} value={seasonNum}>
+                      {seasonNum}시즌
+                    </option>
+                  );
+                })}
+                <option value="all">전체</option>
               </select>
             </div>
             {/* 시즌별 데이터 렌더링 */}
@@ -320,13 +327,13 @@ export default function HeroPlayDataPage({ params }) {
                   )}
                   <span className="data-value">{seasonData?.tier_season}</span>
                   <div className="divider" />
-                  <span className="data-label">{selectedSeason}시즌 티어</span>
+                  <span className="data-label">{selectedSeason === 'all' ? '전체 시즌 티어' : `${selectedSeason}시즌 티어`}</span>
                 </div>
                 <div className="data-card">
                   <MdMoreTime className="data-icon" />
                   <span className="data-value">{seasonData?.total_play_time_season.toLocaleString()}분</span>
                   <div className="divider" />
-                  <span className="data-label">{selectedSeason}시즌 총 플레이 타임</span>
+                  <span className="data-label">{selectedSeason === 'all' ? '전체 시즌 총 플레이 타임' : `${selectedSeason}시즌 총 플레이 타임`}</span>
                 </div>
                 <div className="data-card">
                   <FaMoneyBillAlt className="data-icon" />
@@ -334,47 +341,34 @@ export default function HeroPlayDataPage({ params }) {
                     ₩{(seasonData?.total_item_price + seasonData?.total_bundle_price).toLocaleString()}
                   </span>
                   <div className="divider" />
-                  <span className="data-label">{selectedSeason}시즌 총 과금액</span>
+                  <span className="data-label">{selectedSeason === 'all' ? '전체 시즌 총 과금액' : `${selectedSeason}시즌 총 과금액`}</span>
                 </div>
-              </div>
-            )}
-
-            <div className="user-list-heroPlayData-allData-header2">
-              <div className="user-list-heroPlayData-allData-mainTitle">전체 데이터</div>
-            </div>
-            {/* 전체 데이터 렌더링 */}
-            {playData && (
-              <div className="user-list-heroPlayData-allData-data">
+                {playData && (
                 <div className="data-card">
                   <MdDesktopAccessDisabled className="data-icon" />
                   <span className="data-value">{playData?.last_access.replace('T', ' ')}</span>
                   <div className="divider" />
                   <span className="data-label">마지막 인게임 접속일</span>
                 </div>
-                <div className="data-card">
-                  <MdMoreTime className="data-icon" />
-                  <span className="data-value">{playData?.total_play_time.toLocaleString()}분</span>
-                  <div className="divider" />
-                  <span className="data-label">총 플레이 타임</span>
-                </div>
-                <div className="data-card">
-                  <FaMoneyBillAlt className="data-icon" />
-                  <span className="data-value">₩{playData?.total_spending.toLocaleString()}</span>
-                  <div className="divider" />
-                  <span className="data-label">총 과금액</span>
-                </div>
+                )}
               </div>
             )}
+
+            {/* <div className="user-list-heroPlayData-allData-header2">
+              <div className="user-list-heroPlayData-allData-mainTitle">전체 데이터</div>
+            </div> */}
+            
           </div>
           {/* 캐릭터별 플레이 시간 */}
           <div className="user-list-heroPlayData-characterPlaytime">
             <div className="user-list-heroPlayData-allData-header1">
-              <span className="user-list-heroPlayData-allData-mainTitle">플레이 시간</span>
+              <span className="user-list-heroPlayData-allData-mainTitle">{selectedSeason === 'all' ? '전체 시즌 플레이 타임' : `${selectedSeason}시즌 플레이 타임`}</span>
               <select
                 className="season-select"
                 value={viewType}
                 onChange={(e) => setViewType(e.target.value)}
               >
+                {/* 이거 시즌별로 하나하나 추가해야함 예) 1시즌 영웅별, 2시즌 영웅별.... */}
                 <option value="1">영웅별</option>
                 <option value="2">모드별</option>
                 <option value="3">포지션별</option>
