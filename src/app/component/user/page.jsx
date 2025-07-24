@@ -566,7 +566,7 @@ export default function User() {
                 {openMenuId === (user.userId || idx) && (
                   <div className="user-list-dropdown">
                     <button onClick={() => openUserDetail(user)}>유저 상세보기</button>
-                    <button onClick={() => router.push(`/component/user/${user.userId}`)}>유저 통계보기</button>
+                    <button onClick={() => window.open(`/component/user/${user.userId}`, '_blank')}>유저 통계보기</button>
                     <button onClick={() => window.open(`/component/userExpenditure?id=${user.userId}`, '_blank')}>유저 지출 상세내역</button>
                     <button onClick={() => openMemoModal(user)}>메모 확인하기</button>
                     <button onClick={() => openWriteMemoModal(user)}>메모 작성하기</button>

@@ -443,7 +443,7 @@ export default function General({ token, forumPosts }) {
                                         <button onClick={() => openUserDetailModal(post.userId)}>
                                             유저 상세보기
                                         </button>
-                                        <button onClick={() => router.push(`/component/user/${post.userId}`)}>
+                                        <button onClick={() => window.open(`/component/user/${post.userId}`, '_blank')}>
                                             유저 통계보기
                                         </button>
                                         <button onClick={() => window.open(`/component/userExpenditure?id=${post.userId}`, '_blank')}>

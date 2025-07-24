@@ -280,7 +280,7 @@ export default function HeroPlayDataPage({ params }) {
       <Menu />
       {/* 헤더 영역 */}
       <div className="user-list-header">
-        <button className="user-list-backBtn" onClick={() => router.back()}>
+        <button className="user-list-backBtn" onClick={() => window.close()}>
           {'< 리스트로'}
         </button>
         <span className="user-list-title">유저 통계 보기</span>
