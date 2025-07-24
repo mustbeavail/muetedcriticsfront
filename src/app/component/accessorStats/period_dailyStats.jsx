@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { format } from 'date-fns';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -11,6 +12,9 @@ export default function PeriodDailyStats() {
     const [dailyData, setDailyData] = useState([]);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+
+    // 오늘 날짜를 yyyy-MM-DD 형식으로 가져옴 (종료일 최대값으로 사용)
+    const today = format(new Date(), 'yyyy-MM-dd');
 
     const dailyAccessData = async (s, e) => {
         const start = s ?? startDate;
@@ -73,7 +77,7 @@ export default function PeriodDailyStats() {
                 <h2 className={"accessorStats-title"}>일일 활성 이용자 수</h2>
                 <div className={"accessorStats-filterBox"}>
                     기간 시작일 <input type="date" name="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                    기간 종료일 <input type="date" name="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                    기간 종료일 <input type="date" name="endDate" value={endDate} max={today} onChange={(e) => setEndDate(e.target.value)} />
                     <button onClick={() => dailyAccessData()}>조회</button>
                 </div>
 
