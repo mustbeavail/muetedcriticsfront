@@ -82,7 +82,7 @@ const Report = () => {
     <>
       <Header />
       <Menu />
-      <div className="report-container">
+      <div className="common-container">
         <span className={"report-mainTitle"}>유저 신고 내역</span>
         <div className={"report-chartWrapper"}>
           <h2 className={"report-title"}>유저 신고 리스트</h2>

@@ -116,7 +116,7 @@ export default function InquiryDetail({ params }) {
         <>
             <Header />
             <Menu />
-            <div className="inquiry-list-container">
+            <div className="common-container">
                 <span className={"inquiry-list-mainTitle"}>문의 상세보기</span>
                 <div className={"inquiry-list-chartWrapper"}>
                     <button className="inquiry-detail-back-button" onClick={() => router.back()}>← 리스트로</button>

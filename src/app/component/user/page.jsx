@@ -473,7 +473,7 @@ export default function User() {
 
 
   return (
-    <div className="user-list-container">
+    <div className="common-container">
       <Header />
       <Menu />
       <h2 className="title">유저 리스트</h2>

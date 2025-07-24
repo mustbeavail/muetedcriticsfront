@@ -40,7 +40,7 @@ const InGameStats = () => {
     <>
       <Header />
       <Menu />
-      <div className="stats_container">
+      <div className="common-container">
         <span className={"userStats-mainTitle"}>인게임 통계</span>
 
         <HeroPlaytime_IngameStats />

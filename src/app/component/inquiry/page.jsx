@@ -87,7 +87,7 @@ const Inquiry = () => {
     <>
       <Header />
       <Menu />
-      <div className="inquiry-list-container">
+      <div className="common-container">
         <span className={"inquiry-list-mainTitle"}>유저 문의 내역</span>
         <div className={"inquiry-list-chartWrapper"}>
           <h2 className={"inquiry-list-subTitle"}>유저 문의 리스트</h2>

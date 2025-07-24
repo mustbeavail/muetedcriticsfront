@@ -275,7 +275,7 @@ export default function HeroPlayDataPage({ params }) {
   };
 
   return (
-    <div className="user-list-container1">
+    <div className="common-container">
       <Header />
       <Menu />
       {/* 헤더 영역 */}

@@ -36,7 +36,7 @@ const AccessorStats = () => {
     <>
       <Header/>
       <Menu />
-      <div className="stats_container">
+      <div className="common-container">
         <span className={"accessorStats-mainTitle"}>접속자 수 통계</span>
 
         <PeriodDailyStats />

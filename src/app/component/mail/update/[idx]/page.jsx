@@ -266,7 +266,7 @@ export default function MailSend() {
         <>
             <Header/>
             <Menu />
-            <div className="stats_container">
+            <div className="common-container">
                 <h1 className="mailSend-title">메일 수정</h1>
                 <div className="mailSend-container">
                     <h3 className="mailSend-subtitle">🎯 수신 대상 수정</h3>

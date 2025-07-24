@@ -245,7 +245,7 @@ const Member = () => {
   };
 
   return (
-    <div className="memberList-container">
+    <div className="common-container">
       <Header />
       <Menu />
       <h2 className="memberList-title">회원 리스트</h2>
