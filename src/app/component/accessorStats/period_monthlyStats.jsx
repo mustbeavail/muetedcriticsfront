@@ -18,16 +18,16 @@ export default function PeriodMonthlyStats() {
         const now = new Date();
         const toY = now.getFullYear();
         const toM = now.getMonth() + 1;
-    
+
         const fromDate = new Date(toY, toM - 7, 1); // 6개월 전
         const fromY = fromDate.getFullYear();
         const fromM = fromDate.getMonth() + 1;
-    
+
         setFromYear(fromY.toString());
         setFromMonth(fromM.toString());
         setToYear(toY.toString());
         setToMonth(toM.toString());
-    
+
         // 6개월 범위가 설정된 이후에 조회
         setTimeout(() => {
             monthlyAccessData(fromY.toString(), fromM.toString(), toY.toString(), toM.toString());
@@ -44,11 +44,27 @@ export default function PeriodMonthlyStats() {
             alert("모든 날짜 값을 선택해 주세요.");
             return;
         }
-        if (fromY > toY || (fromY === toY && fromM > toM)) {
+
+        const fromYearNum = Number(fromY);
+        const fromMonthNum = Number(fromM);
+        const toYearNum = Number(toY);
+        const toMonthNum = Number(toM);
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth() + 1;
+
+        if (
+            fromYearNum > toYearNum ||
+            (fromYearNum === toYearNum && fromMonthNum > toMonthNum)
+        ) {
             alert("시작 날짜는 종료 날짜보다 이전이어야 합니다.");
             return;
         }
-        if (toM > new Date().getMonth() + 1) {
+
+        if (
+            toYearNum > currentYear ||
+            (toYearNum === currentYear && toMonthNum > currentMonth)
+        ) {
             alert("종료 날짜는 현재 날짜보다 이후일 수 없습니다.");
             return;
         }
