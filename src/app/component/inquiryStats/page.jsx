@@ -105,7 +105,7 @@ const InquiryStats = () => {
     <>
       <Header />
       <Menu />
-      <div className="stats_container">
+      <div className="common-container">
         <span className={"userStats-mainTitle"}>신고/문의 통계</span>
 
         <All_InquiryStats inquiryStatsAll={inquiryStatsAll} />

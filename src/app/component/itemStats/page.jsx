@@ -294,7 +294,7 @@ const ItemStats = () => {
     <>
       <Header/>
       <Menu />
-      <div className="stats_container">
+      <div className="common-container">
         <span className={"itemStats-mainTitle"}>아이템 통계</span>
 
         {/* 인게임별 아이템 정보 */}

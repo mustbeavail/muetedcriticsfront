@@ -152,7 +152,7 @@ body {
 }
 
 /* ------------------------------ 통계, 메일 공통 css ------------------------------ */
-.stats_container {
+.common-container {
   position: fixed;
   top: 80px;
   left: 80px;

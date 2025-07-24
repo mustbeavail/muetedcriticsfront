@@ -179,7 +179,7 @@ const Main = () => {
     <div>
       <Header />
       <Menu />
-      <div className="stats_container">
+      <div className="common-container">
         <h1 className="dashboard-title">Dashboard</h1>
         <StatsNoti
           notiList={notiList}

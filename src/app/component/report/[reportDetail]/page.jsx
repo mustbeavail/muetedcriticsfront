@@ -112,7 +112,7 @@ export default function ReportDetail({ params }) {
         <>
             <Header />
             <Menu />
-            <div className="report-container">
+            <div className="common-container">
                 <span className="report-mainTitle">신고 상세보기</span>
                 <div className="report-chartWrapper">
                     <button className="report-detail-back-button" onClick={() => router.back()}>← 리스트로</button>

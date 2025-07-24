@@ -312,7 +312,7 @@ export default function RevenueChart() {
         <>
             <Header/>
             <Menu />
-            <div className="stats_container">
+            <div className="common-container">
                 <span className={"salesStats-mainTitle"}>매출 통계</span>
                 <div className={"salesStats-filterBox"}>
                     기간 시작일 <input type="date" value={ltvStartDate} onChange={(e)=>{setLtvStartDate(e.target.value)}}/>

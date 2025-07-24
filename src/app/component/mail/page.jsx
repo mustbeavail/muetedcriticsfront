@@ -43,9 +43,9 @@ export default function MailList() {
     // 검색결과용 리스트 재정렬
     const sortList = (arr, order) =>
         [...arr].sort((a, b) =>
-          order === 'dateDesc'
-            ? new Date(b.mailDate) - new Date(a.mailDate)
-            : new Date(a.mailDate) - new Date(b.mailDate)
+            order === 'dateDesc'
+                ? new Date(b.mailDate) - new Date(a.mailDate)
+                : new Date(a.mailDate) - new Date(b.mailDate)
         );
 
     // 검색 입력 초기화
@@ -57,22 +57,22 @@ export default function MailList() {
     const getList = async (token) => {
 
         try {
-        const { data } = await axios.get(`${URL}/mail/list`, {
-            headers: {
-                Authorization: token
-            },
-            params: {
-                sort: sort,
-                page: currentPage,
-                align: align
-            }
-        });
-        console.log(data);
-        if (sort === 'mailList') {
-            setMailList(data.mailList.content);
-            setTotalFilteredPages(data.mailList.totalPages);
-        } else {
-            setMailList(data.autoSendList.content);
+            const { data } = await axios.get(`${URL}/mail/list`, {
+                headers: {
+                    Authorization: token
+                },
+                params: {
+                    sort: sort,
+                    page: currentPage,
+                    align: align
+                }
+            });
+            console.log(data);
+            if (sort === 'mailList') {
+                setMailList(data.mailList.content);
+                setTotalFilteredPages(data.mailList.totalPages);
+            } else {
+                setMailList(data.autoSendList.content);
                 setTotalFilteredPages(data.autoSendList.totalPages);
             }
         } catch (error) {
@@ -93,25 +93,25 @@ export default function MailList() {
             return;
         }
         try {
-        const { data } = await axios.get(`${URL}/mail/search`, {
-            headers: {
-                Authorization: token
-            },
-            params: {
-                search: search,
-                searchType: searchType,
-                page: currentPage,
-                sort: sort
+            const { data } = await axios.get(`${URL}/mail/search`, {
+                headers: {
+                    Authorization: token
+                },
+                params: {
+                    search: search,
+                    searchType: searchType,
+                    page: currentPage,
+                    sort: sort
+                }
+            });
+            console.log(data);
+            if (sort === 'mailList') {
+                setMailList(data.mailSearchResult.content);
+                setTotalFilteredPages(data.mailSearchResult.totalPages);
+            } else {
+                setMailList(data.autoSendSearchResult.content);
+                setTotalFilteredPages(data.autoSendSearchResult.totalPages);
             }
-        });
-        console.log(data);
-        if (sort === 'mailList') {
-            setMailList(data.mailSearchResult.content);
-            setTotalFilteredPages(data.mailSearchResult.totalPages);
-        } else {
-            setMailList(data.autoSendSearchResult.content);
-            setTotalFilteredPages(data.autoSendSearchResult.totalPages);
-        }
         } catch (error) {
             alert("메일 검색 중 오류가 발생했습니다. 다시 로그인 후 이용해주세요.");
             sessionStorage.removeItem("member_id");
@@ -120,28 +120,45 @@ export default function MailList() {
         }
     }
 
+    // 날짜를 한국 형식으로 포맷팅하는 함수
+    const formatDate = (dateString) => {
+        if (!dateString) return '-'; // 날짜 문자열이 없으면 '-' 반환
+
+        const date = new Date(dateString); // 날짜 객체 생성
+        // 날짜 부분을 한국어 형식으로 변환하고 공백 제거
+        const datePart = date.toLocaleDateString('ko-KR').replace(/ /g, '');
+        // 시간 부분을 24시간 형식으로 변환
+        const timePart = date.toLocaleTimeString('ko-KR', {
+            hour: '2-digit', // 시간: 두 자리 숫자
+            minute: '2-digit', // 분: 두 자리 숫자
+            hour12: false // 24시간 형식 사용
+        });
+
+        return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
+    };
+
     return (
         <>
-            <Header/>
+            <Header />
             <Menu />
-            <div className="stats_container">
+            <div className="common-container">
                 <h1 className={"mailList-title"}>발신 메일 리스트</h1>
                 <div className={"mailList-background"}>
                     <div className={"mailList-header"}>
                         <div className={"mailList-search"}>
-                        <select className={"mailList-sort"} onChange={(e) => {setSort(e.target.value); setIsSearch(false);}}>
-                            <option value="mailList">발송된 메일</option>
-                            <option value="autoSendList">정기 발송 메일 정보</option>
-                        </select>
+                            <select className={"mailList-sort"} onChange={(e) => { setSort(e.target.value); setIsSearch(false); }}>
+                                <option value="mailList">발송된 메일</option>
+                                <option value="autoSendList">정기 발송 메일 정보</option>
+                            </select>
                             <span>메일 검색</span>
                             <div className={"mailList-input-wrapper"}>
                                 <input
                                     type="text"
                                     placeholder={sort == "mailList" ? "발송된 메일 검색" : "정기 발송 메일 검색"}
-                                    value = {search}
+                                    value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                     onKeyUp={e => e.key === 'Enter' && searchMail() && setIsSearch(true)} />
-                                <button className={"search-btn"} onClick={() => {searchMail(); setIsSearch(true)}}><IoSearch /></button>
+                                <button className={"search-btn"} onClick={() => { searchMail(); setIsSearch(true) }}><IoSearch /></button>
                                 <select className={"mailList-search-type"} onChange={(e) => setSearchType(e.target.value)}>
                                     <option value="mailSub">제목</option>
                                     <option value="recipient">수신자</option>
@@ -174,7 +191,7 @@ export default function MailList() {
                                     </div>
                                     <div className={"mailList-right-wrapper"}>
                                         <div className={"mailList-right"}>
-                                            📆 {mail.mailDate ? mail.mailDate : mail.createdAt}
+                                            📆 {mail.mailDate ? formatDate(mail.mailDate) : formatDate(mail.createdAt)}
                                         </div>
                                         {sort == 'autoSendList' ?
                                             <>
@@ -189,20 +206,20 @@ export default function MailList() {
                                             <>
                                             </>
                                         }
-                                        </div>
+                                    </div>
                                 </div>
                             </Link>
                         ))
-                    :
-                    <div className="mailList-noResult">메일 목록이 없습니다.</div>
+                        :
+                        <div className="mailList-noResult">메일 목록이 없습니다.</div>
                     }
                     <div className="mailList-pagination">
                         <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>이전</button>
                         {Array.from({ length: totalFilteredPages }, (_, i) => i + 1).map((page) => (
                             <button
-                            key={page}
-                            className={currentPage === page ? 'active' : ''}
-                            onClick={() => setCurrentPage(page)}
+                                key={page}
+                                className={currentPage === page ? 'active' : ''}
+                                onClick={() => setCurrentPage(page)}
                             >
                                 {page}
                             </button>

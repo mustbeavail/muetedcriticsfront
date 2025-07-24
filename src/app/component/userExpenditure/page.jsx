@@ -134,7 +134,7 @@ function UserExpenditureContent() {
     }, {});
 
     return (
-        <div className="user-expenditure-container">
+        <div className="common-container">
             <Header />
             <Menu />
 

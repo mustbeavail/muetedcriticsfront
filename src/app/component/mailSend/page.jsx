@@ -232,7 +232,7 @@ export default function MailSend() {
         <>
             <Header/>
             <Menu />
-            <div className="stats_container">
+            <div className="common-container">
                 <h1 className="mailSend-title">메일 발송</h1>
                 <div className="mailSend-container">
                     <h3 className="mailSend-subtitle-userType">🎯 수신 대상 설정</h3>

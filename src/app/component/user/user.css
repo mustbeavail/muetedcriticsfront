@@ -1,20 +1,4 @@
 /*========== 유저 ==========*/
-.user-list-container {
-    position: fixed;
-    top: 80px;
-    left: 80px;
-    width: 97%;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    height: calc(100vh - 56px);
-    border-radius: 8px;
-    background-color: transparent;
-    font-size: 18px;
-    font-family: 'Noto Sans KR', sans-serif;
-    margin-bottom: 20px;
-}
-
 
 .user-list-topRow {
     display: flex;

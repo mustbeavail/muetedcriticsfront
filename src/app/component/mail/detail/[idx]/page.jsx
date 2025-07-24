@@ -70,7 +70,23 @@ export default function MailDetailPage() {
     return <div>Loading...</div>;
   }
 
-  // 최상단 stats_container 추가, mailDetail-title 위치 변경
+  // 날짜를 한국 형식으로 포맷팅하는 함수
+  const formatDate = (dateString) => {
+    if (!dateString) return '-'; // 날짜 문자열이 없으면 '-' 반환
+
+    const date = new Date(dateString); // 날짜 객체 생성
+    // 날짜 부분을 한국어 형식으로 변환하고 공백 제거
+    const datePart = date.toLocaleDateString('ko-KR').replace(/ /g, '');
+    // 시간 부분을 24시간 형식으로 변환
+    const timePart = date.toLocaleTimeString('ko-KR', {
+      hour: '2-digit', // 시간: 두 자리 숫자
+      minute: '2-digit', // 분: 두 자리 숫자
+      hour12: false // 24시간 형식 사용
+    });
+
+    return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
+  };
+
   return (
     <>
       <Header />
@@ -80,16 +96,47 @@ export default function MailDetailPage() {
         <div className={"mailDetail-container"}>
           
 
-          {/* <div className={"mailDetail-card"}> */}
-          <div>
-            <div className={"mailDetail-btn-wrapper"}>
-              <Link href="/component/mail">
-                <button className={"mailDetail-backBtn"}>{'< 리스트로'}</button>
-              </Link>
-              <button className={`${mailDetail.scheduleIdx ? "mailDetail-updateBtn" : "hidden"}`} onClick={() => {
-                location.href = `/component/mail/update/scheduleIdxEQ${mailDetail.scheduleIdx}`;
-              }}>정기 메일 수정</button>
-            </div>
+        <div className={"mailDetail-card"}>
+          <div className={"mailDetail-btn-wrapper"}>
+            <Link href="/component/mail">
+              <button className={"mailDetail-backBtn"}>← 리스트로 돌아가기</button>
+            </Link>
+            <button className={`${mailDetail.scheduleIdx ? "mailDetail-updateBtn" : "hidden"}`} onClick={() => {
+              location.href = `/component/mail/update/scheduleIdxEQ${mailDetail.scheduleIdx}`;
+            }}>정기 메일 수정</button>
+          </div>
+
+          {/* <section className={"mailDetail-section"}>
+            <h2 className={"mailDetail-subject"}>📧 {mailDetail.mailSub}</h2>
+            <p className={"mailDetail-meta"}>
+              수신 대상:{" "}
+              <span>
+                {mailDetail.recipient}
+              </span>
+            </p>
+            <p className={"mailDetail-meta"}>
+              담당자 ID: <span>{mailDetail.memberId}</span>
+            </p>
+            {mailDetail.scheduleIdx ? (
+              <>
+                <p className={"mailDetail-meta"}>
+                  다음 발송 일자: <span>{mailDetail.nextSendDate}</span>
+                </p>
+                <p className={"mailDetail-meta"}>
+                  발송 주기: <span>{mailDetail.intervalDays}일</span>
+                </p>
+                <p className={"mailDetail-meta"}>
+                  활성화 여부: <span>{mailDetail.active ? "활성화" : "비활성화"}</span>
+                </p>
+              </>
+            ) : (
+              <>
+              </>
+            )}
+            <div className={"mailDetail-date"}>
+              <IoCalendarClearOutline />
+              <span>{mailDetail.mailDate ? formatDate(mailDetail.mailDate) : formatDate(mailDetail.createdAt)}</span>
+            </div> */}
 
             <section className={"mailDetail-section"}>
               <h2 className={"mailDetail-subject"}>📧 {mailDetail.mailSub}</h2>
