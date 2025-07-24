@@ -297,7 +297,7 @@ const Login = () => {
           className={styles['login-link']}
           onClick={() => setShowFindModal(true)}
         >
-          아이디/비밀번호 찾기
+          비밀번호 변경
         </button>
       </div>
 
@@ -317,7 +317,7 @@ const Login = () => {
                 }`}
               style={{ display: modalStep === 0 ? 'block' : 'none' }}
             >
-              <h3 className={styles['login-modalTitle']}>아이디/비밀번호 찾기</h3>
+              <h3 className={styles['login-modalTitle']}>비밀번호 변경</h3>
               <input
                 type="text"
                 className={styles['login-modalInput']}

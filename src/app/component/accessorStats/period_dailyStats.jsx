@@ -53,23 +53,23 @@ export default function PeriodDailyStats() {
         dailyAccessData(sDate, eDate);  // 초기값 직접 전달해서 호출
     }, []);
 
-    // 통계 저장
-    useEffect(() => {
-        if (!startDate || !endDate) return;
-        const sendHistoricalStats = async () => {
-            const { data } = await axios.post(`${URL}/activity/historical`, null, {
-                params: {
-                    startDate,
-                    endDate
-                },
-                headers: {
-                    authorization: token
-                }
-            });
-            console.log('통계 생성/갱신 완료:', data);
-        };
-        sendHistoricalStats();
-    }, [startDate, endDate]);
+    // // 통계 저장
+    // useEffect(() => {
+    //     if (!startDate || !endDate) return;
+    //     const sendHistoricalStats = async () => {
+    //         const { data } = await axios.post(`${URL}/activity/historical`, null, {
+    //             params: {
+    //                 startDate,
+    //                 endDate
+    //             },
+    //             headers: {
+    //                 authorization: token
+    //             }
+    //         });
+    //         console.log('통계 생성/갱신 완료:', data);
+    //     };
+    //     sendHistoricalStats();
+    // }, [startDate, endDate]);
 
     return (
         <>
