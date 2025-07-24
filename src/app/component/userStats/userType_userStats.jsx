@@ -166,8 +166,6 @@ export default function UserType_UserStats() {
                                     <div><span className="label">총 과금액:</span> {user.totalPayment}원</div>
                                 </div>
                             </div>
-
-                            <div className="user-list-menu">⋮</div>
                         </div>
                     ))}
 
