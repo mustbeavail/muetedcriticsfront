@@ -40,22 +40,12 @@ export default function HeroWinningRate_IngameStats() {
         }
     };
 
-    // 조회 버튼 클릭시 불러오기
-    const handleSearch = () => {
-        if (!seasonIdx) {
-            alert('시즌을 설정해 주세요.');
-            return;
-        }
-        const token = sessionStorage.getItem('token');
-        getHeroWinningRateData(token, seasonIdx, tierName, sortOrder);
-    };
-
     useEffect(() => {
         const token = sessionStorage.getItem('token');
         if (seasonIdx) {
             getHeroWinningRateData(token, seasonIdx, tierName, sortOrder);
         }
-    }, [tierName, sortOrder]);
+    }, [seasonIdx, tierName, sortOrder]);
 
 
     // 현재 페이지에 표시할 데이터를 계산합니다.
@@ -94,7 +84,6 @@ export default function HeroWinningRate_IngameStats() {
                         value={sortOrder}
                         onChange={(e) => {
                             setSortOrder(e.target.value);
-                            handleSearch();
                             setCurrentPage(1);
                         }}
                     >
@@ -135,7 +124,6 @@ export default function HeroWinningRate_IngameStats() {
                         <option value="챌린저">챌린저</option>
                     </optgroup>
                 </select>
-                <button onClick={handleSearch}>조회</button>
             </div>
             전체 유저 중 <span style={{ fontWeight: 'bold' }}>{tierName || '전체'}</span> 유저의 영웅별 승률
             <ResponsiveContainer width="100%" height={1120}>

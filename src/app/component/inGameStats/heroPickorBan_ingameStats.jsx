@@ -44,27 +44,22 @@ export default function HeroPickorBan_IngameStats() {
         }
     };
 
-    // 3. '조회' 버튼 클릭 핸들러
-    const handleSearch = () => {
-        if (!startDate || !endDate) {
-            alert('기간을 설정해 주세요.');
-            return;
-        }
-        if (new Date(startDate) > new Date(endDate)) {
-            alert('시작일은 종료일보다 이전 날짜여야 합니다.');
-            return;
-        }
-        const token = sessionStorage.getItem('token');
-        getHeroPickOrBanData(token, startDate, endDate, sortOrder);
-    };
-
-    // 4. 'sortOrder'가 바뀔 때만 실행되는 useEffect (API 중복 호출 방지)
-    // 단, 날짜가 이미 설정되어 있을 때만 데이터를 다시 불러옴
+    // 3. 날짜, 정렬 기준이 변경될 때만 실행되는 useEffect
     useEffect(() => {
-        if (startDate && endDate) {
-            handleSearch();
+        if (!startDate || !endDate) return;
+
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        if (start > end) {
+            alert("시작일은 종료일보다 이전이어야 합니다.");
+            return;
         }
-    }, [sortOrder]);
+
+        const token = sessionStorage.getItem("token");
+        getHeroPickOrBanData(token, startDate, endDate, sortOrder);
+        setCurrentPage(1);
+    }, [startDate, endDate, sortOrder]);
 
 
     // --- PAGINATION ---
@@ -83,10 +78,8 @@ export default function HeroPickorBan_IngameStats() {
             <div className={"accessorStats-filterBox"}>
                 기간 시작일 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
                 기간 종료일 <input type="date" value={endDate} max={today} onChange={(e) => setEndDate(e.target.value)} />
-                <button onClick={handleSearch}>조회</button>
                 <select className='itemStats-select' onChange={(e) => {
                     setSortOrder(e.target.value);
-                    handleSearch();
                     setCurrentPage(1);
                 }} value={sortOrder}>
                     <option value="desc">높은 순</option>
