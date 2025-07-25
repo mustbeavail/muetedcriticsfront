@@ -480,7 +480,8 @@
 }
 
 .forumDetailContent {
-    background: rgba(255, 255, 255, 0.05);
+    background: #000;
+    border: 1px solid #333;
     padding: 16px;
     border-left: 4px solid #b276f4;
     margin-top: 20px;
@@ -520,7 +521,7 @@
 }
 
 .forumCommentItem span:nth-child(1) {
-    display: block;
+    display: inline-block;
     font-weight: 600;
     color: #9f74f8;
     margin-bottom: 4px;

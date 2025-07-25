@@ -80,7 +80,7 @@ export default function Competition({ token, forumPosts }) {
         '복귀': 'returning',
         '휴면': 'dormant',
         '정지': 'suspended',
-        '이탈 위험군': 'churn_risk',
+        '이탈 위험군': 'churn risk',
         'VIP': 'total spend',
     };
 
