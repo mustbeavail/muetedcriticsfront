@@ -20,6 +20,12 @@ import { subMonths } from 'date-fns';
 import UserType_UserStats from '../userStats/userType_userStats';
 import HeroWinningRate_IngameStats from '../inGameStats/heroWinningRate_ingameStats';
 import Period_InquiryStats from '../inquiryStats/period_inquiryStats';
+import { Lilita_One } from "next/font/google";
+
+const lilitaOne = Lilita_One({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 const Main = () => {
 

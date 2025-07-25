@@ -4,12 +4,10 @@
 }
 
 .dashboard-title {
-    margin-left: 10px;
-    font-size: 40px;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: bolder;
-    font-style: italic;
-    color: tomato;
+    margin-left: 15px;
+    font-size: 50px;
+    font-family: 'Lilita One', serif;
+    color: #7CFFDA;
     display: flex;
 }
 
