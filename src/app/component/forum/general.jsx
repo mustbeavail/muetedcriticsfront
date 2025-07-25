@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import forumStyles from './forum.module.css';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function General({ token, forumPosts }) {
-    const router = useRouter();
-
     const [openMenuId, setOpenMenuId] = useState(null);
     const [hoverBadgeId, setHoverBadgeId] = useState(null);
     const [hoveredPostId, setHoveredPostId] = useState(null);
@@ -23,7 +20,6 @@ export default function General({ token, forumPosts }) {
     const [selectedMemo, setSelectedMemo] = useState(null);
     const [showEditMemoModal, setShowEditMemoModal] = useState(false);
     const [editMemoContent, setEditMemoContent] = useState('');
-
 
     // 각각의 유저 디테일 불러오기 (유저 타입 뱃지)
     const [userDetail, setUserDetail] = useState({});
@@ -208,7 +204,6 @@ export default function General({ token, forumPosts }) {
 
     // 메뉴 외부 클릭 시 메뉴 닫기
     const dropdownRefs = useRef({});
-
     useEffect(() => {
         const handleOutsideClick = (event) => {
             if (openMenuId !== null) {
@@ -223,10 +218,6 @@ export default function General({ token, forumPosts }) {
             document.removeEventListener('mousedown', handleOutsideClick);
         };
     }, [openMenuId]);
-
-    const toggleMenu = (id) => {
-        setOpenMenuId(openMenuId === id ? null : id);
-    };
 
     // 유저 상세보기 버튼을 누를 시 상세보기 모달 출력
     const [selectedDetailUser, setSelectedDetailUser] = useState(null);
@@ -428,33 +419,26 @@ export default function General({ token, forumPosts }) {
                                 </Link>
                             </div>
                             <div className={forumStyles.userCell}>
-                                <button
-                                    style={{ color: 'white' }}
-                                    onClick={() => toggleMenu(post.postIdx)}
-                                    onMouseEnter={() => handleMouseEnter(post)}
-                                    onMouseLeave={handleMouseLeave}>
-                                    {post.userId}
-                                </button>
-                                {openMenuId === post.postIdx && (
-                                    <div
-                                        className={forumStyles.forumDropdown}
-                                        ref={el => { dropdownRefs.current[post.postIdx] = el; }}
-                                    >
-                                        <button onClick={() => openUserDetailModal(post.userId)}>
-                                            유저 상세보기
-                                        </button>
-                                        <button onClick={() => window.open(`/component/user/${post.userId}`, '_blank')}>
-                                            유저 통계보기
-                                        </button>
-                                        <button onClick={() => window.open(`/component/userExpenditure?id=${post.userId}`, '_blank')}>
-                                            유저 지출 상세내역
-                                        </button>
-                                        <button onClick={() => openMemoModal(userDetail[post.userId] || { userId: post.userId })}>
-                                            메모 확인하기
-                                        </button>
-                                        <button onClick={() => openWriteMemoModal(userDetail[post.userId] || { userId: post.userId })}>메모 작성하기</button>
-                                    </div>
-                                )}
+                                <div
+                                    ref={el => { dropdownRefs.current[post.postIdx] = el; }}
+                                >
+                                    <button
+                                        style={{ color: 'white' }}
+                                        onClick={() => setOpenMenuId(openMenuId === post.postIdx ? null : post.postIdx)}
+                                        onMouseEnter={() => handleMouseEnter(post)}
+                                        onMouseLeave={handleMouseLeave}>
+                                        {post.userId}
+                                    </button>
+                                    {openMenuId === post.postIdx && (
+                                        <div className={forumStyles.forumDropdown}>
+                                            <button onClick={() => openUserDetailModal(post.userId)}>유저 상세보기</button>
+                                            <button onClick={() => window.open(`/component/user/${post.userId}`, '_blank')}>유저 통계보기</button>
+                                            <button onClick={() => window.open(`/component/userExpenditure?id=${post.userId}`, '_blank')}>유저 지출 상세내역</button>
+                                            <button onClick={() => openMemoModal(userDetail[post.userId] || { user_id: post.userId })}>메모 확인하기</button>
+                                            <button onClick={() => openWriteMemoModal(userDetail[post.userId] || { user_id: post.userId })}>메모 작성하기</button>
+                                        </div>
+                                    )}
+                                </div>
                                 {hoveredPostId === post.postIdx && (
                                     <div className={forumStyles.forumBadge}>
                                         {tierImage(post.userId)}

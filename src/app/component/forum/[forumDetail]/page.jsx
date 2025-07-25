@@ -11,7 +11,7 @@ const URL = process.env.NEXT_PUBLIC_API_URL;
 export default function ForumDetailPage({ params }) {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
   const member_id = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
-  
+
   // 로그인 체크
   useEffect(() => {
     if (!member_id || !token) {
@@ -29,6 +29,8 @@ export default function ForumDetailPage({ params }) {
   const [forumDetailData, setForumDetailData] = useState(null);
   const [forumCommentData, setForumCommentData] = useState(null);
   const [openMenuId, setOpenMenuId] = useState(null);
+  // 댓글 드롭다운 ref를 댓글별로 관리
+  const commentDropdownRefs = useRef({});
 
   // 메모 state
   const [memoList, setMemoList] = useState([]);
@@ -427,12 +429,12 @@ export default function ForumDetailPage({ params }) {
   // 메뉴 외부 클릭 시 메뉴 닫기
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      if (
-        openMenuId !== null &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
-        setOpenMenuId(null);
+      if (openMenuId !== null) {
+        // 댓글 드롭다운
+        const ref = commentDropdownRefs.current[openMenuId];
+        if (ref && !ref.contains(event.target)) {
+          setOpenMenuId(null);
+        }
       }
     };
     document.addEventListener('mousedown', handleOutsideClick);
@@ -462,10 +464,10 @@ export default function ForumDetailPage({ params }) {
                 <button onClick={() => openUserDetailModal(forumDetailData?.userId)}>
                   유저 상세보기
                 </button>
-                <button onClick={() => router.push(`/component/user/${forumDetailData?.userId}`)}>
+                <button onClick={() => window.open(`/component/user/${forumDetailData?.userId}`, '_blank')}>
                   유저 통계보기
                 </button>
-                <button onClick={() => router.push(`/component/userExpenditure?id=${forumDetailData?.userId}`)}>
+                <button onClick={() => window.open(`/component/userExpenditure?id=${forumDetailData?.userId}`, '_blank')}>
                   유저 지출 상세내역
                 </button>
                 <button onClick={() => openMemoModal(userDetail[forumDetailData?.userId] || { userId: forumDetailData?.userId })}>
@@ -485,17 +487,47 @@ export default function ForumDetailPage({ params }) {
           </div>
         </div>
 
+        {/* 포럼 댓글 */}
         <div className={forumStyles.forumCommentWrapper}>
           <span>댓글</span>
           <div className={forumStyles.forumCommentList}>
             {forumCommentData?.content.map((comment) => (
               <div className={forumStyles.forumCommentItem} key={comment.comIdx}>
-                <span>{comment.userId}</span>
+                <div
+                  ref={el => { commentDropdownRefs.current[comment.comIdx] = el; }}
+                  className={forumStyles.forumCommentDetailUser}
+                >
+                  <span
+                    onClick={() => setOpenMenuId(openMenuId === comment.comIdx ? null : comment.comIdx)}
+                    onMouseEnter={() => handleMouseEnter(comment)}
+                    onMouseLeave={handleMouseLeave}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {comment.userId}
+                  </span>
+                  {openMenuId === comment.comIdx && (
+                    <div className={forumStyles.forumCommentDropdown}>
+                      <button onClick={() => openUserDetailModal(comment.userId)}>
+                        유저 상세보기
+                      </button>
+                      <button onClick={() => window.open(`/component/user/${comment.userId}`, '_blank')}>
+                        유저 통계보기
+                      </button>
+                      <button onClick={() => window.open(`/component/userExpenditure?id=${comment.userId}`, '_blank')}>
+                        유저 지출 상세내역
+                      </button>
+                      <button onClick={() => openMemoModal(userDetail[comment.userId] || { userId: comment.userId })}>
+                        메모 확인하기
+                      </button>
+                      <button onClick={() => openWriteMemoModal(userDetail[comment.userId] || { userId: comment.userId })}>메모 작성하기</button>
+                    </div>
+                  )}
+                </div>
                 <span>{formatDate(comment.createdAt)}</span>
                 <span>{comment.comContent}</span>
               </div>
             ))}
-            <button onClick={() => router.push('/component/forum')}>게시글 목록</button>
+            <button className={forumStyles.forumCommentListBtn} onClick={() => router.push('/component/forum')}>게시글 목록</button>
           </div>
         </div>
         {/* 유저 상세보기 모달 */}

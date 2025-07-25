@@ -1,14 +1,17 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "front",
-  description: "front app",
+  // title: "front",
+  title: "MutedCritics",
+  // description: "front app",
+  description: "Null Core CRM Site",
 };
 
 export default function Layout({ children }) {
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/MainLogo.png" />
         <meta httpEquiv="Content-Type" content="text/html;charset=UTF-8" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
