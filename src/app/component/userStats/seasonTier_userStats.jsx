@@ -1,7 +1,7 @@
 'use client'
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
 import { useState, useEffect, useMemo } from "react";
-import axios from 'axios';
+import api from '../../utils/api';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -13,7 +13,7 @@ export default function SeasonTier_UserStats() {
     // 시즌별 티어 통계
     const getSeasonTierStats = async (token, seasonIdx) => {
         try {
-            const { data } = await axios.get(`${URL}/season-tier-stats`, {
+            const { data } = await api.get(`${URL}/season-tier-stats`, {
                 headers: { Authorization: token },
                 params: {
                     seasonIdx: seasonIdx

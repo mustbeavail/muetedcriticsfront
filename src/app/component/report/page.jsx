@@ -4,7 +4,7 @@ import Header from '../../../Header/page';
 import Menu from '../../../menu/Menu';
 import { IoSearch } from 'react-icons/io5';
 import './report.css';
-import axios from 'axios';
+import api from '../../utils/api';
 import Link from 'next/link';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -43,7 +43,7 @@ const Report = () => {
   }, [currentPage, statusFilter, sortOrder]);
 
   const getReportList = async () => {
-    const { data } = await axios.get(`${URL}/report/list`, {
+    const { data } = await api.get(`${URL}/report/list`, {
       params: {
         inquiryIdx: '',
         userId: searchText,
@@ -115,7 +115,7 @@ const Report = () => {
           {/* 테이블 영역 */}
           <div className="report-table">
             <div className="row header">
-              
+
               <div className="content-cell">내용</div>
               <div className="user-cell">신고자 ID</div>
               <div className="user-cell">피신고자 ID</div>
@@ -124,7 +124,7 @@ const Report = () => {
             </div>
             {currentReportList.map((report, index) => (
               <div className={`row ${report.status === "완료" ? "status-complete" : ''}`} key={index}>
-                
+
                 <div className="content-cell">
                   <Link className='report-detail-link' href={`/component/report/${report.inquiryIdx}`}>
                     {report.content}

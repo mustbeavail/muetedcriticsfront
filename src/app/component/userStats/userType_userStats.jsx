@@ -1,7 +1,7 @@
 'use client'
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from '../../utils/api';
 
 // API 서버 URL 환경변수
 const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -49,7 +49,7 @@ export default function UserType_UserStats() {
     const getUserCategoryStats = async (token, page, size, category) => {
         try {
             // API 호출
-            const { data } = await axios.get(`${URL}/get-user-category`, {
+            const { data } = await api.get(`${URL}/get-user-category`, {
                 headers: { Authorization: token },
                 params: {
                     page,        // 페이지 번호

@@ -4,7 +4,7 @@ import './inquiry.css';
 import Header from '../../../Header/page';
 import Menu from '../../../menu/Menu';
 import { IoSearch } from "react-icons/io5";
-import axios from 'axios';
+import api from '../../utils/api';
 import Link from 'next/link';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -12,7 +12,7 @@ const URL = process.env.NEXT_PUBLIC_API_URL;
 const Inquiry = () => {
   const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
   const memberId = typeof window !== "undefined" ? sessionStorage.getItem('member_id') : null;
-  
+
   // 로그인 체크
   useEffect(() => {
     if (!memberId || !token) {
@@ -45,7 +45,7 @@ const Inquiry = () => {
   }, [currentPage, categoryFilter, vipFilter, statusFilter, sortOrder]);
 
   const getInquiryList = async () => {
-    const { data } = await axios.get(`${URL}/inquiry/list`, {
+    const { data } = await api.get(`${URL}/inquiry/list`, {
       params: {
         inquiryIdx: '',
         userId: searchText,

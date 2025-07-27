@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import "./mail.css";
 import { IoSearch } from "react-icons/io5";
 import Link from "next/link";
-import axios from "axios";
+import api from '../../utils/api';
 import Header from "../../../Header/page";
 import Menu from "../../../menu/Menu";
 
@@ -57,7 +57,7 @@ export default function MailList() {
     const getList = async (token) => {
 
         try {
-            const { data } = await axios.get(`${URL}/mail/list`, {
+            const { data } = await api.get(`${URL}/mail/list`, {
                 headers: {
                     Authorization: token
                 },
@@ -93,7 +93,7 @@ export default function MailList() {
             return;
         }
         try {
-            const { data } = await axios.get(`${URL}/mail/search`, {
+            const { data } = await api.get(`${URL}/mail/search`, {
                 headers: {
                     Authorization: token
                 },

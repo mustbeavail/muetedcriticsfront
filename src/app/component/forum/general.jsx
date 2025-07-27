@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import axios from 'axios';
+import api from '../../utils/api';
 import forumStyles from './forum.module.css';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -25,7 +25,7 @@ export default function General({ token, forumPosts }) {
     const [userDetail, setUserDetail] = useState({});
     const getUserDetail = async (userId) => {
         if (userDetail[userId]) return;
-        const { data } = await axios.get(`${URL}/user/detail`, {
+        const { data } = await api.get(`${URL}/user/detail`, {
             params: { userId },
             headers: {
                 authorization: token
@@ -45,7 +45,7 @@ export default function General({ token, forumPosts }) {
         if (userTiers[userId]) return;
         const tiers = [];
         for (let season = 1; season <= 4; season++) {
-            const { data } = await axios.get(`${URL}/user/stats/season`, {
+            const { data } = await api.get(`${URL}/user/stats/season`, {
                 params: {
                     userId,
                     season: season
@@ -242,7 +242,7 @@ export default function General({ token, forumPosts }) {
         setShowMemoModal(true);
         setMemoLoading(true);
         try {
-            const { data } = await axios.get(`${URL}/user/${user.user_id}/list`, {
+            const { data } = await api.get(`${URL}/user/${user.user_id}/list`, {
                 headers: { Authorization: sessionStorage.getItem('token') }
             });
             setMemoList(data);
@@ -260,7 +260,7 @@ export default function General({ token, forumPosts }) {
             return;
         }
         try {
-            await axios.delete(`${URL}/user/${selectedMemo.memoIdx}/delete`, {
+            await api.delete(`${URL}/user/${selectedMemo.memoIdx}/delete`, {
                 headers: { Authorization: sessionStorage.getItem('token') },
                 data: { memberId: sessionStorage.getItem('member_id') }
             });
@@ -308,7 +308,7 @@ export default function General({ token, forumPosts }) {
     const writeMemo = async (userId, memoContent) => {
         console.log(userId);
         try {
-            const { data } = await axios.post(`${URL}/user/write/memo`, {
+            const { data } = await api.post(`${URL}/user/write/memo`, {
                 memberId: sessionStorage.getItem('member_id'),
                 userId: userId,
                 memo: memoContent
@@ -344,7 +344,7 @@ export default function General({ token, forumPosts }) {
         }
         console.log(selectedMemoUser);
         await writeMemo(selectedMemoUser.user_id, memoContent);
-        
+
         setShowWriteMemoModal(false);
         setMemoContent('');
         // 작성 후 바로 메모 리스트 새로고침 하려면 아래 추가
@@ -368,7 +368,7 @@ export default function General({ token, forumPosts }) {
     // 메모 수정하기
     const updateMemo = async (memoIdx, memoContent) => {
         try {
-            const { data } = await axios.put(`${URL}/user/${memoIdx}/update`, {
+            const { data } = await api.put(`${URL}/user/${memoIdx}/update`, {
                 memberId: sessionStorage.getItem('member_id'),
                 memo: memoContent
             },

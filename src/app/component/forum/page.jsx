@@ -4,7 +4,7 @@ import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
 import forumStyles from './forum.module.css';
 import { IoSearch } from 'react-icons/io5';
-import axios from 'axios';
+import api from '../../utils/api';
 
 import General from './general';
 import Competition from './competition';
@@ -34,7 +34,7 @@ const Forum = () => {
 
   // 포럼 리스트 불러오기
   const getForumList = async () => {
-    const { data } = await axios.get(`${URL}/forum/list`, {
+    const { data } = await api.get(`${URL}/forum/list`, {
       params: {
         page: currentPage,
         topic: currentTab === 'general' ? '일반' : '경쟁전',
@@ -75,7 +75,7 @@ const Forum = () => {
   const [isSearching, setIsSearching] = useState(false); // 검색 중인지 여부
   const forumSearch = async () => {
     setIsSearching(true);
-    const { data } = await axios.get(`${URL}/forum/search`, {
+    const { data } = await api.get(`${URL}/forum/search`, {
       params: {
         search: search, // 검색어
         searchType: searchType, // title, content, userId

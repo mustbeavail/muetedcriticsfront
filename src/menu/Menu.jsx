@@ -12,13 +12,32 @@ import {
 } from 'react-icons/fa';
 import { IoIosLogOut } from "react-icons/io";
 import { RiUserCommunityFill } from "react-icons/ri";
+import api from '../app/utils/api';
+import { useRouter } from 'next/navigation';
+
+const URL = process.env.NEXT_PUBLIC_API_URL;
 
 const Menu = () => {
   const [activeMenu, setActiveMenu] = useState(null);
-
+  const router = useRouter();
   const toggleMenu = (menu) => {
     setActiveMenu(prev => (prev === menu ? null : menu));
   };
+
+  // 로그아웃
+  const handleLogout = async () => {
+    const { data } = await api.post(`${URL}/member/logout`, {
+      member_id: sessionStorage.getItem('member_id'),
+    }, {
+      headers: { Authorization: sessionStorage.getItem('token') }
+    })
+    console.log(data);
+    if (data.success) {
+      router.push('/');
+    } else {
+      alert('로그아웃 실패');
+    }
+  }
 
   return (
     <>
@@ -83,7 +102,7 @@ const Menu = () => {
         </nav>
 
         <div>
-          <Link href="/" className={styles.menu_logout}>
+          <Link href="/" className={styles.menu_logout} onClick={handleLogout}>
             <IoIosLogOut />
           </Link>
         </div>

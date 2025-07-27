@@ -2,11 +2,11 @@
 
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaSearch, FaPlus } from 'react-icons/fa';
 import { FiSend, FiMoreVertical } from 'react-icons/fi';
 import useWebSocket from './webSocket';
-import axios from 'axios';
+import api from '../../utils/api';
 import './chat.css';
 
 const ChatPage = () => {
@@ -126,58 +126,58 @@ const ChatPage = () => {
         return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
     };
 
-    // 멤버 목록 조회 함수
-    const getMemberList = async (token) => {
-        const { data } = await axios.get(`${URL}/memberInfo/list/0`, {
-            headers: {
-                'Authorization': token
-            }
-        });
-        setMemberList(data.members.filter(member => member.memberId !== memberId && member.withdrawDate === null && member.acceptYn === true));
-        setDeptList([...new Set(data.members.map(member => member.deptName))]);
-    };
+  // 멤버 목록 조회 함수
+  const getMemberList = async (token) => {
+    const { data } = await api.get(`${URL}/memberInfo/list/0`, {
+      headers: {
+        'Authorization': token
+      }
+    });
+    setMemberList(data.members.filter(member => member.memberId !== memberId && member.withdrawDate === null && member.acceptYn === true));
+    setDeptList([...new Set(data.members.map(member => member.deptName))]);
+  };
 
-    // 채팅방 목록 조회 함수
-    const getChatRoomList = async (token) => {
-        try {
-            const { data } = await axios.get(`${URL}/rooms`, {
-                headers: {
-                    'Authorization': token
-                },
-                params: {
-                    sortBy: sortBy,
-                    memberId: memberId,
-                    searchKeyword: search,
-                    searchType: 'memberName'
-                }
-            });
-            setChatRoomList(data.content);
-            console.log(data.content);
-        } catch (error) {
-            alert('채팅방 목록 조회 실패, 다시 로그인 후 시도해주세요.');
-            location.href = '/';
-            return;
+  // 채팅방 목록 조회 함수
+  const getChatRoomList = async (token) => {
+    try {
+      const { data } = await api.get(`${URL}/rooms`, {
+        headers: {
+          'Authorization': token
+        },
+        params: {
+          sortBy: sortBy,
+          memberId: memberId,
+          searchKeyword: search,
+          searchType: 'memberName'
         }
-    };
+      });
+      setChatRoomList(data.content);
+      console.log(data.content);
+    } catch (error) {
+      alert('채팅방 목록 조회 실패, 다시 로그인 후 시도해주세요.');
+      location.href = '/';
+      return;
+    }
+  };
 
-    // 채팅 메시지 내역 조회 함수
-    const getChatMessageList = async (token, roomIdx) => {
-        try {
-            const { data } = await axios.get(`${URL}/room/${roomIdx}/messages`, {
-                headers: {
-                    'Authorization': token
-                }
-            });
-            console.log(data);
-            setMessages(data);
-            setFilteredMessages(data);
-            setTimeout(() => scrollToBottom(), 100);
-        } catch (error) {
-            alert('채팅 메시지 내역 조회 실패, 다시 로그인 후 시도해주세요.');
-            location.href = '/';
-            return;
+  // 채팅 메시지 내역 조회 함수
+  const getChatMessageList = async (token, roomIdx) => {
+    try {
+      const { data } = await api.get(`${URL}/room/${roomIdx}/messages`, {
+        headers: {
+          'Authorization': token
         }
-    };
+      });
+      console.log(data);
+      setMessages(data);
+      setFilteredMessages(data);
+      setTimeout(() => scrollToBottom(), 100);
+    } catch (error) {
+      alert('채팅 메시지 내역 조회 실패, 다시 로그인 후 시도해주세요.');
+      location.href = '/';
+      return;
+    }
+  };
 
     // 채팅방 선택 함수
     const handleRoomClick = (roomIdx) => {
@@ -189,16 +189,16 @@ const ChatPage = () => {
         setSelectedRoomsToLeave(prev => prev.includes(roomIdx) ? prev.filter(idx => idx !== roomIdx) : [...prev, roomIdx]);
     };
 
-    // 채팅방 나가기 함수
-    const LeaveSelectedRooms = async (roomIdxArray) => {
-        try {
-            // 모든 요청을 동시에 병렬로 처리
-            const promises = roomIdxArray.map(roomIdx =>
-                axios.post(`${URL}/room/${roomIdx}/leave`,
-                    { memberId: memberId },
-                    { headers: { 'Authorization': token } }
-                )
-            );
+  // 채팅방 나가기 함수
+  const LeaveSelectedRooms = async (roomIdxArray) => {
+    try {
+      // 모든 요청을 동시에 병렬로 처리
+      const promises = roomIdxArray.map(roomIdx =>
+        api.post(`${URL}/room/${roomIdx}/leave`,
+          { memberId: memberId },
+          { headers: { 'Authorization': token } }
+        )
+      );
 
             // 모든 요청이 완료될 때까지 대기
             const results = await Promise.all(promises);
@@ -217,24 +217,24 @@ const ChatPage = () => {
         }
     };
 
-    // 멤버 상세정보 조회 함수
-    const getMemberDetail = async (memberId) => {
-        try {
-            const { data } = await axios.get(`${URL}/memberInfo`, {
-                headers: {
-                    'Authorization': token
-                },
-                params: {
-                    member_id: memberId
-                }
-            });
-            setCurrentMemberDetail(data);
-        } catch (error) {
-            alert('멤버 상세정보 조회 실패, 다시 로그인 후 시도해주세요.');
-            location.href = '/';
-            return;
+  // 멤버 상세정보 조회 함수
+  const getMemberDetail = async (memberId) => {
+    try {
+      const { data } = await api.get(`${URL}/memberInfo`, {
+        headers: {
+          'Authorization': token
+        },
+        params: {
+          member_id: memberId
         }
-    };
+      });
+      setCurrentMemberDetail(data);
+    } catch (error) {
+      alert('멤버 상세정보 조회 실패, 다시 로그인 후 시도해주세요.');
+      location.href = '/';
+      return;
+    }
+  };
 
     // 모달 닫기 함수
     const handleCloseModal = () => {
@@ -243,28 +243,28 @@ const ChatPage = () => {
         setCurrentMemberDetail(null);
     };
 
-    // 채팅방 추가 함수
-    const createChatRoom = async (targetMemberId) => {
-        try {
-            const { data } = await axios.post(`${URL}/room/private`,
-                {
-                    targetMemberId: targetMemberId,
-                    memberId: memberId
-                },
-                {
-                    headers: {
-                        'Authorization': token
-                    }
-                }
-            );
-            getChatRoomList(token);
-            setShowAddMenu(false);
-        } catch (error) {
-            alert('채팅방 생성 실패, 다시 로그인 후 시도해주세요.');
-            location.href = '/';
-            return;
+  // 채팅방 추가 함수
+  const createChatRoom = async (targetMemberId) => {
+    try {
+      const { data } = await api.post(`${URL}/room/private`,
+        {
+          targetMemberId: targetMemberId,
+          memberId: memberId
+        },
+        {
+          headers: {
+            'Authorization': token
+          }
         }
-    };
+      );
+      getChatRoomList(token);
+      setShowAddMenu(false);
+    } catch (error) {
+      alert('채팅방 생성 실패, 다시 로그인 후 시도해주세요.');
+      location.href = '/';
+      return;
+    }
+  };
 
     return (
         <>

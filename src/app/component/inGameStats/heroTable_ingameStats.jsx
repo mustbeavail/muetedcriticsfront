@@ -1,5 +1,5 @@
 'use client'
-import axios from 'axios';
+import api from '../../utils/api';
 import React, { useEffect, useState, useMemo } from 'react';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -31,7 +31,7 @@ export default function HeroTable_IngameStats() {
     // 영웅 통계 데이터 불러오기
     const getHeroTableData = async (token, currentSortBy, currentSortOrder) => {
         try {
-            const { data } = await axios.get(`${URL}/get/hero-playtime-potg-item-count`, {
+            const { data } = await api.get(`${URL}/get/hero-playtime-potg-item-count`, {
                 headers: { Authorization: token },
                 params: {
                     sortBy: currentSortBy,

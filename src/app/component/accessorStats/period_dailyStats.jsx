@@ -1,5 +1,5 @@
 'use client';
-import axios from 'axios';
+import api from '../../utils/api';
 import { useState, useEffect } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { format } from 'date-fns';
@@ -29,7 +29,7 @@ export default function PeriodDailyStats() {
             return;
         }
 
-        const { data } = await axios.get(`${URL}/activity/periodDailyUser/${start}/${end}`, {
+        const { data } = await api.get(`${URL}/activity/periodDailyUser/${start}/${end}`, {
             params: { startDate: start, endDate: end },
             headers: { authorization: token }
         });
@@ -57,7 +57,7 @@ export default function PeriodDailyStats() {
     // useEffect(() => {
     //     if (!startDate || !endDate) return;
     //     const sendHistoricalStats = async () => {
-    //         const { data } = await axios.post(`${URL}/activity/historical`, null, {
+    //         const { data } = await api.post(`${URL}/activity/historical`, null, {
     //             params: {
     //                 startDate,
     //                 endDate

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import { IoIosNotificationsOutline, IoIosNotifications } from 'react-icons/io';
 import { FiArrowRightCircle, FiTrash2 } from 'react-icons/fi';
-import axios from 'axios';
+import api from '../app/utils/api';
 import useNotiWebSocket from './notiWebSocket';
 
 const Header = () => {
@@ -70,7 +70,7 @@ const Header = () => {
   // 알림 목록 가져오기
   const getNotiList = async (token, memberId) => {
     try {
-      const { data } = await axios.get(`${URL}/notice/chat/list`, {
+      const { data } = await api.get(`${URL}/notice/chat/list`, {
         headers: { Authorization: token },
         params: {
           memberId: memberId
@@ -85,7 +85,7 @@ const Header = () => {
   // 알림 읽음 처리
   const setNotiCheck = async (token, notiIdx) => {
     try {
-      const { data } = await axios.put(`${URL}/notice/read`,
+      const { data } = await api.put(`${URL}/notice/read`,
         { notiIdx: notiIdx },
         { headers: { Authorization: token } }
       );
@@ -109,7 +109,7 @@ const Header = () => {
 
   // 내 정보 가져오기
   const getMyInfo = async () => {
-    const { data } = await axios.get(`${URL}/memberInfo`,
+    const { data } = await api.get(`${URL}/memberInfo`,
       {
         headers: { Authorization: token },
         params: {

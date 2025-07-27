@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { FaCheck, FaEye, FaEyeSlash } from 'react-icons/fa';
 import Link from 'next/link';
-import axios from 'axios';
+import api from '../../utils/api';
 import './join.css';
 
 const JoinPage = () => {
@@ -70,7 +70,7 @@ const JoinPage = () => {
     setChecking(true);
     setIdCheckResult(null);
 
-    const { data } = await axios.post(`${URL}/member/overlay_id`, { member_id: formData.memberId });
+    const { data } = await api.post(`${URL}/member/overlay_id`, { member_id: formData.memberId });
     console.log(data);
 
     if (data.used) {
@@ -159,7 +159,7 @@ const JoinPage = () => {
     setErrorMsg('');
     console.log('가입 데이터:', formData);
 
-    const { data } = await axios.post(`${URL}/member/join`, formData);
+    const { data } = await api.post(`${URL}/member/join`, formData);
     console.log(data);
 
     if (data.success) {

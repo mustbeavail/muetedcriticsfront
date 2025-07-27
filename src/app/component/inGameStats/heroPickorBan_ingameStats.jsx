@@ -1,5 +1,5 @@
 "use client"
-import axios from 'axios';
+import api from '../../utils/api';
 import { format, subDays } from 'date-fns';
 import React, { useState, useMemo, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -28,7 +28,7 @@ export default function HeroPickorBan_IngameStats() {
     // 2. 영웅별 밴률 및 픽률 데이터 불러오기
     const getHeroPickOrBanData = async (token, startDate, endDate, sortOrder) => {
         try {
-            const { data } = await axios.get(`${URL}/get/hero-banpick-rate`, {
+            const { data } = await api.get(`${URL}/get/hero-banpick-rate`, {
                 headers: { Authorization: token },
                 params: {
                     startDate: startDate,

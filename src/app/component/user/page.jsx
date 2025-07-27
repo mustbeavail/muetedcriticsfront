@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { FaClock, FaGlobe } from 'react-icons/fa';
 import { FiMoreVertical } from 'react-icons/fi';
 import "./user.css";
+import api from '../../utils/api';
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
-import axios from 'axios';
 
 // API URL 환경변수
 const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -119,7 +119,7 @@ export default function User() {
       const tiers = [];
       // 시즌 1~4까지의 티어 정보 가져오기
       for (let season = 1; season <= 4; season++) {
-        const { data } = await axios.get(`${URL}/user/stats/season`, {
+        const { data } = await api.get(`${URL}/user/stats/season`, {
           params: { userId, season },
           headers: { authorization: token }
         });
@@ -172,7 +172,7 @@ export default function User() {
       // 유저타입 있을 때만 파라미터 추가 (전체 제외)
       if (userType && userType !== '전체') params.userType = userType;
 
-      const { data } = await axios.get(`${URL}/user/list`, {
+      const { data } = await api.get(`${URL}/user/list`, {
         headers: { Authorization: token },
         params,
       });
@@ -192,7 +192,7 @@ export default function User() {
     setShowMemoModal(true);
     setMemoLoading(true);
     try {
-      const { data } = await axios.get(`${URL}/user/${user.userId}/list`, {
+      const { data } = await api.get(`${URL}/user/${user.userId}/list`, {
         headers: { Authorization: sessionStorage.getItem('token') }
       });
       setMemoList(data);
@@ -206,7 +206,7 @@ export default function User() {
   // 메모 작성하기 (API 호출)
   const writeMemo = async (userId, memoContent) => {
     try {
-      const { data } = await axios.post(`${URL}/user/write/memo`, {
+      const { data } = await api.post(`${URL}/user/write/memo`, {
         memberId: sessionStorage.getItem('member_id'),
         userId: userId,
         memo: memoContent
@@ -280,7 +280,7 @@ export default function User() {
   // 메모 수정하기 (API 호출)
   const updateMemo = async (memoIdx, memoContent) => {
     try {
-      const { data } = await axios.put(`${URL}/user/${memoIdx}/update`, {
+      const { data } = await api.put(`${URL}/user/${memoIdx}/update`, {
         memberId: sessionStorage.getItem('member_id'),
         memo: memoContent
       },
@@ -311,7 +311,7 @@ export default function User() {
       return;
     }
     try {
-      await axios.delete(`${URL}/user/${selectedMemo.memoIdx}/delete`, {
+      await api.delete(`${URL}/user/${selectedMemo.memoIdx}/delete`, {
         headers: { Authorization: sessionStorage.getItem('token') },
         data: { memberId: sessionStorage.getItem('member_id') }
       });
@@ -405,7 +405,7 @@ export default function User() {
       return;
     }
     try {
-      const { data } = await axios.get(`${URL}/user/detail`, {
+      const { data } = await api.get(`${URL}/user/detail`, {
         headers: { Authorization: sessionStorage.getItem('token') },
         params: { userId: userId }
       });

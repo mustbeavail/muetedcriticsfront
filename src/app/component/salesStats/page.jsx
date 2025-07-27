@@ -9,7 +9,7 @@ import DailyInterval from './dailyInterval';
 import Pu from './pu';
 import OtherTable from './otherTable';
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from '../../utils/api';
 import { subMonths } from 'date-fns';
 
 export default function RevenueChart() {
@@ -59,13 +59,13 @@ export default function RevenueChart() {
         const memberId = sessionStorage.getItem("member_id");
         const tokenRaw = sessionStorage.getItem("token");
         const adminRaw = sessionStorage.getItem("admin_yn");
-        const deptRaw  = sessionStorage.getItem("dept_name");
-      
+        const deptRaw = sessionStorage.getItem("dept_name");
+
         if (!memberId || !tokenRaw || !adminRaw || !deptRaw) {
-          alert("로그인 후 이용해주세요.");
-          return void (location.href = "/");
+            alert("로그인 후 이용해주세요.");
+            return void (location.href = "/");
         }
-      
+
         // state에 세팅
         setMemberId(memberId);
         setToken(tokenRaw);
@@ -90,7 +90,7 @@ export default function RevenueChart() {
         setPuEndDate(today);
 
         setInitialized(true);
-      
+
     }, []);
 
     const wrap = async fn => {
@@ -100,17 +100,17 @@ export default function RevenueChart() {
     };
 
     // 날짜 초기화되면 함수 실행
-    useEffect (()=>{
+    useEffect(() => {
         if (!initialized) return;
         if (adminYn || dept === "마케팅팀" || dept === "개발팀") {
 
-            wrap(()=>getLtv(token, ltvStartDate, ltvEndDate));
-            wrap(()=>getSalesByPeriod(token, periodStartDate, periodEndDate));
-            wrap(()=>getArpu(token, arpuStartDate, arpuEndDate));
-            wrap(()=>getArppu(token, arppuStartDate, arppuEndDate));
-            wrap(()=>getInterval(token, intervalStartDate, intervalEndDate));
-            wrap(()=>getPu(token, puStartDate, puEndDate));
-            wrap(()=>getSummary(token));
+            wrap(() => getLtv(token, ltvStartDate, ltvEndDate));
+            wrap(() => getSalesByPeriod(token, periodStartDate, periodEndDate));
+            wrap(() => getArpu(token, arpuStartDate, arpuEndDate));
+            wrap(() => getArppu(token, arppuStartDate, arppuEndDate));
+            wrap(() => getInterval(token, intervalStartDate, intervalEndDate));
+            wrap(() => getPu(token, puStartDate, puEndDate));
+            wrap(() => getSummary(token));
             setIsLoading(false);
 
         } else {
@@ -123,27 +123,27 @@ export default function RevenueChart() {
     const format3digits = (num) => {
         // 항상 소수점 아래 둘째 자리까지 표시
         const [intPart, decPart] = Number(num).toFixed(2).split('.');
-        
+
         // 정수 부분만 3자리마다 콤마 삽입
         const withCommas = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        
+
         return `${withCommas}.${decPart}`;
-      }
+    }
 
     // LTV
-    const getLtv = async(token, startDate, endDate) => {
+    const getLtv = async (token, startDate, endDate) => {
         if (startDate > endDate) {
             alert('시작일은 종료일보다 이전 날짜여야 합니다.');
             return;
         }
-        try{
-            const {data} = await axios.get(`${URL}/revenue/LTV`, {
-                headers : {
+        try {
+            const { data } = await api.get(`${URL}/revenue/LTV`, {
+                headers: {
                     Authorization: token
                 },
-                params : {
-                    startDate : startDate,
-                    endDate : endDate
+                params: {
+                    startDate: startDate,
+                    endDate: endDate
                 }
             });
             const prettyApv = format3digits(data.APV);
@@ -154,7 +154,7 @@ export default function RevenueChart() {
             setApf(prettyApf);
             setAcl(prettyAcl);
             setLtv(prettyLtv);
-        } catch(error) {
+        } catch (error) {
             alert("LTV 조회중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
             return;
@@ -168,19 +168,19 @@ export default function RevenueChart() {
             alert('시작일은 종료일보다 이전 날짜여야 합니다.');
             return;
         }
-        try{
-            const {data} = await axios.get(`${URL}/revenue/period`, {
-                headers : {
+        try {
+            const { data } = await api.get(`${URL}/revenue/period`, {
+                headers: {
                     Authorization: token
                 },
-                params : {
-                    startDate : startDate,
-                    endDate : endDate
+                params: {
+                    startDate: startDate,
+                    endDate: endDate
                 }
             });
-            console.log("기간별 판매액",data);
+            console.log("기간별 판매액", data);
             setSalesByPeriod(data.list);
-        } catch(error) {
+        } catch (error) {
             alert("기간별 판매액 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
             return;
@@ -193,19 +193,19 @@ export default function RevenueChart() {
             alert('시작일은 종료일보다 이전 날짜여야 합니다.');
             return;
         }
-        try{
-            const {data} = await axios.get(`${URL}/revenue/ARPU`, {
-                headers : {
+        try {
+            const { data } = await api.get(`${URL}/revenue/ARPU`, {
+                headers: {
                     Authorization: token
                 },
-                params : {
-                    startDate : startDate,
-                    endDate : endDate
+                params: {
+                    startDate: startDate,
+                    endDate: endDate
                 }
             });
-            console.log("ARPU",data);
+            console.log("ARPU", data);
             setArpu(data.list);
-        } catch(error) {
+        } catch (error) {
             alert("ARPU 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
             return;
@@ -218,19 +218,19 @@ export default function RevenueChart() {
             alert('시작일은 종료일보다 이전 날짜여야 합니다.');
             return;
         }
-        try{
-            const {data} = await axios.get(`${URL}/revenue/ARPPU`, {
-                headers : {
+        try {
+            const { data } = await api.get(`${URL}/revenue/ARPPU`, {
+                headers: {
                     Authorization: token
                 },
-                params : {
-                    startDate : startDate,
-                    endDate : endDate
+                params: {
+                    startDate: startDate,
+                    endDate: endDate
                 }
             });
-            console.log("ARPPU",data);
+            console.log("ARPPU", data);
             setArppu(data.list);
-        } catch(error) {
+        } catch (error) {
             alert("ARPPU 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
             return;
@@ -243,19 +243,19 @@ export default function RevenueChart() {
             alert('시작일은 종료일보다 이전 날짜여야 합니다.');
             return;
         }
-        try{
-            const {data} = await axios.get(`${URL}/revenue/purchaseInterval`, {
-                headers : {
+        try {
+            const { data } = await api.get(`${URL}/revenue/purchaseInterval`, {
+                headers: {
                     Authorization: token
                 },
-                params : {
-                    startDate : startDate,
-                    endDate : endDate
+                params: {
+                    startDate: startDate,
+                    endDate: endDate
                 }
             });
-            console.log("평균 구매간격",data);
+            console.log("평균 구매간격", data);
             setInterval(data.list);
-        } catch(error) {
+        } catch (error) {
             alert("평균 구매간격 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
             return;
@@ -268,19 +268,19 @@ export default function RevenueChart() {
             alert('시작일은 종료일보다 이전 날짜여야 합니다.');
             return;
         }
-        try{
-            const {data} = await axios.get(`${URL}/revenue/PU`, {
-                headers : {
+        try {
+            const { data } = await api.get(`${URL}/revenue/PU`, {
+                headers: {
                     Authorization: token
                 },
-                params : {
-                    startDate : startDate,
-                    endDate : endDate
+                params: {
+                    startDate: startDate,
+                    endDate: endDate
                 }
             });
-            console.log("PU",data);
+            console.log("PU", data);
             setPu(data.list);
-        } catch(error) {
+        } catch (error) {
             alert("PU 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
             return;
@@ -289,15 +289,15 @@ export default function RevenueChart() {
 
     // 세부 통계 테이블(전체기간 매출통계)
     const getSummary = async (token) => {
-        try{
-            const {data} = await axios.get(`${URL}/revenue/total`, {
-                headers : {
+        try {
+            const { data } = await api.get(`${URL}/revenue/total`, {
+                headers: {
                     Authorization: token
                 }
             });
-            console.log("세부 통계 테이블",data);
+            console.log("세부 통계 테이블", data);
             setSummary(data);
-        } catch(error) {
+        } catch (error) {
             alert("세부 통계 테이블 조회 중 오류 발생 다시 로그인 후 시도해주세요.");
             location.href = "/";
             return;
@@ -310,14 +310,14 @@ export default function RevenueChart() {
 
     return (
         <>
-            <Header/>
+            <Header />
             <Menu />
             <div className="common-container">
                 <span className={"salesStats-mainTitle"}>매출 통계</span>
                 <div className={"salesStats-filterBox"}>
-                    기간 시작일 <input type="date" value={ltvStartDate} onChange={(e)=>{setLtvStartDate(e.target.value)}}/>
-                    기간 종료일 <input type="date" value={ltvEndDate} onChange={(e)=>{setLtvEndDate(e.target.value)}}/>
-                    <button onClick={()=>{getLtv(token, ltvStartDate, ltvEndDate)}}>조회</button>
+                    기간 시작일 <input type="date" value={ltvStartDate} onChange={(e) => { setLtvStartDate(e.target.value) }} />
+                    기간 종료일 <input type="date" value={ltvEndDate} onChange={(e) => { setLtvEndDate(e.target.value) }} />
+                    <button onClick={() => { getLtv(token, ltvStartDate, ltvEndDate) }}>조회</button>
                 </div>
                 <div className="salesStats-card-container">
                     <div className="salesStats-card">
@@ -339,48 +339,48 @@ export default function RevenueChart() {
                 </div>
 
                 <SalesByPeriod
-                token={token}
-                periodStartDate={periodStartDate} setPeriodStartDate={setPeriodStartDate}
-                periodEndDate={periodEndDate} setPeriodEndDate={setPeriodEndDate}
-                getSalesByPeriod={getSalesByPeriod} salesByPeriod={salesByPeriod}
-                today={today}
+                    token={token}
+                    periodStartDate={periodStartDate} setPeriodStartDate={setPeriodStartDate}
+                    periodEndDate={periodEndDate} setPeriodEndDate={setPeriodEndDate}
+                    getSalesByPeriod={getSalesByPeriod} salesByPeriod={salesByPeriod}
+                    today={today}
                 />
 
                 <Arpu
-                token={token}
-                arpuStartDate={arpuStartDate} setArpuStartDate={setArpuStartDate}
-                arpuEndDate={arpuEndDate} setArpuEndDate={setArpuEndDate}
-                getArpu={getArpu} arpu={arpu}
-                today={today}
+                    token={token}
+                    arpuStartDate={arpuStartDate} setArpuStartDate={setArpuStartDate}
+                    arpuEndDate={arpuEndDate} setArpuEndDate={setArpuEndDate}
+                    getArpu={getArpu} arpu={arpu}
+                    today={today}
                 />
 
                 <Arppu
-                token={token}
-                arppuStartDate={arppuStartDate} setArppuStartDate={setArppuStartDate}
-                arppuEndDate={arppuEndDate} setArppuEndDate={setArppuEndDate}
-                getArppu={getArppu} arppu={arppu}
-                today={today}
+                    token={token}
+                    arppuStartDate={arppuStartDate} setArppuStartDate={setArppuStartDate}
+                    arppuEndDate={arppuEndDate} setArppuEndDate={setArppuEndDate}
+                    getArppu={getArppu} arppu={arppu}
+                    today={today}
                 />
 
                 <DailyInterval
-                token={token}
-                intervalStartDate={intervalStartDate} setIntervalStartDate={setIntervalStartDate}
-                intervalEndDate={intervalEndDate} setIntervalEndDate={setIntervalEndDate}
-                getInterval={getInterval} interval={interval}
-                today={today}
+                    token={token}
+                    intervalStartDate={intervalStartDate} setIntervalStartDate={setIntervalStartDate}
+                    intervalEndDate={intervalEndDate} setIntervalEndDate={setIntervalEndDate}
+                    getInterval={getInterval} interval={interval}
+                    today={today}
                 />
 
                 <Pu
-                token={token}
-                puStartDate={puStartDate} setPuStartDate={setPuStartDate}
-                puEndDate={puEndDate} setPuEndDate={setPuEndDate}
-                getPu={getPu} pu={pu}
-                today={today}
+                    token={token}
+                    puStartDate={puStartDate} setPuStartDate={setPuStartDate}
+                    puEndDate={puEndDate} setPuEndDate={setPuEndDate}
+                    getPu={getPu} pu={pu}
+                    today={today}
                 />
 
                 <OtherTable
-                format3digits={format3digits}
-                summary={summary}/>
+                    format3digits={format3digits}
+                    summary={summary} />
             </div>
         </>
     );
