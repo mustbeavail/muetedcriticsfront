@@ -1,7 +1,7 @@
 'use client'
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
+import api from '../../utils/api';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -38,7 +38,7 @@ export default function Usertype_Tier_UserStats() {
     // 영웅 정보 불러오기(최초 1회)
     const getHeroData = async (token) => {
         try {
-            const { data } = await axios.get(`${URL}/get/hero-data`, {
+            const { data } = await api.get(`${URL}/get/hero-data`, {
                 headers: { Authorization: token }
             });
             setHeroData(data);
@@ -69,7 +69,7 @@ export default function Usertype_Tier_UserStats() {
         const token = sessionStorage.getItem('token');
         if (!token) return;
         try {
-            const { data } = await axios.get(`${URL}/user-tier-stats`, {
+            const { data } = await api.get(`${URL}/user-tier-stats`, {
                 headers: { Authorization: token },
                 params: makeParams()
             });
@@ -110,7 +110,7 @@ export default function Usertype_Tier_UserStats() {
         if (!token) return;
         const fetchUsers = async () => {
             try {
-                const { data } = await axios.get(`${URL}/user-tier-stats`, {
+                const { data } = await api.get(`${URL}/user-tier-stats`, {
                     headers: { Authorization: token },
                     params: makeParams(selectedTier, currentPage, 10)
                 });

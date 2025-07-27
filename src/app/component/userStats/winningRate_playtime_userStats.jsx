@@ -1,8 +1,7 @@
 'use client'
-import { IoSearch } from "react-icons/io5";
 import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import axios from "axios";
+import api from '../../utils/api';
 import { format } from 'date-fns';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -43,7 +42,7 @@ export default function WinningRate_Playtime_UserStats() {
     // 유저 승리, 패배, 승률 조회   
     const getUserStatsOverview = async (token, userId, startDate, endDate) => {
         try {
-            const { data } = await axios.get(`${URL}/user-stats/overview`, {
+            const { data } = await api.get(`${URL}/user-stats/overview`, {
                 headers: { Authorization: token },
                 params: {
                     userId: userId,

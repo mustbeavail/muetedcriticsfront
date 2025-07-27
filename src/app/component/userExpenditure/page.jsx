@@ -4,7 +4,7 @@ import React, { useEffect, useState, Suspense } from 'react';
 import './userExpenditure.css';
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
-import axios from 'axios';
+import api from '../../utils/api';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 // API URL 환경변수
@@ -62,7 +62,7 @@ function UserExpenditureContent() {
         const getUserExpenditure = async () => {
             try {
                 // API 호출하여 사용자 지출 데이터 가져오기
-                const { data } = await axios.get(`${URL}/user/spending`, {
+                const { data } = await api.get(`${URL}/user/spending`, {
                     headers: { Authorization: token },
                     params: { userId }
                 });

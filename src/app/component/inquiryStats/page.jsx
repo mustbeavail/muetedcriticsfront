@@ -5,7 +5,7 @@ import Header from '../../../Header/page';
 import Menu from '../../../menu/Menu';
 import All_InquiryStats from './all_inquiryStats';
 import Period_InquiryStats from './period_inquiryStats';
-import axios from 'axios';
+import api from '../../utils/api';
 import { useRouter } from 'next/navigation';
 import { format, subDays } from 'date-fns';
 
@@ -49,7 +49,7 @@ const InquiryStats = () => {
   // 신고/문의 전체 불러오기
   const getInquiryStatsAll = async (token) => {
     try {
-      const { data } = await axios.get(`${URL}/inquiry/stats/all`, {
+      const { data } = await api.get(`${URL}/inquiry/stats/all`, {
         headers: {
           Authorization: token
         }
@@ -66,7 +66,7 @@ const InquiryStats = () => {
   // 신고/문의 기간별 불러오기
   const getInquiryStatsPeriod = async (token, start, end) => {
     try {
-      const { data } = await axios.get(`${URL}/inquiry/stats`, {
+      const { data } = await api.get(`${URL}/inquiry/stats`, {
         headers: { Authorization: token },
         params: {
           startDate: start,
