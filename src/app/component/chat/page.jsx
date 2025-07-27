@@ -148,7 +148,7 @@ const ChatPage = () => {
 
     // 채팅 알림이오면 채팅방 리스트 재조회
     const handleNewNotiReceived = () => {
-        getChatRoomList(token);
+        setTimeout(() => getChatRoomList(token), 100);
     };
 
     // 멤버 목록 조회 함수
