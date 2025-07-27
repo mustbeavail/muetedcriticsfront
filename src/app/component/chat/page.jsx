@@ -2,10 +2,9 @@
 
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
-import React, { useState, useMemo, useEffect } from 'react';
-import { FaSearch, FaPlus, FaThumbtack } from 'react-icons/fa';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { FaSearch, FaPlus } from 'react-icons/fa';
 import { FiSend, FiMoreVertical } from 'react-icons/fi';
-import { FaCheck, FaTimes, FaEdit } from 'react-icons/fa';
 import useWebSocket from './webSocket';
 import axios from 'axios';
 import './chat.css';
@@ -32,7 +31,14 @@ const ChatPage = () => {
   const [initialized, setInitialized] = useState(false);
   const [messages, setMessages] = useState([]);
   const [filteredMessages, setFilteredMessages] = useState([]);
-  const [sendCnt, setSendCnt] = useState(0);
+  const chatBodyRef = useRef(null);
+
+  // 스크롤을 맨 밑으로 이동하는 함수
+  const scrollToBottom = () => {
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
+  };
 
   // 메시지 수신 핸들러
   const handleMessageReceived = (newMessage) => {
@@ -41,11 +47,10 @@ const ChatPage = () => {
       setMessages(prev => {
         const exists = prev.some(msg => msg.msgIdx === newMessage.msgIdx);
         if (exists) return prev;
-        setSendCnt(prev => prev + 1);
         return [...prev, newMessage];
       });
       // 검색 조건 확인 후 필터링된 메시지에 추가
-      if (!messageSearch || newMessage.msgContent.includes(messageSearch)) {
+      if (messageSearch === '' || newMessage.msgContent.includes(messageSearch)) {
         setFilteredMessages(prev => {
           const exists = prev.some(msg => msg.msgIdx === newMessage.msgIdx);
           if (exists) return prev;
@@ -56,7 +61,7 @@ const ChatPage = () => {
   };
   // 웹소켓 훅 사용
   const { sendMessage, isConnected } = useWebSocket({
-    token, memberId, setSendCnt,
+    token, memberId,
     currentRoomIdx: currentRoom?.roomIdx,
     onMessageReceived: handleMessageReceived
   });
@@ -82,7 +87,7 @@ const ChatPage = () => {
     if (!initialized) return;
     getChatRoomList(token);
     getMemberList(token);
-  }, [initialized, sendCnt]);
+  }, [initialized]);
 
   // 정렬기준, 검색어 바뀔때마다 채팅방 목록 조회
   useEffect(() => {
@@ -95,7 +100,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (!initialized || !currentRoom) return;
     getChatMessageList(token, currentRoom.roomIdx);
-  }, [currentRoom, sendCnt]);
+  }, [currentRoom]);
 
   // 메시지 검색 시 메시지 내역 조회
   useEffect(() => {
@@ -163,8 +168,10 @@ const ChatPage = () => {
         'Authorization': token
       }
     });
+    console.log(data);
       setMessages(data);
       setFilteredMessages(data);
+      setTimeout(() => scrollToBottom(), 100);
     } catch (error) {
       alert('채팅 메시지 내역 조회 실패, 다시 로그인 후 시도해주세요.');
       location.href = '/';
@@ -447,7 +454,7 @@ const ChatPage = () => {
                 </div>
 
                 {/* 메시지 목록 표시 영역 */}
-                <div className="chat_chatBody">
+                <div className="chat_chatBody" ref={chatBodyRef}>
                   {filteredMessages.length === 0 && <div className="chat_noMsg">대화가 없습니다.</div>}
                   {filteredMessages.map(msg => (
                     <div
