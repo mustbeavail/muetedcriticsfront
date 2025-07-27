@@ -7,6 +7,7 @@ const useNotiWebSocket = ({ token, memberId, onNotiReceived }) => {
 
     const [isConnected, setIsConnected] = useState(false);
     const [stompClient, setStompClient] = useState(null);
+    const [newMsgFlag, setNewMsgFlag] = useState(0);
 
     useEffect(() => {
 
@@ -60,6 +61,7 @@ const useNotiWebSocket = ({ token, memberId, onNotiReceived }) => {
             // 알림을 page.jsx로 전달
             if (onNotiReceived) {
                 onNotiReceived(receivedNoti);
+                setNewMsgFlag(prev => prev + 1);
             }
         });
 
@@ -70,7 +72,7 @@ const useNotiWebSocket = ({ token, memberId, onNotiReceived }) => {
         };
     }, [stompClient, isConnected, memberId]);
 
-    return { isConnected };
+    return { isConnected, newMsgFlag };
 }
 
 export default useNotiWebSocket;

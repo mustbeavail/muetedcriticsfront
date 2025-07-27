@@ -8,7 +8,7 @@ import { FiArrowRightCircle, FiTrash2 } from 'react-icons/fi';
 import api from '../app/utils/api';
 import useNotiWebSocket from './notiWebSocket';
 
-const Header = () => {
+const Header = ({ wholeNotiFlag = 0, onNewNotiReceived = null }) => {
 
   const router = useRouter();
   const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -27,6 +27,7 @@ const Header = () => {
 
   const toggleNotificationModal = () => setShowNotificationModal(prev => !prev);
 
+  // 알림 클릭 시 채팅방 이동
   const goToChatRoom = (idx) => {
     setNotiCheck(token, idx);
     router.push(`/component/chat`);
@@ -49,6 +50,9 @@ const Header = () => {
       if (exists) return prev;
       return [...prev, newNoti];
     });
+    if (onNewNotiReceived) {
+      onNewNotiReceived();
+    }
   };
 
   // 알림 웹소켓 훅 사용
@@ -56,9 +60,9 @@ const Header = () => {
 
   // 알림 읽음처리시 알림 목록 갱신
   useEffect(() => {
-    if (notiFlag === 0) return;
+    if (notiFlag === 0 && wholeNotiFlag === 0) return;
     getNotiList(token, memberId);
-  }, [notiFlag]);
+  }, [notiFlag, wholeNotiFlag]);
 
   // 내 정보 띄우기
   useEffect(() => {

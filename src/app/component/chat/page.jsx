@@ -32,6 +32,7 @@ const ChatPage = () => {
     const [messages, setMessages] = useState([]);
     const [filteredMessages, setFilteredMessages] = useState([]);
     const chatBodyRef = useRef(null);
+    const [notiFlag, setNotiFlag] = useState(0);
 
     // 스크롤을 맨 밑으로 이동하는 함수
     const scrollToBottom = () => {
@@ -57,6 +58,8 @@ const ChatPage = () => {
                     return [...prev, newMessage];
                 });
             }
+            setTimeout(() => scrollToBottom(), 100);
+            readNotiByRoomIdx(currentRoom.roomIdx);
         }
     };
     // 웹소켓 훅 사용
@@ -75,7 +78,6 @@ const ChatPage = () => {
             setToken(tokenRaw);
             setMemberId(memberIdRaw);
             setInitialized(true);
-
         } else {
             alert('로그인 후 이용해주세요.');
             location.href = '/';
@@ -96,10 +98,11 @@ const ChatPage = () => {
     }, [sortBy, search]);
 
 
-    // 채팅방 선택 시 메시지 내역 조회
+    // 채팅방 선택 시 메시지 내역 조회 및 해당하는 알림 읽음 처리
     useEffect(() => {
         if (!initialized || !currentRoom) return;
         getChatMessageList(token, currentRoom.roomIdx);
+        readNotiByRoomIdx(currentRoom.roomIdx);
     }, [currentRoom]);
 
     // 메시지 검색 시 메시지 내역 조회
@@ -126,58 +129,80 @@ const ChatPage = () => {
         return `${datePart} ${timePart}`; // 날짜와 시간 조합하여 반환
     };
 
-  // 멤버 목록 조회 함수
-  const getMemberList = async (token) => {
-    const { data } = await api.get(`${URL}/memberInfo/list/0`, {
-      headers: {
-        'Authorization': token
-      }
-    });
-    setMemberList(data.members.filter(member => member.memberId !== memberId && member.withdrawDate === null && member.acceptYn === true));
-    setDeptList([...new Set(data.members.map(member => member.deptName))]);
-  };
-
-  // 채팅방 목록 조회 함수
-  const getChatRoomList = async (token) => {
-    try {
-      const { data } = await api.get(`${URL}/rooms`, {
-        headers: {
-          'Authorization': token
-        },
-        params: {
-          sortBy: sortBy,
-          memberId: memberId,
-          searchKeyword: search,
-          searchType: 'memberName'
+    // 채팅방 입장시 해당 알림 일괄 읽음처리
+    const readNotiByRoomIdx = async (roomIdx) => {
+        try {
+            const { data } = await api.put(`${URL}/notice/read/all`,
+                {
+                    memberId: memberId,
+                    roomIdx: roomIdx
+                },
+                {
+                    headers: { Authorization: token }
+                });
+            setNotiFlag(prev => prev + 1);
+        } catch (error) {
+            alert("알림 읽음 처리를 실패했습니다.");
         }
-      });
-      setChatRoomList(data.content);
-      console.log(data.content);
-    } catch (error) {
-      alert('채팅방 목록 조회 실패, 다시 로그인 후 시도해주세요.');
-      location.href = '/';
-      return;
-    }
-  };
+    };
 
-  // 채팅 메시지 내역 조회 함수
-  const getChatMessageList = async (token, roomIdx) => {
-    try {
-      const { data } = await api.get(`${URL}/room/${roomIdx}/messages`, {
-        headers: {
-          'Authorization': token
+    // 채팅 알림이오면 채팅방 리스트 재조회
+    const handleNewNotiReceived = () => {
+        getChatRoomList(token);
+    };
+
+    // 멤버 목록 조회 함수
+    const getMemberList = async (token) => {
+        const { data } = await api.get(`${URL}/memberInfo/list/0`, {
+            headers: {
+                'Authorization': token
+            }
+        });
+        setMemberList(data.members.filter(member => member.memberId !== memberId && member.withdrawDate === null && member.acceptYn === true));
+        setDeptList([...new Set(data.members.map(member => member.deptName))]);
+    };
+
+    // 채팅방 목록 조회 함수
+    const getChatRoomList = async (token) => {
+        try {
+            const { data } = await api.get(`${URL}/rooms`, {
+                headers: {
+                    'Authorization': token
+                },
+                params: {
+                    sortBy: sortBy,
+                    memberId: memberId,
+                    searchKeyword: search,
+                    searchType: 'memberName'
+                }
+            });
+            setChatRoomList(data.content);
+            console.log(data.content);
+        } catch (error) {
+            alert('채팅방 목록 조회 실패, 다시 로그인 후 시도해주세요.');
+            location.href = '/';
+            return;
         }
-      });
-      console.log(data);
-      setMessages(data);
-      setFilteredMessages(data);
-      setTimeout(() => scrollToBottom(), 100);
-    } catch (error) {
-      alert('채팅 메시지 내역 조회 실패, 다시 로그인 후 시도해주세요.');
-      location.href = '/';
-      return;
-    }
-  };
+    };
+
+    // 채팅 메시지 내역 조회 함수
+    const getChatMessageList = async (token, roomIdx) => {
+        try {
+            const { data } = await api.get(`${URL}/room/${roomIdx}/messages`, {
+                headers: {
+                    'Authorization': token
+                }
+            });
+            console.log(data);
+            setMessages(data);
+            setFilteredMessages(data);
+            setTimeout(() => scrollToBottom(), 100);
+        } catch (error) {
+            alert('채팅 메시지 내역 조회 실패, 다시 로그인 후 시도해주세요.');
+            location.href = '/';
+            return;
+        }
+    };
 
     // 채팅방 선택 함수
     const handleRoomClick = (roomIdx) => {
@@ -189,16 +214,16 @@ const ChatPage = () => {
         setSelectedRoomsToLeave(prev => prev.includes(roomIdx) ? prev.filter(idx => idx !== roomIdx) : [...prev, roomIdx]);
     };
 
-  // 채팅방 나가기 함수
-  const LeaveSelectedRooms = async (roomIdxArray) => {
-    try {
-      // 모든 요청을 동시에 병렬로 처리
-      const promises = roomIdxArray.map(roomIdx =>
-        api.post(`${URL}/room/${roomIdx}/leave`,
-          { memberId: memberId },
-          { headers: { 'Authorization': token } }
-        )
-      );
+    // 채팅방 나가기 함수
+    const LeaveSelectedRooms = async (roomIdxArray) => {
+        try {
+            // 모든 요청을 동시에 병렬로 처리
+            const promises = roomIdxArray.map(roomIdx =>
+                api.post(`${URL}/room/${roomIdx}/leave`,
+                    { memberId: memberId },
+                    { headers: { 'Authorization': token } }
+                )
+            );
 
             // 모든 요청이 완료될 때까지 대기
             const results = await Promise.all(promises);
@@ -217,24 +242,24 @@ const ChatPage = () => {
         }
     };
 
-  // 멤버 상세정보 조회 함수
-  const getMemberDetail = async (memberId) => {
-    try {
-      const { data } = await api.get(`${URL}/memberInfo`, {
-        headers: {
-          'Authorization': token
-        },
-        params: {
-          member_id: memberId
+    // 멤버 상세정보 조회 함수
+    const getMemberDetail = async (memberId) => {
+        try {
+            const { data } = await api.get(`${URL}/memberInfo`, {
+                headers: {
+                    'Authorization': token
+                },
+                params: {
+                    member_id: memberId
+                }
+            });
+            setCurrentMemberDetail(data);
+        } catch (error) {
+            alert('멤버 상세정보 조회 실패, 다시 로그인 후 시도해주세요.');
+            location.href = '/';
+            return;
         }
-      });
-      setCurrentMemberDetail(data);
-    } catch (error) {
-      alert('멤버 상세정보 조회 실패, 다시 로그인 후 시도해주세요.');
-      location.href = '/';
-      return;
-    }
-  };
+    };
 
     // 모달 닫기 함수
     const handleCloseModal = () => {
@@ -243,33 +268,33 @@ const ChatPage = () => {
         setCurrentMemberDetail(null);
     };
 
-  // 채팅방 추가 함수
-  const createChatRoom = async (targetMemberId) => {
-    try {
-      const { data } = await api.post(`${URL}/room/private`,
-        {
-          targetMemberId: targetMemberId,
-          memberId: memberId
-        },
-        {
-          headers: {
-            'Authorization': token
-          }
+    // 채팅방 추가 함수
+    const createChatRoom = async (targetMemberId) => {
+        try {
+            const { data } = await api.post(`${URL}/room/private`,
+                {
+                    targetMemberId: targetMemberId,
+                    memberId: memberId
+                },
+                {
+                    headers: {
+                        'Authorization': token
+                    }
+                }
+            );
+            getChatRoomList(token);
+            setShowAddMenu(false);
+        } catch (error) {
+            alert('채팅방 생성 실패, 다시 로그인 후 시도해주세요.');
+            location.href = '/';
+            return;
         }
-      );
-      getChatRoomList(token);
-      setShowAddMenu(false);
-    } catch (error) {
-      alert('채팅방 생성 실패, 다시 로그인 후 시도해주세요.');
-      location.href = '/';
-      return;
-    }
-  };
+    };
 
     return (
         <>
             {/* === 상단 네비게이션 === */}
-            <Header />
+            <Header wholeNotiFlag={notiFlag} onNewNotiReceived={handleNewNotiReceived} />
             <Menu />
 
             {/* === 메인 채팅 컨테이너 === */}
@@ -387,8 +412,8 @@ const ChatPage = () => {
                                                 key={room.roomIdx}
                                                 className={
                                                     `chat_roomItem ${checkboxClass}
-                      ${currentRoom?.roomIdx === room.roomIdx && !isCheckboxMode ? 'chat_activeRoom' : ''}
-                      ${isSelected ? 'chat_selectedRoom' : ''}`}
+                                                    ${currentRoom?.roomIdx === room.roomIdx && !isCheckboxMode ? 'chat_activeRoom' : ''}
+                                                    ${isSelected ? 'chat_selectedRoom' : ''}`}
                                                 onClick={() => {
                                                     if (isCheckboxMode) {
                                                         toggleRoomSelection(room.roomIdx);
@@ -492,6 +517,7 @@ const ChatPage = () => {
                                                             currentRoom.participants
                                                                 .filter(parti => parti.memberId !== memberId)[0].memberId,
                                                             message);
+                                                        setTimeout(() => getChatRoomList(token), 100);
                                                         setMessage('');
                                                     }
                                                 }}
@@ -504,6 +530,7 @@ const ChatPage = () => {
                                                     currentRoom.participants
                                                         .filter(parti => parti.memberId !== memberId)[0].memberId,
                                                     message);
+                                                setTimeout(() => getChatRoomList(token), 100);
                                                 setMessage('');
                                             }}
                                                 disabled={isCheckboxMode || message.trim() === ''}>
