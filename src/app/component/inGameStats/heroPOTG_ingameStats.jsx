@@ -1,5 +1,5 @@
 "use client"
-import axios from 'axios';
+import api from '../../utils/api';
 import { format } from 'date-fns';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -28,7 +28,7 @@ export default function HeroPOTG_IngameStats() {
     // 영웅별 최고의 플레이 비중 불러오기
     const getPotgData = async (token) => {
         try {
-            const { data } = await axios.get(`${URL}/get/hero-potg-rate`, {
+            const { data } = await api.get(`${URL}/get/hero-potg-rate`, {
                 headers: { Authorization: token },
                 params: {
                     sortOrder: sortOrder,

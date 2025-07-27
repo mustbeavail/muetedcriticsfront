@@ -1,7 +1,7 @@
 'use client';
 import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
-import axios from 'axios';
+import api from '../../utils/api';
 import React, { useEffect, useState } from 'react';
 import './member.css';
 
@@ -60,7 +60,7 @@ const Member = () => {
     }
 
     const queryString = params.toString();
-    const { data } = await axios.get(`${URL}/memberInfo/list/${page}${queryString ? `?${queryString}` : ''}`, {
+    const { data } = await api.get(`${URL}/memberInfo/list/${page}${queryString ? `?${queryString}` : ''}`, {
       headers: { authorization: token }
     });
     setMemberList(data);
@@ -91,7 +91,7 @@ const Member = () => {
   };
 
   const memberInfoUpdate = async () => {
-    const { data } = await axios.post(`${URL}/memberInfo/update/${selectedMember.memberId}`, {
+    const { data } = await api.post(`${URL}/memberInfo/update/${selectedMember.memberId}`, {
       email: selectedMember.email,
       member_name: selectedMember.memberName,
       office_phone: selectedMember.officePhone,
@@ -120,7 +120,7 @@ const Member = () => {
       if (!confirmRevoke) return;
 
       try {
-        const { data } = await axios.post(`${URL}/admin/revoke`, {
+        const { data } = await api.post(`${URL}/admin/revoke`, {
           memberId: selectedMember.memberId,
           requesterId: sessionStorage.getItem('member_id')
         }, {
@@ -149,7 +149,7 @@ const Member = () => {
       );
 
       if (!confirmGrant) return;
-      const { data } = await axios.get(`${URL}/admin/${selectedMember.memberId}`, {
+      const { data } = await api.get(`${URL}/admin/${selectedMember.memberId}`, {
         headers: { authorization: token }
       });
       if (data.success) {
@@ -172,7 +172,7 @@ const Member = () => {
     );
 
     if (!confirmAccept) return;
-    const { data } = await axios.get(`${URL}/admin/accept/${member.memberId}`, {
+    const { data } = await api.get(`${URL}/admin/accept/${member.memberId}`, {
       headers: { authorization: token }
     });
     if (data.success) {
@@ -187,7 +187,7 @@ const Member = () => {
     );
 
     if (!confirmReject) return;
-    const { data } = await axios.get(`${URL}/admin/reject/${member.memberId}`, {
+    const { data } = await api.get(`${URL}/admin/reject/${member.memberId}`, {
       headers: { authorization: token }
     });
     if (data.success) {
@@ -198,7 +198,7 @@ const Member = () => {
 
   // 회원과 채팅하기
   const chatWithMember = async (member) => {
-    const { data } = await axios.post(`${URL}/room/private/`, {
+    const { data } = await api.post(`${URL}/room/private/`, {
       memberId: memberId,
       targetMemberId: member.memberId
     }, {
@@ -225,7 +225,7 @@ const Member = () => {
     if (!confirmWithdraw) return;
 
     try {
-      const { data } = await axios.post(`${URL}/memberInfo/withdraw`, {
+      const { data } = await api.post(`${URL}/memberInfo/withdraw`, {
         memberId: member.memberId,
         requesterId: sessionStorage.getItem('member_id')
       }, {

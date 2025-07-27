@@ -1,8 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import axios from 'axios';
-import { getISOWeek, subWeeks } from 'date-fns';
+import api from '../../utils/api';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -84,7 +83,7 @@ export default function PeriodWeeklyStats() {
             return;
         }
 
-        const { data } = await axios.get(`${URL}/activity/periodWeeklyUser`, {
+        const { data } = await api.get(`${URL}/activity/periodWeeklyUser`, {
             params: {
                 fromYear: fY,
                 fromMonth: fM,

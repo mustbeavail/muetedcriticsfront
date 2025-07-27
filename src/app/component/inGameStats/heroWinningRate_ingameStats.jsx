@@ -1,5 +1,5 @@
 "use client"
-import axios from 'axios';
+import api from '../../utils/api';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -20,7 +20,7 @@ export default function HeroWinningRate_IngameStats() {
     // 영웅별 승률 데이터 불러오기
     const getHeroWinningRateData = async (token, seasonIdx, tierName, sortOrder) => {
         try {
-            const { data } = await axios.get(`${URL}/get/hero-winrate`, {
+            const { data } = await api.get(`${URL}/get/hero-winrate`, {
                 headers: { Authorization: token },
                 params: {
                     seasonIdx: seasonIdx || '',

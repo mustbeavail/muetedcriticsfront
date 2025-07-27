@@ -5,7 +5,7 @@ import Link from "next/link";
 import "../../../mail/mail.css";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { useEffect } from "react";
-import axios from "axios";
+import api from '../../../../utils/api';
 import { useState } from "react";
 import Header from '../../../../../Header/page';
 import Menu from '../../../../../menu/Menu';
@@ -40,7 +40,7 @@ export default function MailDetailPage() {
   // 메일 상세 정보 조회
   const getMailDetail = async (idx, token) => {
     try {
-      const { data } = await axios.get(`${URL}/mail/detail`, {
+      const { data } = await api.get(`${URL}/mail/detail`, {
         headers: {
           Authorization: token
         },
@@ -92,11 +92,11 @@ export default function MailDetailPage() {
       <Header />
       <Menu />
       <div className="common-container">
-      <h1 className={"mailDetail-title"}>{mailDetail.mailIdx ? "📨 발신 메일 상세보기" : "📨 정기 발송 메일 상세보기"}</h1>
+        <h1 className={"mailDetail-title"}>{mailDetail.mailIdx ? "📨 발신 메일 상세보기" : "📨 정기 발송 메일 상세보기"}</h1>
         <div className={"mailDetail-container"}>
-          
 
-        {/* <div className={"mailDetail-card"}> */}
+
+          {/* <div className={"mailDetail-card"}> */}
           <div className={"mailDetail-btn-wrapper"}>
             <Link href="/component/mail">
               <button className={"mailDetail-backBtn"}>← 리스트로 돌아가기</button>
@@ -169,11 +169,11 @@ export default function MailDetailPage() {
                 <IoCalendarClearOutline />
                 <span>{mailDetail.mailDate ? mailDetail.mailDate : mailDetail.createdAt}</span>
               </div> */}
-            </section>
+          </section>
 
-            <div className={"mailDetail-content"} dangerouslySetInnerHTML={{ __html: mailDetail.mailContent }} />
-          </div>
+          <div className={"mailDetail-content"} dangerouslySetInnerHTML={{ __html: mailDetail.mailContent }} />
         </div>
+      </div>
       {/* </div> */}
     </>
   );

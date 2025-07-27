@@ -12,7 +12,7 @@ import {
 } from 'react-icons/fa';
 import { IoIosLogOut } from "react-icons/io";
 import { RiUserCommunityFill } from "react-icons/ri";
-import axios from 'axios';
+import api from '../app/utils/api';
 import { useRouter } from 'next/navigation';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
@@ -26,7 +26,7 @@ const Menu = () => {
 
   // 로그아웃
   const handleLogout = async () => {
-    const { data } = await axios.post(`${URL}/member/logout`, {
+    const { data } = await api.post(`${URL}/member/logout`, {
       member_id: sessionStorage.getItem('member_id'),
     }, {
       headers: { Authorization: sessionStorage.getItem('token') }

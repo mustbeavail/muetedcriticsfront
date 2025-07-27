@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import axios from 'axios';
+import api from '../../utils/api';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -69,7 +69,7 @@ export default function PeriodMonthlyStats() {
             return;
         }
 
-        const { data } = await axios.get(`${URL}/activity/periodMonthlyUser`, {
+        const { data } = await api.get(`${URL}/activity/periodMonthlyUser`, {
             params: {
                 fromYear: fromY,
                 fromMonth: fromM,

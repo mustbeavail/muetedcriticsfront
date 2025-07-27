@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../../utils/api';
 import { useRouter } from 'next/navigation';
 import Header from '../../../../Header/page';
 import Menu from '../../../../menu/Menu';
@@ -50,7 +50,7 @@ export default function ReportDetail({ params }) {
     }, [reportDetail]);
 
     const getDetail = async (idx) => {
-        const { data } = await axios.get(`${URL}/report/detail/${idx}`, {
+        const { data } = await api.get(`${URL}/report/detail/${idx}`, {
             headers: {
                 authorization: token
             }
@@ -78,7 +78,7 @@ export default function ReportDetail({ params }) {
         if (isDisabled) return;
         setIsDisabled(true);
 
-        const { data } = await axios.get(`${URL}/inquiry/${reportDetail}/ai-response`, {
+        const { data } = await api.get(`${URL}/inquiry/${reportDetail}/ai-response`, {
             headers: {
                 authorization: token
             }
@@ -89,7 +89,7 @@ export default function ReportDetail({ params }) {
 
     // 상담사 답변 작성
     const agentResponse = async () => {
-        const { data } = await axios.post(`${URL}/inquiry/agent-response`, {
+        const { data } = await api.post(`${URL}/inquiry/agent-response`, {
             inquiryIdx: reportDetail,
             agentId: member_id,
             content: response,

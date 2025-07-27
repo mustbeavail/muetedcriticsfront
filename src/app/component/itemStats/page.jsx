@@ -9,7 +9,7 @@ import EventItemStats from './event_itemStats';
 import EventTop3ItemStats from './eventTop3_itemStats';
 import RefundItemStats from './refund_itemStats';
 import { subMonths } from 'date-fns';
-import axios from 'axios';
+import api from '../../utils/api';
 
 const ItemStats = () => {
 
@@ -139,7 +139,7 @@ const ItemStats = () => {
       return;
     }
     try {
-      const { data } = await axios.get(`${URL}/item/list`, {
+      const { data } = await api.get(`${URL}/item/list`, {
         headers: {
           Authorization: token,
         },
@@ -162,7 +162,7 @@ const ItemStats = () => {
   // 이벤트 아이템 리스트
   const getEventList = async (token, eventName, align) => {
     try {
-      const { data } = await axios.get(`${URL}/item/event`, {
+      const { data } = await api.get(`${URL}/item/event`, {
         headers: {
           Authorization: token,
         },
@@ -182,7 +182,7 @@ const ItemStats = () => {
   // 이벤트 3개 비교
   const getFirstEventList = async (token, eventName, align) => {
     try {
-      const { data } = await axios.get(`${URL}/item/event`, {
+      const { data } = await api.get(`${URL}/item/event`, {
         headers: {
           Authorization: token,
         },
@@ -200,7 +200,7 @@ const ItemStats = () => {
   };
   const getSecondEventList = async (token, eventName, align) => {
     try {
-      const { data } = await axios.get(`${URL}/item/event`, {
+      const { data } = await api.get(`${URL}/item/event`, {
         headers: {
           Authorization: token,
         },
@@ -218,7 +218,7 @@ const ItemStats = () => {
   };
   const getThirdEventList = async (token, eventName, align) => {
     try {
-      const { data } = await axios.get(`${URL}/item/event`, {
+      const { data } = await api.get(`${URL}/item/event`, {
         headers: {
           Authorization: token,
         },
@@ -242,7 +242,7 @@ const ItemStats = () => {
       return;
     }
     try {
-      const { data } = await axios.get(`${URL}/item/refund/list`, {
+      const { data } = await api.get(`${URL}/item/refund/list`, {
         headers: {
           Authorization: token,
         },
@@ -269,7 +269,7 @@ const ItemStats = () => {
       return;
     }
     try {
-      const { data } = await axios.get(`${URL}/item/refund/summary`, {
+      const { data } = await api.get(`${URL}/item/refund/summary`, {
         headers: {
           Authorization: token,
         },
@@ -292,7 +292,7 @@ const ItemStats = () => {
 
   return (
     <>
-      <Header/>
+      <Header />
       <Menu />
       <div className="common-container">
         <span className={"itemStats-mainTitle"}>아이템 통계</span>
@@ -307,7 +307,7 @@ const ItemStats = () => {
           getItemList={getItemList} itemList={itemList}
           format3digits={format3digits}
           today={today}
-          />
+        />
 
         {/* 이벤트별 아이템 정보 */}
         <EventItemStats
@@ -347,7 +347,7 @@ const ItemStats = () => {
           getRefundList={getRefundList} getRefundSummary={getRefundSummary}
           format3digits={format3digits}
           today={today}
-          />
+        />
       </div>
     </>
   );

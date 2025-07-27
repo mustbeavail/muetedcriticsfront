@@ -4,7 +4,7 @@ import Header from '@/Header/page';
 import Menu from '@/menu/Menu';
 import React from 'react';
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from '../../utils/api';
 import StatsNoti from './statsNoti';
 import './main.css';
 import '../salesStats/salesStats.css';
@@ -105,7 +105,7 @@ const Main = () => {
   // 통계 알림 조회
   const getNotiList = async (token) => {
     try {
-      const { data } = await axios.get(`${URL}/notice/stat/list`, {
+      const { data } = await api.get(`${URL}/notice/stat/list`, {
         headers: {
           'Authorization': token
         }
@@ -123,7 +123,7 @@ const Main = () => {
       return;
     }
     try {
-      const { data } = await axios.get(`${URL}/revenue/period`, {
+      const { data } = await api.get(`${URL}/revenue/period`, {
         headers: {
           Authorization: token
         },
@@ -142,7 +142,7 @@ const Main = () => {
   // 신고/문의 기간별 불러오기
   const getInquiryStatsPeriod = async (token, start, end) => {
     try {
-      const { data } = await axios.get(`${URL}/inquiry/stats`, {
+      const { data } = await api.get(`${URL}/inquiry/stats`, {
         headers: { Authorization: token },
         params: {
           startDate: start,

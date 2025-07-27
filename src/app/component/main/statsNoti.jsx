@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 
-export default function StatsNoti({notiList}) {
+export default function StatsNoti({ notiList }) {
 
     return (
         <>
@@ -15,12 +15,12 @@ export default function StatsNoti({notiList}) {
                         <div className="cell">날짜</div>
                     </div>
                     {notiList.length > 0 ? (
-                    notiList.map((noti) => (
-                    <div className="row" key={noti.notiIdx}>
-                        <div className="cell">{noti.contentPre}</div>
-                        <div className="cell">{noti.createdAt.split("T")[0]}</div>
-                    </div>
-                    ))
+                        notiList.map((noti) => (
+                            <div className="row" key={noti.notiIdx}>
+                                <div className="cell">{noti.contentPre}</div>
+                                <div className="cell">{noti.createdAt.split("T")[0]}</div>
+                            </div>
+                        ))
                     ) : (
                         <div className="row">
                             <div className="cell">통계 알림이 없습니다.</div>

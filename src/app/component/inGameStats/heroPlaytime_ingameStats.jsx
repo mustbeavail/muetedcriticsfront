@@ -1,5 +1,5 @@
 "use client"
-import axios from 'axios';
+import api from '../../utils/api';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -37,7 +37,7 @@ export default function HeroPlaytime_IngameStats() {
      */
     const getHeroPlaytimeData = async (token) => {
         try {
-            const { data } = await axios.get(`${URL}/get/hero-playtime`, {
+            const { data } = await api.get(`${URL}/get/hero-playtime`, {
                 headers: { Authorization: token },
                 params: {
                     sortOrder: sortOrder // 정렬 순서를 쿼리 파라미터로 전달합니다.

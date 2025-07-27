@@ -2,7 +2,7 @@
 import Header from '../../../../Header/page';
 import Menu from '../../../../menu/Menu';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../../utils/api';
 import { use } from 'react';
 import { useRouter } from 'next/navigation';
 import '../inquiry.css';
@@ -49,7 +49,7 @@ export default function InquiryDetail({ params }) {
     }, [inquiryDetail]);
 
     const getDetail = async (idx) => {
-        const { data } = await axios.get(`${URL}/inquiry/detail/${idx}`, {
+        const { data } = await api.get(`${URL}/inquiry/detail/${idx}`, {
             headers: {
                 authorization: token
             }
@@ -82,7 +82,7 @@ export default function InquiryDetail({ params }) {
         if (isDisabled) return;
         setIsDisabled(true);
 
-        const { data } = await axios.get(`${URL}/inquiry/${inquiryDetail}/ai-response`, {
+        const { data } = await api.get(`${URL}/inquiry/${inquiryDetail}/ai-response`, {
             headers: {
                 authorization: token
             }
@@ -93,7 +93,7 @@ export default function InquiryDetail({ params }) {
 
     // 상담사 답변 작성
     const agentResponse = async () => {
-        const { data } = await axios.post(`${URL}/inquiry/agent-response`, {
+        const { data } = await api.post(`${URL}/inquiry/agent-response`, {
             inquiryIdx: inquiryDetail,
             agentId: member_id,
             content: response,

@@ -1,5 +1,5 @@
 "use client"
-import axios from 'axios';
+import api from '../../utils/api';
 import { format } from 'date-fns';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { useEffect, useMemo, useState } from 'react';
@@ -30,7 +30,7 @@ export default function ModePlaytime_IngameStats() {
     const getModePlaytimeData = async (token) => {
         try {
             // API에 GET 요청을 보내 데이터를 가져옴
-            const { data } = await axios.get(`${URL}/get/mode-playtime`, {
+            const { data } = await api.get(`${URL}/get/mode-playtime`, {
                 headers: { Authorization: token } // 요청 헤더에 인증 토큰 추가
             });
             console.log(data); // 받아온 데이터를 콘솔에 출력
