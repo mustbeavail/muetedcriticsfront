@@ -6,6 +6,7 @@ import styles from './page.module.css';
 import { IoIosNotificationsOutline, IoIosNotifications } from 'react-icons/io';
 import { FiArrowRightCircle, FiTrash2 } from 'react-icons/fi';
 import axios from 'axios';
+import useNotiWebSocket from './notiWebSocket';
 
 const Header = () => {
 
@@ -17,10 +18,10 @@ const Header = () => {
   const [notiList, setNotiList] = useState([]);
   const [token, setToken] = useState('');
   const [memberId, setMemberId] = useState('');
-  const [notiCheckCnt, setNotiCheckCnt] = useState(0);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [notifications, setNotifications] = useState(0);
   const [showMyInfoModal, setShowMyInfoModal] = useState(false);
+  const [notiFlag, setNotiFlag] = useState(0);
 
   const hideTimer = useRef(null);
 
@@ -31,6 +32,7 @@ const Header = () => {
     router.push(`/component/chat`);
   };
 
+  // 로그인 체크
   useEffect(() => {
     const tokenRaw = sessionStorage.getItem('token');
     const memberIdRaw = sessionStorage.getItem('member_id');
@@ -39,10 +41,24 @@ const Header = () => {
     getNotiList(tokenRaw, memberIdRaw);
   }, []);
 
+  // 알림 수신 핸들러
+  const handleNotiReceived = (newNoti) => {
+    console.log('새 알림 수신:', newNoti);
+    setNotiList(prev => {
+      const exists = prev.some(noti => noti.notiIdx === newNoti.notiIdx);
+      if (exists) return prev;
+      return [...prev, newNoti];
+    });
+  };
+
+  // 알림 웹소켓 훅 사용
+  const { isConnected } = useNotiWebSocket({ token, memberId, onNotiReceived: handleNotiReceived });
+
+  // 알림 읽음처리시 알림 목록 갱신
   useEffect(() => {
-    if (notiCheckCnt === 0) return;
+    if (notiFlag === 0) return;
     getNotiList(token, memberId);
-  }, [notiCheckCnt]);
+  }, [notiFlag]);
 
   // 내 정보 띄우기
   useEffect(() => {
@@ -51,6 +67,7 @@ const Header = () => {
     }
   }, [token, memberId, id]);
 
+  // 알림 목록 가져오기
   const getNotiList = async (token, memberId) => {
     try {
       const { data } = await axios.get(`${URL}/notice/chat/list`, {
@@ -65,18 +82,20 @@ const Header = () => {
     }
   };
 
+  // 알림 읽음 처리
   const setNotiCheck = async (token, notiIdx) => {
     try {
       const { data } = await axios.put(`${URL}/notice/read`,
         { notiIdx: notiIdx },
         { headers: { Authorization: token } }
       );
-      setNotiCheckCnt(prev => prev + 1);
+      setNotiFlag(prev => prev + 1);
     } catch (error) {
       alert("알림 읽음 처리를 실패했습니다.");
     }
   };
 
+  // 알림 목록 띄우기
   useEffect(() => {
     setNotifications(notiList.length);
     if (showNotificationModal && notiList.length === 0) {

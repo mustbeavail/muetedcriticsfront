@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 
-const useWebSocket = ({ token, memberId, currentRoomIdx, onMessageReceived }) => {
+const useNotiWebSocket = ({ token, memberId, onNotiReceived }) => {
 
     const [isConnected, setIsConnected] = useState(false);
     const [stompClient, setStompClient] = useState(null);
@@ -49,23 +49,18 @@ const useWebSocket = ({ token, memberId, currentRoomIdx, onMessageReceived }) =>
         };
     }, [token, memberId]);
 
-    // 채팅방 구독 관리
+    // 알림방 구독 관리
     useEffect(() => {
-        if (!stompClient || !isConnected || !currentRoomIdx) return;
+        if (!stompClient || !isConnected) return;
 
-        // 이전 구독 해제
-        if (currentSubscription) {
-            currentSubscription.unsubscribe();
-        }
+        // 새 알림방 구독
+        const subscription = stompClient.subscribe(`/topic/noti/${memberId}`, (message) => {
+            const receivedNoti = JSON.parse(message.body);
+            console.log('수신된 알림:', receivedNoti);
 
-        // 새 채팅방 구독
-        const subscription = stompClient.subscribe(`/topic/chat/${currentRoomIdx}`, (message) => {
-            const receivedMessage = JSON.parse(message.body);
-            console.log('수신된 메시지:', receivedMessage);
-
-            // 메시지를 page.jsx로 전달
-            if (onMessageReceived) {
-                onMessageReceived(receivedMessage);
+            // 알림을 page.jsx로 전달
+            if (onNotiReceived) {
+                onNotiReceived(receivedNoti);
             }
         });
 
@@ -76,26 +71,9 @@ const useWebSocket = ({ token, memberId, currentRoomIdx, onMessageReceived }) =>
                 subscription.unsubscribe();
             }
         };
-    }, [stompClient, isConnected, currentRoomIdx]);
+    }, [stompClient, isConnected, memberId]);
 
-    // 메시지 전송 함수
-    const sendMessage = (roomIdx, memberId, receiverId, content) => {
-        if (stompClient && isConnected) {
-            const message = {
-                roomIdx: roomIdx,
-                senderId: memberId,
-                receiverId: receiverId,
-                msgContent: content
-            };
-            stompClient.publish({
-                destination: '/app/chat/' + roomIdx,
-                body: JSON.stringify(message)
-            });
-            setTimeout(() => {
-            }, 100);
-        }
-    };
-    return { sendMessage, isConnected };
+    return { isConnected };
 }
 
-export default useWebSocket;
+export default useNotiWebSocket;
