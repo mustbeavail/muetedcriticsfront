@@ -23,41 +23,58 @@ const Report = () => {
   // if (!memberId || !token) return null;
 
   const [reportList, setReportList] = useState([]);
+  const [allReportList, setAllReportList] = useState([]); // 전체 데이터 저장
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalFilteredPages, setTotalFilteredPages] = useState(1);
-  const currentReportList = reportList;
+
+  const [statusFilter, setStatusFilter] = useState('');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [searchText, setSearchText] = useState('');
+
+  // 검색어로 필터링된 리스트 (신고자 ID와 피신고자 ID 모두 검색)
+  const filteredReportList = allReportList.filter(report => 
+    searchText.trim() === '' || 
+    report.userId.toLowerCase().includes(searchText.trim().toLowerCase()) ||
+    report.reportedUserId.toLowerCase().includes(searchText.trim().toLowerCase())
+  );
+
+  // 페이지네이션을 위한 현재 페이지 데이터
+  const itemsPerPage = 15;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentReportList = filteredReportList.slice(startIndex, startIndex + itemsPerPage);
+
+  // 검색어가 변경될 때마다 페이지를 1로 리셋하고 총 페이지 수 계산
+  useEffect(() => {
+    setCurrentPage(1);
+    setTotalFilteredPages(Math.ceil(filteredReportList.length / itemsPerPage));
+  }, [searchText, filteredReportList.length]);
 
   const goToPage = (page) => {
     if (page < 1 || page > totalFilteredPages) return;
     setCurrentPage(page);
   };
 
-  const [statusFilter, setStatusFilter] = useState('');
-  const [sortOrder, setSortOrder] = useState('desc');
-
-  const [searchText, setSearchText] = useState('');
-
   useEffect(() => {
     getReportList();
-  }, [currentPage, statusFilter, sortOrder]);
+  }, [statusFilter, sortOrder]);
 
   const getReportList = async () => {
     const { data } = await api.get(`${URL}/report/list`, {
       params: {
         inquiryIdx: '',
-        userId: searchText,
+        userId: '', // 빈 문자열로 전체 조회
         sortBy: 'createdAt',
         sortOrder: sortOrder,
         status: statusFilter,
-        page: currentPage,
-        size: 15
+        page: 1, // 전체 데이터를 받기 위해 페이지 관련 처리 수정 필요
+        size: 1000 // 충분히 큰 수로 설정하여 전체 데이터 받기
       },
       headers: {
         authorization: token
       }
     });
-    setReportList(data.content);
+    setAllReportList(data.content);
     setTotalFilteredPages(Math.ceil(data.totalElements / 15));
   }
 

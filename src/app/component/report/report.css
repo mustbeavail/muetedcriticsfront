@@ -344,6 +344,15 @@
     transition: all 0.3s ease;
 }
 
+.report-detail-submit-btn:disabled {
+    /* color: #999; */
+    cursor: not-allowed;
+}
+
+.report-detail-submit-btn:disabled:hover {
+    background-color: #8d35f0;
+}
+
 .report-detail-reply-content {
     background-color: #000000;
     border-radius: 8px;

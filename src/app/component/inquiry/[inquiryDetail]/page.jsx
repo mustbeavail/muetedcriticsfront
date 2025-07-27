@@ -105,7 +105,6 @@ export default function InquiryDetail({ params }) {
         console.log(data);
         if (data.success) {
             alert('답변이 성공적으로 작성되었습니다.');
-            // router.push(`/component/inquiry`);
             getDetail(inquiryDetail);
         } else {
             alert('답변 작성에 실패했습니다.');
@@ -142,7 +141,7 @@ export default function InquiryDetail({ params }) {
                             />
                             <div className="inquiry-detail-button-group">
                                 <button className="inquiry-detail-ai-btn" onClick={aiResponse} disabled={isDisabled}>AI 답변 생성</button>
-                                <button className="inquiry-detail-submit-btn" onClick={agentResponse}>답변 작성</button>
+                                <button className="inquiry-detail-submit-btn" onClick={agentResponse} disabled={!response.trim()}>답변 작성</button>
                             </div>
                         </div>
                     )}

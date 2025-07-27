@@ -136,7 +136,7 @@ export default function ReportDetail({ params }) {
                             />
                             <div className="report-detail-button-group">
                                 <button className="report-detail-ai-btn" onClick={aiResponse} disabled={isDisabled}>AI 답변 생성</button>
-                                <button className="report-detail-submit-btn" onClick={agentResponse}>답변 작성</button>
+                                <button className="report-detail-submit-btn" onClick={agentResponse} disabled={!response.trim()}>답변 작성</button>
                             </div>
                         </div>
                     )}

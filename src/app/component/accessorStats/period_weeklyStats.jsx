@@ -5,6 +5,14 @@ import api from '../../utils/api';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
+// 오늘이 몇 주차인지 계산 함수
+function getWeekOfMonth(date) {
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    const dayOfWeek = firstDay.getDay();
+    const offsetDate = date.getDate() + dayOfWeek;
+    return Math.ceil(offsetDate / 7);
+}
+
 export default function PeriodWeeklyStats() {
     const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
 
@@ -21,21 +29,14 @@ export default function PeriodWeeklyStats() {
         const fiveWeeksAgo = new Date();
         fiveWeeksAgo.setDate(now.getDate() - 7 * 5);
 
-        const getWeekNumber = (date) => {
-            const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-            const dayOfWeek = firstDayOfMonth.getDay();
-            const adjustedDate = date.getDate() + dayOfWeek;
-            return Math.ceil(adjustedDate / 7);
-        };
-
         // 계산된 값 저장
         const fromY = fiveWeeksAgo.getFullYear().toString();
         const fromM = (fiveWeeksAgo.getMonth() + 1).toString();
-        const fromW = getWeekNumber(fiveWeeksAgo).toString();
+        const fromW = getWeekOfMonth(fiveWeeksAgo).toString();
 
         const toY = now.getFullYear().toString();
         const toM = (now.getMonth() + 1).toString();
-        const toW = getWeekNumber(now).toString();
+        const toW = getWeekOfMonth(now).toString();
 
         // setState
         setFromYear(fromY);
@@ -44,6 +45,13 @@ export default function PeriodWeeklyStats() {
         setToYear(toY);
         setToMonth(toM);
         setToWeek(toW);
+
+        // 디버깅용 콘솔
+        const today = new Date();
+        const todayYear = today.getFullYear();
+        const todayMonth = today.getMonth() + 1;
+        const todayWeek = getWeekOfMonth(today);
+        console.log('today:', todayYear, todayMonth, todayWeek, 'to:', toY, toM, toW);
 
         // 직접 계산된 값으로 조회 함수 호출
         weeklyAccessData(fromY, fromM, fromW, toY, toM, toW);
@@ -69,17 +77,26 @@ export default function PeriodWeeklyStats() {
         const tM = Number(toM);
         const tW = Number(toW);
 
-        const toDate = new Date(tY, tM - 1, 1 + (tW - 1) * 7); // 해당 주의 날짜 추정
-        const today = new Date();
-
-        if (toDate > today) {
-            alert("종료 날짜는 현재 날짜보다 이후일 수 없습니다.");
+        const fromDate = new Date(fY, fM - 1, 1 + (fW - 1) * 7);
+        const toDate = new Date(tY, tM - 1, 1 + (tW - 1) * 7);
+        if (fromDate > toDate) {
+            alert("시작 날짜는 종료 날짜보다 이전이어야 합니다.");
             return;
         }
 
-        const fromDate = new Date(fY, fM - 1, 1 + (fW - 1) * 7);
-        if (fromDate > toDate) {
-            alert("시작 날짜는 종료 날짜보다 이전이어야 합니다.");
+        // 오늘 날짜의 연/월/주 계산
+        const today = new Date();
+        const todayYear = today.getFullYear();
+        const todayMonth = today.getMonth() + 1;
+        const todayWeek = getWeekOfMonth(today);
+
+        // 오늘 주차까지 허용
+        if (
+            tY > todayYear ||
+            (tY === todayYear && tM > todayMonth) ||
+            (tY === todayYear && tM === todayMonth && tW > todayWeek)
+        ) {
+            alert("종료 날짜는 현재 날짜보다 이후일 수 없습니다.");
             return;
         }
 

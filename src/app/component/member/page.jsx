@@ -55,8 +55,11 @@ const Member = () => {
     }
     if (state === 'signUp') {
       params.append('acceptYn', 'true');
+      params.append('withdrawYn', 'false');
     } else if (state === 'signUpWait') {
       params.append('acceptYn', 'false');
+    } else if (state === 'withdraw') {
+      params.append('withdrawYn', 'true');
     }
 
     const queryString = params.toString();
@@ -177,7 +180,7 @@ const Member = () => {
     });
     if (data.success) {
       alert('해당 회원의 회원가입이 승인되었습니다.');
-      getMemberList(page);
+      getMemberList(page, activeDept, activePosition, sortField, sortDirection, search, state);
     }
   }
 
@@ -192,7 +195,7 @@ const Member = () => {
     });
     if (data.success) {
       alert('해당 회원의 회원가입이 거절되었습니다.');
-      getMemberList(page);
+      getMemberList(page, activeDept, activePosition, sortField, sortDirection, search, state);
     }
   }
 
@@ -291,6 +294,7 @@ const Member = () => {
         >
           <option value="signUp">가입 완료</option>
           <option value="signUpWait">가입 대기</option>
+          <option value="withdraw">탈퇴한 회원</option>
         </select>
 
         <div className="memberList-tagFilterButtons">

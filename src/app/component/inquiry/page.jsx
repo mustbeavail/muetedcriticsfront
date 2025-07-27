@@ -23,15 +23,10 @@ const Inquiry = () => {
   // if (!memberId || !token) return null;
 
   const [inquiryList, setInquiryList] = useState([]);
+  const [allInquiryList, setAllInquiryList] = useState([]); // 전체 데이터 저장
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalFilteredPages, setTotalFilteredPages] = useState(1);
-  const currentInquiryList = inquiryList;
-
-  const goToPage = (page) => {
-    if (page < 1 || page > totalFilteredPages) return;
-    setCurrentPage(page);
-  };
 
   const [categoryFilter, setCategoryFilter] = useState('');
   const [vipFilter, setVipFilter] = useState('');
@@ -39,30 +34,51 @@ const Inquiry = () => {
   const [sortOrder, setSortOrder] = useState('desc');
 
   const [searchText, setSearchText] = useState('');
+  
+  // 검색어로 필터링된 리스트
+  const filteredInquiryList = allInquiryList.filter(inquiry => 
+    searchText.trim() === '' || 
+    inquiry.userId.toLowerCase().includes(searchText.trim().toLowerCase())
+  );
+
+  // 페이지네이션을 위한 현재 페이지 데이터
+  const itemsPerPage = 15;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentInquiryList = filteredInquiryList.slice(startIndex, startIndex + itemsPerPage);
+
+  // 검색어가 변경될 때마다 페이지를 1로 리셋하고 총 페이지 수 계산
+  useEffect(() => {
+    setCurrentPage(1);
+    setTotalFilteredPages(Math.ceil(filteredInquiryList.length / itemsPerPage));
+  }, [searchText, filteredInquiryList.length]);
+
+  const goToPage = (page) => {
+    if (page < 1 || page > totalFilteredPages) return;
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     getInquiryList();
-  }, [currentPage, categoryFilter, vipFilter, statusFilter, sortOrder]);
+  }, [categoryFilter, vipFilter, statusFilter, sortOrder]);
 
   const getInquiryList = async () => {
     const { data } = await api.get(`${URL}/inquiry/list`, {
       params: {
         inquiryIdx: '',
-        userId: searchText,
+        userId: '', // 빈 문자열로 전체 조회
         category: categoryFilter,
         status: statusFilter,
         isVip: vipFilter,
         sortBy: 'createdAt',
         sortOrder: sortOrder,
-        page: currentPage,
-        size: 15
+        page: 1, // 전체 데이터를 받기 위해 페이지 관련 처리 수정 필요
+        size: 1000 // 충분히 큰 수로 설정하여 전체 데이터 받기
       },
       headers: {
         authorization: token
       }
     });
-    setInquiryList(data.content);
-    setTotalFilteredPages(Math.ceil(data.totalElements / 15));
+    setAllInquiryList(data.content);
     // console.log(data.content);
   }
 

@@ -29,6 +29,7 @@ export default function ForumDetailPage({ params }) {
   const [forumDetailData, setForumDetailData] = useState(null);
   const [forumCommentData, setForumCommentData] = useState(null);
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   // 댓글 드롭다운 ref를 댓글별로 관리
   const commentDropdownRefs = useRef({});
 
@@ -42,14 +43,15 @@ export default function ForumDetailPage({ params }) {
   const [showEditMemoModal, setShowEditMemoModal] = useState(false);
   const [editMemoContent, setEditMemoContent] = useState('');
 
+  // 유저 아이디 클릭 시 토글 (prev로 비교)
   const toggleMenu = (id) => {
-    setOpenMenuId(openMenuId === id ? null : id);
+    setOpenMenuId(prev => (prev === id ? null : id));
   };
 
-  const getForumDetail = async () => {
+  const getForumDetail = async (page = 1) => {
     const { data } = await axios.get(`${URL}/forum/detail/${postIdx}`, {
       params: {
-        page: 1
+        page: page
       },
       headers: {
         authorization: token
@@ -60,9 +62,15 @@ export default function ForumDetailPage({ params }) {
     setForumDetailData(data.forumPost);
     setForumCommentData(data.forumComments);
   }
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    getForumDetail(page);
+  };
+
   useEffect(() => {
     console.log(postIdx);
-    getForumDetail();
+    getForumDetail(currentPage);
   }, [postIdx]);
 
   const [hoverBadgeId, setHoverBadgeId] = useState(null);
@@ -428,18 +436,36 @@ export default function ForumDetailPage({ params }) {
 
   // 메뉴 외부 클릭 시 메뉴 닫기
   useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (openMenuId !== null) {
-        // 댓글 드롭다운
-        const ref = commentDropdownRefs.current[openMenuId];
-        if (ref && !ref.contains(event.target)) {
-          setOpenMenuId(null);
-        }
+    function handleClickOutside(event) {
+      // 드롭다운이 열려 있지 않으면 아무것도 하지 않음
+      if (openMenuId === null) return;
+
+      // 드롭다운 내부 클릭이면 닫지 않음
+      if (dropdownRef.current && dropdownRef.current.contains(event.target)) {
+        return;
       }
-    };
-    document.addEventListener('mousedown', handleOutsideClick);
+
+      // 댓글 드롭다운 내부 클릭이면 닫지 않음
+      const commentRef = commentDropdownRefs.current[openMenuId];
+      if (commentRef && commentRef.contains(event.target)) {
+        return;
+      }
+
+      // 아이디 버튼 클릭이면 닫지 않음 (toggleMenu가 처리함) // 이거 없으면 중복 실행됨
+      const clickedElement = event.target.closest('span[style*="cursor: pointer"], button[style*="color: white"]');
+      if (clickedElement) {
+        return;
+      }
+
+      // 진짜 외부 클릭일 때만 닫음
+      setOpenMenuId(null);
+    }
+
+    if (openMenuId !== null) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [openMenuId]);
 
@@ -498,7 +524,7 @@ export default function ForumDetailPage({ params }) {
                   className={forumStyles.forumCommentDetailUser}
                 >
                   <span
-                    onClick={() => setOpenMenuId(openMenuId === comment.comIdx ? null : comment.comIdx)}
+                    onClick={() => toggleMenu(comment.comIdx)}
                     onMouseEnter={() => handleMouseEnter(comment)}
                     onMouseLeave={handleMouseLeave}
                     style={{ cursor: 'pointer' }}
@@ -527,9 +553,38 @@ export default function ForumDetailPage({ params }) {
                 <span>{comment.comContent}</span>
               </div>
             ))}
+
+            {/* 페이지네이션 */}
+            <div className={forumStyles.forumPagination}>
+              <button
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                이전
+              </button>
+
+              {Array.from({ length: forumCommentData?.totalPages || 1 }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  className={page === currentPage ? forumStyles.active : ''}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                disabled={currentPage === (forumCommentData?.totalPages || 1)}
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                다음
+              </button>
+            </div>
+            
             <button className={forumStyles.forumCommentListBtn} onClick={() => router.push('/component/forum')}>게시글 목록</button>
           </div>
         </div>
+
+
         {/* 유저 상세보기 모달 */}
         {selectedDetailUser && (
           <div className={forumStyles.forumModalBackdrop}>

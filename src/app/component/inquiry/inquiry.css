@@ -318,6 +318,15 @@
     transition: all 0.3s ease;
 }
 
+.inquiry-detail-submit-btn:disabled {
+    /* color: #999; */
+    cursor: not-allowed;
+}
+
+.inquiry-detail-submit-btn:disabled:hover {
+    background-color: #8d35f0;
+}
+
 .inquiry-detail-reply-content {
     background-color: #000000;
     border-radius: 8px;

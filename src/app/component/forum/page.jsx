@@ -73,6 +73,19 @@ const Forum = () => {
   const [search, setSearch] = useState('');
   const [searchType, setSearchType] = useState('title');
   const [isSearching, setIsSearching] = useState(false); // 검색 중인지 여부
+
+  // 검색어가 변경될 때마다 자동으로 검색 실행
+  useEffect(() => {
+    if (search.trim() !== '') {
+      setCurrentPage(1); // 검색 시 페이지를 1로 리셋
+      forumSearch();
+    } else {
+      // 검색어가 비어있으면 일반 리스트 조회
+      setIsSearching(false);
+      getForumList();
+    }
+  }, [search, searchType]);
+
   const forumSearch = async () => {
     setIsSearching(true);
     const { data } = await api.get(`${URL}/forum/search`, {
@@ -107,7 +120,12 @@ const Forum = () => {
               </select>
               <div className={forumStyles.forumSearch}>
                 <div className={forumStyles.forumInputWrapper}>
-                  <input type="text" placeholder="포럼 검색" onChange={(e) => setSearch(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && forumSearch()} />
+                  <input 
+                    type="text" 
+                    placeholder="포럼 검색" 
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
                   <button className={forumStyles.forumSearchBtn} onClick={forumSearch} onKeyUp={(e) => e.key === 'Enter' && forumSearch()}><IoSearch /></button>
                 </div>
               </div>
