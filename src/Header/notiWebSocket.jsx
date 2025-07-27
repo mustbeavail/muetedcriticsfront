@@ -7,7 +7,6 @@ const useNotiWebSocket = ({ token, memberId, onNotiReceived }) => {
 
     const [isConnected, setIsConnected] = useState(false);
     const [stompClient, setStompClient] = useState(null);
-    const [currentSubscription, setCurrentSubscription] = useState(null);
 
     useEffect(() => {
 
@@ -63,8 +62,6 @@ const useNotiWebSocket = ({ token, memberId, onNotiReceived }) => {
                 onNotiReceived(receivedNoti);
             }
         });
-
-        setCurrentSubscription(subscription);
 
         return () => {
             if (subscription) {
