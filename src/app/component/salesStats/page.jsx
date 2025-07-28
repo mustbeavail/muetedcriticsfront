@@ -10,6 +10,7 @@ import Pu from './pu';
 import OtherTable from './otherTable';
 import { useEffect, useState } from "react";
 import api from '../../utils/api';
+import { format } from 'date-fns-tz';
 import { subMonths } from 'date-fns';
 
 export default function RevenueChart() {
@@ -51,7 +52,7 @@ export default function RevenueChart() {
 
     const [summary, setSummary] = useState({});
 
-    const today = new Date().toISOString().split('T')[0];
+    const today = format(new Date(), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
     const URL = process.env.NEXT_PUBLIC_API_URL;
 
     // 페이지 입장시 로그인체크, 날짜 초기화하기
@@ -72,8 +73,8 @@ export default function RevenueChart() {
         setAdminYn(adminRaw === "true");
         setDept(deptRaw);
 
-        const sixMonthsAgo = subMonths(today, 6).toISOString().split('T')[0];
-        const oneMonthAgo = subMonths(today, 1).toISOString().split('T')[0];
+        const sixMonthsAgo = format(subMonths(new Date(), 6), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
+        const oneMonthAgo = format(subMonths(new Date(), 1), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
 
         setLtvStartDate(sixMonthsAgo);
         setPeriodStartDate(oneMonthAgo);
@@ -315,8 +316,8 @@ export default function RevenueChart() {
             <div className="common-container">
                 <span className={"salesStats-mainTitle"}>매출 통계</span>
                 <div className={"salesStats-filterBox"}>
-                    기간 시작일 <input type="date" value={ltvStartDate} onChange={(e) => { setLtvStartDate(e.target.value) }} />
-                    기간 종료일 <input type="date" value={ltvEndDate} onChange={(e) => { setLtvEndDate(e.target.value) }} />
+                    기간 시작일 <input type="date" value={ltvStartDate} max={today} onChange={(e) => { setLtvStartDate(e.target.value) }} />
+                    기간 종료일 <input type="date" value={ltvEndDate} max={today} onChange={(e) => { setLtvEndDate(e.target.value) }} />
                     <button onClick={() => { getLtv(token, ltvStartDate, ltvEndDate) }}>조회</button>
                 </div>
                 <div className="salesStats-card-container">

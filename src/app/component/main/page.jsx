@@ -16,6 +16,7 @@ import SalesByPeriod from '../salesStats/salesByPeriod';
 import Period_dailyStats from '../accessorStats/period_dailyStats';
 import Period_weeklyStats from '../accessorStats/period_weeklyStats';
 import Period_monthlyStats from '../accessorStats/period_monthlyStats';
+import { format } from 'date-fns-tz';
 import { subMonths } from 'date-fns';
 import UserType_UserStats from '../userStats/userType_userStats';
 import HeroWinningRate_IngameStats from '../inGameStats/heroWinningRate_ingameStats';
@@ -36,8 +37,8 @@ const Main = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingCnt, setLoadingCnt] = useState(0);
   const [initialized, setInitialized] = useState(false);
-  const today = new Date().toISOString().split('T')[0];
-  const oneMonthAgo = subMonths(today, 1).toISOString().split('T')[0];
+  const today = format(new Date(), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
+  const oneMonthAgo = format(subMonths(new Date(), 1), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
   const URL = process.env.NEXT_PUBLIC_API_URL;
 
   const [notiList, setNotiList] = useState([]);

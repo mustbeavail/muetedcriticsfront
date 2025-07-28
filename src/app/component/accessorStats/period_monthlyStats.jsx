@@ -5,6 +5,11 @@ import api from '../../utils/api';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
+// KST 기준 날짜 생성 함수
+const getKSTDate = (date = new Date()) => {
+    return new Date(date.toLocaleString("en-US", {timeZone: "Asia/Seoul"}));
+  };
+
 export default function PeriodMonthlyStats() {
     const token = typeof window !== "undefined" ? sessionStorage.getItem('token') : null;
 
@@ -15,7 +20,7 @@ export default function PeriodMonthlyStats() {
     const [monthlyData, setMonthlyData] = useState([]);
 
     useEffect(() => {
-        const now = new Date();
+        const now = getKSTDate();
         const toY = now.getFullYear();
         const toM = now.getMonth() + 1;
 
@@ -49,7 +54,7 @@ export default function PeriodMonthlyStats() {
         const fromMonthNum = Number(fromM);
         const toYearNum = Number(toY);
         const toMonthNum = Number(toM);
-        const now = new Date();
+        const now = getKSTDate();
         const currentYear = now.getFullYear();
         const currentMonth = now.getMonth() + 1;
 

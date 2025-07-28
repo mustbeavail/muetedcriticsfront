@@ -1,6 +1,6 @@
 "use client"
 import api from '../../utils/api';
-import { format } from 'date-fns';
+import { format } from 'date-fns-tz';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -14,7 +14,7 @@ export default function ModePlaytime_IngameStats() {
     const [modePlaytimeData, setModePlaytimeData] = useState([]);
 
     // 오늘 날짜를 'yyyy-MM-DD' 형식으로 저장
-    const today = format(new Date(), 'yyyy-MM-dd');
+    const today = format(new Date(), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
 
     // 컴포넌트가 마운트될 때 한 번만 실행
     useEffect(() => {

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import api from '../../utils/api';
-import { format } from 'date-fns';
+import { format } from 'date-fns-tz';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -26,7 +26,7 @@ export default function WinningRate_Playtime_UserStats() {
 
     const totalPages = Math.ceil(heroPlaytimeData.length / itemsPerPage); // 총 페이지 수
 
-    const today = format(new Date(), 'yyyy-MM-dd');
+    const today = format(new Date(), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
 
 
     // 조회 버튼 클릭시 실행

@@ -1,15 +1,22 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { subWeeks } from 'date-fns';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import api from '../../utils/api';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
+// KST 기준 날짜 생성 함수
+const getKSTDate = (date = new Date()) => {
+  return new Date(date.toLocaleString("en-US", {timeZone: "Asia/Seoul"}));
+};
+
 // 오늘이 몇 주차인지 계산 함수
 function getWeekOfMonth(date) {
-    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    const kstDate = getKSTDate(date);
+    const firstDay = new Date(kstDate.getFullYear(), kstDate.getMonth(), 1);
     const dayOfWeek = firstDay.getDay();
-    const offsetDate = date.getDate() + dayOfWeek;
+    const offsetDate = kstDate.getDate() + dayOfWeek;
     return Math.ceil(offsetDate / 7);
 }
 
@@ -25,9 +32,8 @@ export default function PeriodWeeklyStats() {
     const [toWeek, setToWeek] = useState('');
 
     useEffect(() => {
-        const now = new Date();
-        const fiveWeeksAgo = new Date();
-        fiveWeeksAgo.setDate(now.getDate() - 7 * 5);
+        const now = getKSTDate();
+        const fiveWeeksAgo = getKSTDate(subWeeks(new Date(), 5));
 
         // 계산된 값 저장
         const fromY = fiveWeeksAgo.getFullYear().toString();
@@ -47,7 +53,7 @@ export default function PeriodWeeklyStats() {
         setToWeek(toW);
 
         // 디버깅용 콘솔
-        const today = new Date();
+        const today = getKSTDate();
         const todayYear = today.getFullYear();
         const todayMonth = today.getMonth() + 1;
         const todayWeek = getWeekOfMonth(today);
@@ -85,7 +91,7 @@ export default function PeriodWeeklyStats() {
         }
 
         // 오늘 날짜의 연/월/주 계산
-        const today = new Date();
+        const today = getKSTDate();
         const todayYear = today.getFullYear();
         const todayMonth = today.getMonth() + 1;
         const todayWeek = getWeekOfMonth(today);

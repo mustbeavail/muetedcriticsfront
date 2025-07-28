@@ -1,6 +1,6 @@
 "use client"
 import api from '../../utils/api';
-import { format } from 'date-fns';
+import { format } from 'date-fns-tz';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -15,7 +15,7 @@ export default function HeroPOTG_IngameStats() {
 
     const itemsPerPage = 10; // 페이지 당 보여줄 영웅 수
 
-    const today = format(new Date(), 'yyyy-MM-dd');
+    const today = format(new Date(), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
