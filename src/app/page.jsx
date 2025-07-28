@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FaCheck } from 'react-icons/fa';
 import styles from './page.module.css';
-import axios from 'axios';
+import api from './utils/api';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -70,7 +70,7 @@ const PasswordChangeModal = ({ onClose }) => {
       return;
     }
 
-    const { data } = await axios.post(`${URL}/member/change_password`, {
+    const { data } = await api.post(`${URL}/member/change_password`, {
       memberId: changePwInfo.member_id,
       member_pw: changePwInfo.member_pw
     });
@@ -201,7 +201,7 @@ const Login = () => {
       return;
     }
 
-    const { data } = await axios.post(`${URL}/member/login`, info);
+    const { data } = await api.post(`${URL}/member/login`, info);
     console.log(data);
     if (data.success === true) {
       router.push('/component/main');
@@ -233,14 +233,14 @@ const Login = () => {
     setModalStep(1);
     setVerificationError(false);
 
-    const { data } = await axios.post(`${URL}/member/send_code`, findPwInfo);
+    const { data } = await api.post(`${URL}/member/send_code`, findPwInfo);
     console.log(data);
     sessionStorage.setItem('member_id', findPwInfo.memberId);
   };
 
   // 인증 코드 검증
   const handleVerifyCode = async () => {
-    const { data } = await axios.post(`${URL}/member/verify_code`, {
+    const { data } = await api.post(`${URL}/member/verify_code`, {
       memberId: findPwInfo.memberId,
       email: findPwInfo.email,
       authCode: verificationCode
