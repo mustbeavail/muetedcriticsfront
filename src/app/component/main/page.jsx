@@ -187,7 +187,7 @@ const Main = () => {
       <Header />
       <Menu />
       <div className="common-container">
-        <h1 className="dashboard-title">Dashboard</h1>
+        <h1 className={`dashboard-title ${lilitaOne.className}`}>Dashboard</h1>
         <StatsNoti
           notiList={notiList}
         />
