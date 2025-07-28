@@ -595,7 +595,8 @@ export default function User() {
       </div>
 
       {/* 유저 상세 모달 */}
-      {selectedUser && (
+      {/* "유저가 선택되어 있고, 동시에 메모 관련 모달들이 모두 닫혀있을 때만 유저 상세 모달을 보여줘" */}
+      {selectedUser && !showMemoModal && !showWriteMemoModal && !showEditMemoModal && (
         <div className="user-list-modalBackdrop">
           <div className="user-list-modal">
             <div className="user-list-modalHeader">
