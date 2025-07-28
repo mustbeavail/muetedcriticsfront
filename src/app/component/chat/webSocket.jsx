@@ -14,7 +14,7 @@ const useWebSocket = ({ token, memberId, currentRoomIdx, onMessageReceived }) =>
         if (!token || !memberId) return;
         // STOMP 클라이언트 생성
         const client = new Client({
-            brokerURL: 'ws://localhost:80/ws',
+            brokerURL: 'ws://52.78.198.224/ws',
             debug: function (str) {
                 console.log('STOMP: ' + str);
             },
