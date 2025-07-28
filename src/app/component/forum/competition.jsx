@@ -64,6 +64,28 @@ export default function Competition({ token, forumPosts }) {
         }
     }, [hoverBadgeId]);
 
+    // 각 유저별 메모 개수 저장
+    const [userMemoCount, setUserMemoCount] = useState({});
+    const getUserMemoCount = async (userId) => {
+        // 이미 조회했으면 skip
+        if (userMemoCount[userId] !== undefined) return;
+
+        try {
+            const { data } = await api.get(`${URL}/user/${userId}/list`, {
+                headers: { Authorization: sessionStorage.getItem('token') }
+            });
+            setUserMemoCount(prev => ({ ...prev, [userId]: data.length }));
+        } catch (e) {
+            setUserMemoCount(prev => ({ ...prev, [userId]: 0 }));
+        }
+    };
+    useEffect(() => {
+        if (forumPosts && forumPosts.length > 0) {
+            forumPosts.forEach(post => {
+                getUserMemoCount(post.userId);
+            });
+        }
+    }, [forumPosts]);
     const tierMap = {
         '골드': 'gold',
         '그랜드마스터': 'grandmaster',
@@ -116,6 +138,9 @@ export default function Competition({ token, forumPosts }) {
                         </div>
                     );
                 })}
+                {userMemoCount[userId] > 0 && (
+                    <span> 📝</span>
+                )}
             </div>
         );
     };
@@ -428,6 +453,9 @@ export default function Competition({ token, forumPosts }) {
                                         onMouseEnter={() => handleMouseEnter(post)}
                                         onMouseLeave={handleMouseLeave}>
                                         {post.userId}
+                                        {userMemoCount[post.userId] > 0 && (
+                                            <span> 📝</span>
+                                        )}
                                     </button>
                                     {openMenuId === post.postIdx && (
                                         <div className={forumStyles.forumDropdown}>

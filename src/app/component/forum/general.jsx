@@ -41,6 +41,8 @@ export default function General({ token, forumPosts }) {
 
     // 각각의 유저 시즌별 티어 불러오기 (뱃지 목록)
     const [userTiers, setUserTiers] = useState({});
+    // 각 유저별 메모 개수 저장
+    const [userMemoCount, setUserMemoCount] = useState({});
     const getUserTier = async (userId) => {
         if (userTiers[userId]) return;
         const tiers = [];
@@ -63,6 +65,30 @@ export default function General({ token, forumPosts }) {
             getUserTier(hoverBadgeId);
         }
     }, [hoverBadgeId]);
+
+    // 유저별 메모 개수 조회
+    const getUserMemoCount = async (userId) => {
+        // 이미 조회했으면 skip
+        if (userMemoCount[userId] !== undefined) return;
+        
+        try {
+            const { data } = await api.get(`${URL}/user/${userId}/list`, {
+                headers: { Authorization: sessionStorage.getItem('token') }
+            });
+            setUserMemoCount(prev => ({ ...prev, [userId]: data.length }));
+        } catch (e) {
+            setUserMemoCount(prev => ({ ...prev, [userId]: 0 }));
+        }
+    };
+
+    // forumPosts가 로드될 때 모든 유저의 메모 개수 조회
+    useEffect(() => {
+        if (forumPosts && forumPosts.length > 0) {
+            forumPosts.forEach(post => {
+                getUserMemoCount(post.userId);
+            });
+        }
+    }, [forumPosts]);
 
     const tierMap = {
         '골드': 'gold',
@@ -428,6 +454,9 @@ export default function General({ token, forumPosts }) {
                                         onMouseEnter={() => handleMouseEnter(post)}
                                         onMouseLeave={handleMouseLeave}>
                                         {post.userId}
+                                        {userMemoCount[post.userId] > 0 && (
+                                            <span> 📝</span>
+                                        )}
                                     </button>
                                     {openMenuId === post.postIdx && (
                                         <div className={forumStyles.forumDropdown}>
@@ -509,7 +538,7 @@ export default function General({ token, forumPosts }) {
                                     <div className={forumStyles.forumOtherMemoList}>
                                         {memoList.map((memo) => (
                                             <div key={memo.memoIdx}
-                                                className={`${forumStyles.forumOtherMemoItem} ${selectedMemo?.memoIdx === memo.memoIdx ? 'selected' : ''}`}
+                                                className={`${forumStyles.forumOtherMemoItem} ${selectedMemo?.memoIdx === memo.memoIdx ? forumStyles.selected : ''}`}
                                                 style={{ marginBottom: 20 }}
                                                 onClick={() => setSelectedMemo(memo)}>
                                                 <div className={forumStyles.forumMemoInfo}>

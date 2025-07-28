@@ -740,6 +740,13 @@
     cursor: default;
 }
 
+/* 선택된 메모 아이템 스타일 */
+.selected {
+    background-color: rgba(141, 53, 240, 0.15);
+    border: 2px solid #8d35f0;
+    border-radius: 8px;
+}
+
 /* 메모 작성일 표시 */
 .forumMemoInfo {
     display: flex;
@@ -831,3 +838,10 @@
     font-size: 15px;
     resize: none;
 }
+
+/* .forumOtherMemoItem.selected {
+    background-color: rgba(141, 53, 240, 0.2);
+    border: 1px solid #8d35f0;
+    border-radius: 8px;
+    padding: 5px;
+} */
