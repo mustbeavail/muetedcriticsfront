@@ -8,6 +8,7 @@ import IngameItemStats from './ingame_itemStats';
 import EventItemStats from './event_itemStats';
 import EventTop3ItemStats from './eventTop3_itemStats';
 import RefundItemStats from './refund_itemStats';
+import { format } from 'date-fns-tz';
 import { subMonths } from 'date-fns';
 import api from '../../utils/api';
 
@@ -50,7 +51,7 @@ const ItemStats = () => {
   const [refundSummaryEndDate, setRefundSummaryEndDate] = useState("");
   const [refundSummary, setRefundSummary] = useState([]);
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = format(new Date(), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
   const URL = process.env.NEXT_PUBLIC_API_URL;
 
   // 페이지 입장시 로그인체크, 날짜 초기화하기
@@ -71,7 +72,7 @@ const ItemStats = () => {
     setAdminYn(adminRaw === "true");
     setDept(deptRaw);
 
-    const oneMonthAgo = subMonths(today, 1).toISOString().split('T')[0];
+    const oneMonthAgo = format(subMonths(new Date(), 1), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
 
     setItemListStartDate(oneMonthAgo);
     setItemListEndDate(today);

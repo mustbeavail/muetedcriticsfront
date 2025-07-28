@@ -2,7 +2,8 @@
 import api from '../../utils/api';
 import { useState, useEffect } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { format } from 'date-fns';
+import { format } from 'date-fns-tz';
+import { subDays } from 'date-fns';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -14,7 +15,7 @@ export default function PeriodDailyStats() {
     const [endDate, setEndDate] = useState('');
 
     // 오늘 날짜를 yyyy-MM-DD 형식으로 가져옴 (종료일 최대값으로 사용)
-    const today = format(new Date(), 'yyyy-MM-dd');
+    const today = format(new Date(), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
 
     const dailyAccessData = async (s, e) => {
         const start = s ?? startDate;
@@ -38,19 +39,13 @@ export default function PeriodDailyStats() {
 
     //최초 렌더링 시 기본 기간 설정 (최근 7일)
     useEffect(() => {
-        const today = new Date();
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(today.getDate() - 6);
+        const today = format(new Date(), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
+        const sevenDaysAgo = format(subDays(new Date(), 7), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'});
 
-        const format = (date) => date.toISOString().split('T')[0];
+        setStartDate(sevenDaysAgo);
+        setEndDate(today);
 
-        const sDate = format(sevenDaysAgo);
-        const eDate = format(today);
-
-        setStartDate(sDate);
-        setEndDate(eDate);
-
-        dailyAccessData(sDate, eDate);  // 초기값 직접 전달해서 호출
+        dailyAccessData(sevenDaysAgo, today);  // 초기값 직접 전달해서 호출
     }, []);
 
     // // 통계 저장

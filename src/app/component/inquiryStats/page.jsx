@@ -7,7 +7,8 @@ import All_InquiryStats from './all_inquiryStats';
 import Period_InquiryStats from './period_inquiryStats';
 import api from '../../utils/api';
 import { useRouter } from 'next/navigation';
-import { format, subDays } from 'date-fns';
+import { format } from 'date-fns-tz';
+import { subDays } from 'date-fns';
 
 const URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,8 +16,8 @@ const InquiryStats = () => {
   const router = useRouter();
 
   // 기본 날짜
-  const today = format(new Date(), 'yyyy-MM-dd'); // 오늘 날짜(종료일 기본값)
-  const weekAgo = format(subDays(new Date(), 7), 'yyyy-MM-dd'); // 일주일 전 날짜(시작일 기본값)
+  const today = format(new Date(), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'}); // 오늘 날짜(종료일 기본값)
+  const weekAgo = format(subDays(new Date(), 7), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'}); // 일주일 전 날짜(시작일 기본값)
 
   const [inquiryStatsAll, setInquiryStatsAll] = useState([]);
   const [inquiryStatsPeriod, setInquiryStatsPeriod] = useState([]);

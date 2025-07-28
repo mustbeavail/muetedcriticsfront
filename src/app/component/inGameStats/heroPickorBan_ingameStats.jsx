@@ -1,6 +1,7 @@
 "use client"
 import api from '../../utils/api';
-import { format, subDays } from 'date-fns';
+import { format } from 'date-fns-tz';
+import { subDays } from 'date-fns';
 import React, { useState, useMemo, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -17,9 +18,9 @@ export default function HeroPickorBan_IngameStats() {
     const itemsPerPage = 10; // 페이지 당 보여줄 아이템 수
 
     // 기본 날짜
-    const today = format(new Date(), 'yyyy-MM-dd'); // 오늘 날짜(종료일 기본값)
-    const weekAgo = format(subDays(new Date(), 7), 'yyyy-MM-dd'); // 일주일 전 날짜(시작일 기본값)
-
+    const today = format(new Date(), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'}); // 오늘 날짜(종료일 기본값)
+    const weekAgo = format(subDays(new Date(), 7), 'yyyy-MM-dd', {timeZone: 'Asia/Seoul'}); // 일주일 전 날짜(시작일 기본값)
+    
     // 1. 초기 상태를 빈 값으로 설정
     const [startDate, setStartDate] = useState(weekAgo); // 기간 시작일
     const [endDate, setEndDate] = useState(today); // 기간 종료일
