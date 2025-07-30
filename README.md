@@ -6,5 +6,8 @@ Next.js
 Axios
 Cursor
 
+## 프로젝트 기간
+2025.06.26 - 2025.07.31
+
 ## 배포
 AWS, Docker 로 배포하였습니다.
