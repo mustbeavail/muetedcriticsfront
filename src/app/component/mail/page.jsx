@@ -25,7 +25,7 @@ export default function MailList() {
         const dept = sessionStorage.getItem("dept_name");
         const adminYn = sessionStorage.getItem("admin_yn") === "true";
 
-        if (!adminYn && (dept != "CS팀" || dept != "마케팅팀")) {
+        if (!adminYn && dept === "개발팀") {
             alert("접근 권한이 없습니다.");
             location.href = "/component/main";
             return;

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../../../Header/page";
 import Menu from "../../../menu/Menu";
 import "../mail/mail.css";
+import Dompurify from "dompurify";
 
 export default function MailSend() {
     const pathname = usePathname();
@@ -52,7 +53,7 @@ export default function MailSend() {
             alert("로그인 후 이용해주세요.");
             location.href = "/";
             return;
-        } else if (!admin_yn && (dept != "CS팀" || dept != "마케팅팀")) {
+        } else if (!admin_yn && dept === "개발팀") {
             alert("접근 권한이 없습니다.");
             location.href = "/component/main";
             return;
@@ -104,6 +105,11 @@ export default function MailSend() {
             setIsLoading(false);
         }
     }
+
+    // html 방어코드 사용
+    const sanitizedContent = useMemo(() => {
+        return Dompurify.sanitize(mailContent);
+    }, [mailContent]);
 
     // 작성 중인지 판단(예: 제목·본문·수신자 배열 중 하나라도 채워지면 true)
     const unsaved = useMemo(
@@ -323,7 +329,7 @@ export default function MailSend() {
                                     <span className="mailSend-span">메일 미리보기</span>
                                     {mailContent && (
                                         <div className="mailSend-preview">
-                                            <div dangerouslySetInnerHTML={{ __html: mailContent }} />
+                                            <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
                                         </div>
                                     )}
                                 </div>
